@@ -1,0 +1,29 @@
+{
+    "name": "pragmatist/assistant",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pragmatist\\Assistant\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Frank van den Brink",
+            "email": "frank@pragmatist.nl"
+        }
+    ],
+    "require": {
+        "symfony/console": "^6.2",
+        "openai-php/client": "^0.4.2",
+        "symfony/http-client": "^6.2",
+        "nyholm/psr7": "^1.6",
+        "guzzlehttp/guzzle": "^7.5",
+        "symfony/config": "^6.2",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

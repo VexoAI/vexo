@@ -1,2 +1,4 @@
 /vendor/
+/output/*
 composer.phar
+.env

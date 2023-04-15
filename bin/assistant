@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+use Symfony\Component\Console\Application;
+use Pragmatist\Assistant\RunCommand;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+$command = new RunCommand;
+$app = new Application('Assistant', '0.1');
+$app->add($command);
+$app->setDefaultCommand($command->getName());
+$app->run();
