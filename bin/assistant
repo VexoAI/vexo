@@ -5,15 +5,18 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Dotenv\Dotenv;
-use Symfony\Component\Console\Application;
-use Pragmatist\Assistant\RunCommand;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__ . '/../.env.defaults', __DIR__ . '/../.env');
 
-$command = new RunCommand;
-$app = new Application('Assistant', '0.1');
-$app->add($command);
-$app->setDefaultCommand($command->getName());
+$container = new ContainerBuilder;
+$yamlLoader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../config'));
+$yamlLoader->load('services.yaml');
+$container->compile(true);
+
+$app = $container->get('application');
 $app->run();

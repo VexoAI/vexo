@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Pragmatist\Assistant;
 
 use GuzzleHttp\Exception\TransferException;
-use OpenAI;
+use OpenAI\Client as OpenAIClient;
+use Psr\Http\Client\ClientInterface as HttpClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -62,16 +63,15 @@ Response Format:
 }
 Ensure the response can be parsed by PHP json_decode';
 
-    protected function configure()
-    {
-        $this->setName('run')
-            ->setDescription('Runs the assistant');
+    public function __construct(
+        private OpenAIClient $openAIClient,
+        private HttpClient $httpClient
+    ) {
+        parent::__construct('run');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $client = OpenAI::client($_ENV['OPENAI_API_KEY']);
-        $httpClient = new \GuzzleHttp\Client(['timeout' => 10]);
         $io = new SymfonyStyle($input, $output);
 
         $messages = [
@@ -87,7 +87,7 @@ Ensure the response can be parsed by PHP json_decode';
             $io->writeln('<fg=gray>Thinking...</>');
             $io->writeln('');
 
-            $response = $client->chat()->create(['model' => 'gpt-3.5-turbo', 'messages' => $messages]);
+            $response = $this->openAIClient->chat()->create(['model' => 'gpt-3.5-turbo', 'messages' => $messages]);
 
             $result = json_decode($response->choices[0]->message->content, true);
             file_put_contents(__DIR__ . '/../output/llm-response-' . time() . '.txt', $response->choices[0]->message->content);
@@ -112,8 +112,7 @@ Ensure the response can be parsed by PHP json_decode';
             $io->writeln('<fg=blue>Executing:</> ' . $result['command']['name'] . ' ' . json_encode($result['command']['args']));
             switch ($result['command']['name']) {
                 case 'google':
-                    $apiResponse = $httpClient->request(
-                        'GET',
+                    $apiResponse = $this->httpClient->get(
                         sprintf(
                             'https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s',
                             $_ENV['GOOGLE_API_KEY'],
@@ -131,7 +130,7 @@ Ensure the response can be parsed by PHP json_decode';
                 case 'browse_webpage':
                     try {
                         $io->writeln('<fg=blue>Downloading page:</> ' . $result['command']['args']['url']);
-                        $browseResponse = $httpClient->get($result['command']['args']['url']);
+                        $browseResponse = $this->httpClient->get($result['command']['args']['url']);
                     } catch (TransferException $e) {
                         $commandResult = 'An error occurred: ' . $e->getMessage();
                         break;
@@ -144,7 +143,7 @@ Ensure the response can be parsed by PHP json_decode';
                     $browseResponse = preg_replace('#\s+#', ' ', $browseResponse);
 
                     $io->write('<fg=blue>Analyzing text:</> ');
-                    $browseLlmResponse = $client->chat()->create(
+                    $browseLlmResponse = $this->openAIClient->chat()->create(
                         [
                             'model' => 'gpt-3.5-turbo',
                             'messages' => [

@@ -1,0 +1,28 @@
+parameters:
+    openai_api_key: '%env(OPENAI_API_KEY)%'
+    openai_organization: '%env(OPENAI_ORGANIZATION)%'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Pragmatist\Assistant\:
+    resource: '../src/*'
+
+  application:
+    class: \Symfony\Component\Console\Application
+    arguments: [ 'Assistant', '0.1' ]
+    calls:
+      - add: [ '@Pragmatist\Assistant\RunCommand' ]
+      - setDefaultCommand: [ 'run', true ]
+    public: true
+
+  Psr\Http\Client\ClientInterface:
+    class: \GuzzleHttp\Client
+    arguments:
+      - timeout: 10
+
+  OpenAI\Client:
+    factory: ['\OpenAI', 'client']
+    arguments: [ '%openai_api_key%', '%openai_organization%' ]
