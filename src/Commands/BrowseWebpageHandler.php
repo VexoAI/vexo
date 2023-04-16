@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pragmatist\Assistant\Commands;
 
 use Assert\Assertion as Ensure;
-use OpenAI\Client as OpenAIClient;
+use OpenAI\Contracts\ClientContract as OpenAIClient;
 use GuzzleHttp\Client as HttpClient;
 use Pragmatist\Assistant\Commands\BrowseWebpage\TextExtractor;
 use Pragmatist\Assistant\Commands\BrowseWebpage\TextSplitter;
@@ -49,9 +49,7 @@ final class BrowseWebpageHandler implements CommandHandler
     {
         $chunks = $this->textSplitter->divideTextIntoChunks($text);
         $chunkSummaries = $this->summarizeChunks($chunks, $question);
-        $combinedSummary = implode("\n", $chunkSummaries);
-
-        return $this->summarizeText($combinedSummary, $question);
+        return implode("\n", $chunkSummaries);
     }
 
     private function summarizeChunks(array $chunks, string $question): array

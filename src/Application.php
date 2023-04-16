@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant;
 
-use OpenAI\Client as OpenAIClient;
+use OpenAI\Contracts\ClientContract as OpenAIClient;
 use Nette\Utils\Json;
 use Pragmatist\Assistant\Commands\CommandBuilder;
 use Pragmatist\Assistant\Commands\CommandRunner;
@@ -95,6 +95,7 @@ Ensure the response can be parsed by PHP json_decode';
                 $result = Json::decode($response->choices[0]->message->content, true);
             } catch (\Exception $e) {
                 $io->writeln('<fg=red>Failed to parse response:</> ' . $response->choices[0]->message->content);
+                exit;
             }
 
             $messages[] = ['role' => 'assistant', 'content' => Json::encode($result)];

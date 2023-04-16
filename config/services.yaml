@@ -35,7 +35,7 @@ services:
         headers:
           User-Agent: '%http_client_user_agent%'
 
-  OpenAI\Client:
+  OpenAI\Contracts\ClientContract:
     factory: ['\OpenAI', 'client']
     arguments: [ '%openai_api_key%', '%openai_organization%' ]
 
@@ -81,7 +81,7 @@ services:
       - '@Pragmatist\Assistant\Commands\BrowseWebpage\TextExtractor'
       - '@Pragmatist\Assistant\Commands\BrowseWebpage\TextSplitter'
       - '@GuzzleHttp\Client'
-      - '@OpenAI\Client'
+      - '@OpenAI\Contracts\ClientContract'
       - '%fast_llm_model%'
     tags: ['assistant.command_handler']
 
