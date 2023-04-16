@@ -91,7 +91,11 @@ Ensure the response can be parsed by PHP json_decode';
 
             $response = $this->openAIClient->chat()->create(['model' => 'gpt-3.5-turbo', 'messages' => $messages]);
 
-            $result = Json::decode($response->choices[0]->message->content, true);
+            try {
+                $result = Json::decode($response->choices[0]->message->content, true);
+            } catch (\Exception $e) {
+                $io->writeln('<fg=red>Failed to parse response:</> ' . $response->choices[0]->message->content);
+            }
 
             $messages[] = ['role' => 'assistant', 'content' => Json::encode($result)];
 
