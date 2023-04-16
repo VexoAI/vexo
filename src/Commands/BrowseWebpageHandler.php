@@ -7,10 +7,12 @@ namespace Pragmatist\Assistant\Commands;
 use Assert\Assertion as Ensure;
 use OpenAI\Client as OpenAIClient;
 use GuzzleHttp\Client as HttpClient;
+use Pragmatist\Assistant\Commands\BrowseWebpage\TextExtractor;
 
 final class BrowseWebpageHandler implements CommandHandler
 {
     public function __construct(
+        private TextExtractor $textExtractor,
         private HttpClient $httpClient,
         private OpenAIClient $openAIClient,
         private string $model
@@ -29,7 +31,7 @@ final class BrowseWebpageHandler implements CommandHandler
         return new CommandResult(
             [
                 $this->analyzeText(
-                    $this->extractText($this->fetchPage($command->url)),
+                    $this->textExtractor->extract($this->fetchPage($command->url)),
                     $command->question
                 )
             ]
@@ -45,7 +47,7 @@ final class BrowseWebpageHandler implements CommandHandler
                     ['role' => 'user', 'content' => 'The following text has been extracted from a webpage:'],
                     ['role' => 'user', 'content' => '"""' . $text . '"""'],
                     ['role' => 'user', 'content' => 'Using the above text, please answer the following question: "' . $question . '"'],
-                    ['role' => 'user', 'content' => 'Do not provide other information besides answering the question.'],
+                    ['role' => 'user', 'content' => 'Do not provide other information beyond answering the question.'],
                     ['role' => 'user', 'content' => 'If the question cannot be answered, explicitly say so and then summarize the text.']
                 ]
             ]
@@ -57,26 +59,5 @@ final class BrowseWebpageHandler implements CommandHandler
     private function fetchPage(string $url): string
     {
         return (string) $this->httpClient->get($url)->getBody();
-    }
-
-    private function extractText(string $contents): string
-    {
-        $dom = new \DOMDocument();
-        @$dom->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        // Define an array of tags that generally don't contain useful content
-        $tagsToRemove = ['head', 'script', 'style', 'noscript', 'iframe', 'meta', 'link', 'select'];
-
-        // Remove the specified tags and their content
-        $xpath = new \DOMXPath($dom);
-        foreach ($tagsToRemove as $tag) {
-            $nodes = $xpath->query('//' . $tag);
-            foreach ($nodes as $node) {
-                $node->parentNode->removeChild($node);
-            }
-        }
-
-        // Remove extra white space and return
-        return trim(preg_replace('/\s+/', ' ', $dom->textContent));
     }
 }

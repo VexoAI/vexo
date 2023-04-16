@@ -78,6 +78,7 @@ services:
   Pragmatist\Assistant\Commands\BrowseWebpageHandler:
     class: \Pragmatist\Assistant\Commands\BrowseWebpageHandler
     arguments:
+      - '@Pragmatist\Assistant\Commands\BrowseWebpage\TextExtractor'
       - '@GuzzleHttp\Client'
       - '@OpenAI\Client'
       - '%fast_llm_model%'
