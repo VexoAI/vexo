@@ -24,7 +24,8 @@
         "symfony/dotenv": "^6.2",
         "beberlei/assert": "^3.3",
         "league/flysystem": "^3.14",
-        "nette/utils": "^4.0"
+        "nette/utils": "^4.0",
+        "mustache/mustache": "^2.14"
     },
     "config": {
         "allow-plugins": {
