@@ -1,4 +1,5 @@
 /vendor/
-/output/*
+/workspace/
+/tmp/
 composer.phar
 .env

@@ -1,7 +1,13 @@
 parameters:
-  http_client_timeout: 10
+  assistant_version: '0.1-alpha'
+  fast_llm_model: '%env(FAST_LLM_MODEL)%'
+  http_client_user_agent: 'PragmatistAssistant/%assistant_version%'
+  http_client_timeout: 30
   openai_api_key: '%env(OPENAI_API_KEY)%'
   openai_organization: '%env(OPENAI_ORGANIZATION)%'
+  google_api_key: '%env(GOOGLE_API_KEY)%'
+  google_custom_search_engine_id: '%env(GOOGLE_CUSTOM_SEARCH_ENGINE_ID)%'
+  filesystem_local_root_path: '%env(FILESYSTEM_LOCAL_ROOT_PATH)%'
 
 services:
   _defaults:
@@ -13,17 +19,69 @@ services:
 
   application:
     class: \Symfony\Component\Console\Application
-    arguments: [ 'Assistant', '0.1' ]
+    arguments: [ 'Assistant', '%assistant_version%' ]
     calls:
-      - add: [ '@Pragmatist\Assistant\RunCommand' ]
+      - add: [ '@Pragmatist\Assistant\Application' ]
       - setDefaultCommand: [ 'run', true ]
     public: true
 
-  Psr\Http\Client\ClientInterface:
+  #
+  # Third party dependencies
+  #
+  GuzzleHttp\Client:
     class: \GuzzleHttp\Client
     arguments:
       - timeout: '%http_client_timeout%'
+        headers:
+          User-Agent: '%http_client_user_agent%'
 
   OpenAI\Client:
     factory: ['\OpenAI', 'client']
     arguments: [ '%openai_api_key%', '%openai_organization%' ]
+
+  League\Flysystem\FilesystemAdapter:
+    class: \League\Flysystem\Local\LocalFilesystemAdapter
+    arguments: [ '%filesystem_local_root_path%' ]
+
+  League\Flysystem\Filesystem: ~
+
+  #
+  # Command handling
+  #
+  Pragmatist\Assistant\Commands\CommandBuilder:
+    class: \Pragmatist\Assistant\Commands\CommandBuilder
+    arguments:
+      - ['Pragmatist\Assistant\Commands\']
+
+  Pragmatist\Assistant\Commands\CommandRunner:
+    class: \Pragmatist\Assistant\Commands\CommandRunner
+    arguments:
+      - !tagged_iterator assistant.command_handler
+
+  #
+  # Individual command handlers
+  #
+  Pragmatist\Assistant\Commands\GoogleHandler:
+    class: \Pragmatist\Assistant\Commands\GoogleHandler
+    arguments:
+      - '@GuzzleHttp\Client'
+      - '%google_api_key%'
+      - '%google_custom_search_engine_id%'
+    tags: ['assistant.command_handler']
+
+  Pragmatist\Assistant\Commands\WriteToFileHandler:
+    tags: ['assistant.command_handler']
+
+  Pragmatist\Assistant\Commands\ReadFromFileHandler:
+    tags: ['assistant.command_handler']
+
+  Pragmatist\Assistant\Commands\BrowseWebpageHandler:
+    class: \Pragmatist\Assistant\Commands\BrowseWebpageHandler
+    arguments:
+      - '@GuzzleHttp\Client'
+      - '@OpenAI\Client'
+      - '%fast_llm_model%'
+    tags: ['assistant.command_handler']
+
+  Pragmatist\Assistant\Commands\DoNothingHandler:
+    tags: ['assistant.command_handler']
