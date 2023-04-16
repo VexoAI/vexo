@@ -6,12 +6,12 @@ namespace Pragmatist\Assistant\Prompt;
 
 use PHPUnit\Framework\TestCase;
 
-final class BuilderTest extends TestCase
+final class FactoryTest extends TestCase
 {
     public function testSimple(): void
     {
         $engine = new StrReplaceRenderEngine();
-        $builder = new Builder($engine);
+        $builder = new Factory($engine);
 
         $simplePrompt = $builder->simple('test_template');
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant\Prompt;
 
-final class Builder
+final class Factory
 {
     public function __construct(
         private RenderEngine $engine
