@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pragmatist\Assistant\Commands;
 
 use Assert\Assertion as Ensure;
-use OpenAI\Contracts\ClientContract as OpenAIClient;
 use GuzzleHttp\Client as HttpClient;
+use OpenAI\Contracts\ClientContract as OpenAIClient;
 use Pragmatist\Assistant\Commands\BrowseWebpage\TextExtractor;
 use Pragmatist\Assistant\Commands\BrowseWebpage\TextSplitter;
 
