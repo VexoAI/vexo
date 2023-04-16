@@ -113,17 +113,21 @@ Ensure the response can be parsed by PHP json_decode';
 
             $io->confirm('Proceed?', true);
 
-            $commandResult = null;
-            $io->writeln('<fg=blue>Executing:</> ' . $result['command']['name'] . ' ' . Json::encode($result['command']['args']));
-            try {
-                $result = $this->commandRunner->handle(
-                    $this->commandBuilder->fromArray($result['command'])
-                );
-                $commandResult = $result->toJson();
-            } catch (\Exception $e) {
-                $commandResult = $e->getMessage();
+            if (in_array($result['command']['name'], ['google', 'browse_webpage', 'write_to_file', 'read_from_file', 'do_nothing'])) {
+                $commandResult = null;
+                $io->writeln('<fg=blue>Executing:</> ' . $result['command']['name'] . ' ' . Json::encode($result['command']['args']));
+                try {
+                    $result = $this->commandRunner->handle(
+                        $this->commandBuilder->fromArray($result['command'])
+                    );
+                    $commandResult = $result->toJson();
+                } catch (\Exception $e) {
+                    $commandResult = $e->getMessage();
+                }
+                $io->writeln('<fg=blue>Command result:</> ' . $commandResult);
+            } else {
+                $commandResult = 'You have specified an invalid command. Only use the commands listed in the prompt above.';
             }
-            $io->writeln('<fg=blue>Command result:</> ' . $commandResult);
 
             $messages[] = ['role' => 'system', 'content' => 'Last command result: ' . $commandResult];
             $messages[] = ['role' => 'user', 'content' => 'Determine which next command to use, and respond using the format specified above:'];
