@@ -8,13 +8,13 @@ use Assert\Assertion as Ensure;
 use OpenAI\Client as OpenAIClient;
 use GuzzleHttp\Client as HttpClient;
 use Pragmatist\Assistant\Commands\BrowseWebpage\TextExtractor;
+use Pragmatist\Assistant\Commands\BrowseWebpage\TextSplitter;
 
 final class BrowseWebpageHandler implements CommandHandler
 {
-    const MAX_CHUNK_SIZE = 8192;
-
     public function __construct(
         private TextExtractor $textExtractor,
+        private TextSplitter $textSplitter,
         private HttpClient $httpClient,
         private OpenAIClient $openAIClient,
         private string $model
@@ -47,45 +47,20 @@ final class BrowseWebpageHandler implements CommandHandler
 
     private function analyzeText(string $text, string $question): string
     {
-        $chunks = $this->divideTextIntoChunks($text);
-        $chunkSummaries = [];
-
-        foreach ($chunks as $chunk) {
-            $chunkSummaries[] = $this->summarizeText($chunk, $question);
-        }
-
+        $chunks = $this->textSplitter->divideTextIntoChunks($text);
+        $chunkSummaries = $this->summarizeChunks($chunks, $question);
         $combinedSummary = implode("\n", $chunkSummaries);
 
         return $this->summarizeText($combinedSummary, $question);
     }
 
-    private function divideTextIntoChunks(string $text): array
+    private function summarizeChunks(array $chunks, string $question): array
     {
-        $chunks = [];
-        $currentChunk = '';
-        $paragraphs = $this->splitTextIntoParagraphs($text);
-
-        foreach ($paragraphs as $paragraph) {
-            $tempChunk = $currentChunk . "\n" . $paragraph;
-
-            if (strlen($tempChunk) <= self::MAX_CHUNK_SIZE) {
-                $currentChunk = $tempChunk;
-            } else {
-                $chunks[] = trim($currentChunk);
-                $currentChunk = $paragraph;
-            }
+        $chunkSummaries = [];
+        foreach ($chunks as $chunk) {
+            $chunkSummaries[] = $this->summarizeText($chunk, $question);
         }
-
-        if (!empty($currentChunk)) {
-            $chunks[] = trim($currentChunk);
-        }
-
-        return $chunks;
-    }
-
-    private function splitTextIntoParagraphs(string $text): array
-    {
-        return preg_split('/\n/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        return $chunkSummaries;
     }
 
     private function summarizeText(string $text, string $question): string
@@ -97,7 +72,6 @@ final class BrowseWebpageHandler implements CommandHandler
                     ['role' => 'user', 'content' => 'The following text has been extracted from a webpage:'],
                     ['role' => 'user', 'content' => '"""' . $text . '"""'],
                     ['role' => 'user', 'content' => 'Using the above text, please answer the following question: "' . $question . '"'],
-                    ['role' => 'user', 'content' => 'Do not provide other information beyond answering the question.'],
                     ['role' => 'user', 'content' => 'Summarize the text if the question cannot be answered directly.']
                 ]
             ]
