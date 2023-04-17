@@ -13,6 +13,23 @@ use Pragmatist\Assistant\Chain\SequentialPipeline;
 
 final class SequentialPipelineTest extends TestCase
 {
+    public function testSequentialPipelineConstructorValidatesChains(): void
+    {
+        $inputFactory = new SimpleInputFactory();
+        $chainOne = new PassthroughChain($inputFactory);
+        $chainTwo = new PassthroughChain($inputFactory);
+
+        $middleware = new PassthroughMiddleware();
+
+        // Valid chains array
+        $sequentialPipeline = new SequentialPipeline([$chainOne, $chainTwo]);
+        $sequentialPipeline->addMiddleware($middleware);
+
+        // Invalid chains array
+        $this->expectException(\InvalidArgumentException::class);
+        new SequentialPipeline([$chainOne, $chainTwo, 'InvalidChain']);
+    }
+
     public function testSequentialPipelineWithMiddleware(): void
     {
         $inputFactory = new SimpleInputFactory();
@@ -21,8 +38,8 @@ final class SequentialPipelineTest extends TestCase
 
         $middleware = new PassthroughMiddleware();
 
-        $middlewares = [$middleware];
-        $sequentialPipeline = new SequentialPipeline([$chainOne, $chainTwo], $middlewares);
+        $sequentialPipeline = new SequentialPipeline([$chainOne, $chainTwo]);
+        $sequentialPipeline->addMiddleware($middleware);
 
         $input = new SimpleInput(['foo' => 'bar']);
         $output = $sequentialPipeline->process($input);

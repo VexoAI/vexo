@@ -4,26 +4,18 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant\Chain;
 
-use Pragmatist\Assistant\Chain\Middleware\Middleware;
-use Pragmatist\Assistant\Chain\Middleware\MiddlewarePlumbing;
+use Assert\Assertion as Ensure;
 
-final class SequentialPipeline implements Pipeline
+final class SequentialPipeline implements MiddlewarePipeline
 {
-    use MiddlewarePlumbing;
-
-    /**
-     * @var Chain[]
-     */
-    private array $chains;
+    use MiddlewareSupport;
 
     /**
      * @param Chain[] $chains
-     * @param Middleware[] $middlewares
      */
-    public function __construct(array $chains, array $middlewares = [])
+    public function __construct(private array $chains)
     {
-        $this->chains = $chains;
-        $this->middlewares = $middlewares;
+        Ensure::allIsInstanceOf($chains, Chain::class);
     }
 
     public function process(Input $input): Output
