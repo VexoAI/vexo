@@ -25,7 +25,8 @@
         "beberlei/assert": "^3.3",
         "league/flysystem": "^3.14",
         "nette/utils": "^4.0",
-        "mustache/mustache": "^2.14"
+        "mustache/mustache": "^2.14",
+        "psr/log": "^3.0"
     },
     "config": {
         "allow-plugins": {

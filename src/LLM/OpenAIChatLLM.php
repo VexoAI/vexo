@@ -8,11 +8,17 @@ use Pragmatist\Assistant\Prompt\Prompt;
 
 use Assert\Assertion as Ensure;
 use OpenAI\Contracts\Resources\ChatContract;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-final class OpenAIChatLLM implements LLM
+final class OpenAIChatLLM implements LLM, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(private ChatContract $chat)
     {
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -24,7 +30,9 @@ final class OpenAIChatLLM implements LLM
 
         $generations = [];
         foreach ($prompt as $singlePrompt) {
-            $generations[] = new Generation(
+            $this->logger->debug('Generating response for prompt', ['prompt' => $singlePrompt->text()]);
+
+            $generation = new Generation(
                 $this->chat->create(
                     [
                         'model' => 'gpt-3.5-turbo',
@@ -32,6 +40,9 @@ final class OpenAIChatLLM implements LLM
                     ]
                 )->choices[0]->message->content
             );
+
+            $this->logger->debug('Generated response', ['generation' => $generation->text()]);
+            $generations[] = $generation;
         }
 
         return new Response($generations);
