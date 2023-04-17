@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant\Prompt;
 
-final class StrReplaceRenderEngine implements RenderEngine
+final class StrReplaceRenderer implements Renderer
 {
     public function render(string $template, array $values): Prompt
     {

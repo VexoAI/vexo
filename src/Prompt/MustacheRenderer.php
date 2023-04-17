@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant\Prompt;
 
-final class MustacheRenderEngine implements RenderEngine
+final class MustacheRenderer implements Renderer
 {
     public function __construct(
         private \Mustache_Engine $mustache

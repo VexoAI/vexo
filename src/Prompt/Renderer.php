@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant\Prompt;
 
-interface RenderEngine
+interface Renderer
 {
     /**
      * @param string $template The template to render.

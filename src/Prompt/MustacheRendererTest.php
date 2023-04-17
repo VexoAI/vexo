@@ -6,15 +6,15 @@ namespace Pragmatist\Assistant\Prompt;
 
 use PHPUnit\Framework\TestCase;
 
-final class MustacheRenderEngineTest extends TestCase
+final class MustacheRendererTest extends TestCase
 {
-    private MustacheRenderEngine $renderEngine;
+    private MustacheRenderer $renderer;
     private \Mustache_Engine $mustache;
 
     protected function setUp(): void
     {
         $this->mustache = new \Mustache_Engine();
-        $this->renderEngine = new MustacheRenderEngine($this->mustache);
+        $this->renderer = new MustacheRenderer($this->mustache);
     }
 
     public function testRender(): void
@@ -23,7 +23,7 @@ final class MustacheRenderEngineTest extends TestCase
         $values = ['name' => 'John'];
 
         $expectedResult = 'Hello, John!';
-        $prompt = $this->renderEngine->render($template, $values);
+        $prompt = $this->renderer->render($template, $values);
 
         $this->assertSame($expectedResult, $prompt->text());
     }

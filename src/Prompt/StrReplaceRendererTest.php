@@ -6,11 +6,11 @@ namespace Pragmatist\Assistant\Prompt;
 
 use PHPUnit\Framework\TestCase;
 
-final class StrReplaceRenderEngineTest extends TestCase
+final class StrReplaceRendererTest extends TestCase
 {
     public function testRender(): void
     {
-        $engine = new StrReplaceRenderEngine();
+        $engine = new StrReplaceRenderer();
         $template = 'Hello, {{name}}! Welcome to {{location}}.';
         $values = [
             'name' => 'John',
