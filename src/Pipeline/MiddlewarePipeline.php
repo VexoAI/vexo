@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline;
+namespace Vexo\Weave\Pipeline;
 
-use Pragmatist\Assistant\Pipeline\Middleware\Middleware;
+use Vexo\Weave\Pipeline\Middleware\Middleware;
 
 interface MiddlewarePipeline extends Pipeline
 {

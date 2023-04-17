@@ -1,5 +1,2 @@
 /vendor/
-/workspace/
 /tmp/
-composer.phar
-.env

@@ -5,7 +5,7 @@
     colors="true"
     cacheDirectory="tmp/.phpunit.cache">
     <testsuites>
-        <testsuite name="Assistant">
+        <testsuite name="Weave">
             <directory suffix="Test.php">src/</directory>
         </testsuite>
     </testsuites>

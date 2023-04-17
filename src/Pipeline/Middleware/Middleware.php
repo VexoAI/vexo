@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline\Middleware;
+namespace Vexo\Weave\Pipeline\Middleware;
 
-use Pragmatist\Assistant\Chain\Input;
-use Pragmatist\Assistant\Chain\Output;
+use Vexo\Weave\Chain\Input;
+use Vexo\Weave\Chain\Output;
 
 interface Middleware
 {

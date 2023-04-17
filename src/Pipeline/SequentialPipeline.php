@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline;
+namespace Vexo\Weave\Pipeline;
 
 use Assert\Assertion as Ensure;
-use Pragmatist\Assistant\Chain\Chain;
-use Pragmatist\Assistant\Chain\Input;
-use Pragmatist\Assistant\Chain\Output;
-use Pragmatist\Assistant\Pipeline\Concerns\SupportsMiddleware;
+use Vexo\Weave\Chain\Chain;
+use Vexo\Weave\Chain\Input;
+use Vexo\Weave\Chain\Output;
+use Vexo\Weave\Pipeline\Concerns\SupportsMiddleware;
 
 final class SequentialPipeline implements MiddlewarePipeline
 {

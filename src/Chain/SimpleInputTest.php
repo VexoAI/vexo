@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Chain;
+namespace Vexo\Weave\Chain;
 
 use PHPUnit\Framework\TestCase;
 

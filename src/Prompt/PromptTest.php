@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Prompt;
+namespace Vexo\Weave\Prompt;
 
 use PHPUnit\Framework\TestCase;
 

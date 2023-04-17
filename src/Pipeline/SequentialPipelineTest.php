@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline;
+namespace Vexo\Weave\Pipeline;
 
 use PHPUnit\Framework\TestCase;
-use Pragmatist\Assistant\Chain\PassthroughChain;
-use Pragmatist\Assistant\Chain\SimpleInput;
-use Pragmatist\Assistant\Chain\SimpleInputFactory;
-use Pragmatist\Assistant\Pipeline\Middleware\PassthroughMiddleware;
+use Vexo\Weave\Chain\PassthroughChain;
+use Vexo\Weave\Chain\SimpleInput;
+use Vexo\Weave\Chain\SimpleInputFactory;
+use Vexo\Weave\Pipeline\Middleware\PassthroughMiddleware;
 
 final class SequentialPipelineTest extends TestCase
 {

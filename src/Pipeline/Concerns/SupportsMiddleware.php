@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline\Concerns;
+namespace Vexo\Weave\Pipeline\Concerns;
 
-use Pragmatist\Assistant\Chain\Input;
-use Pragmatist\Assistant\Chain\Output;
-use Pragmatist\Assistant\Pipeline\Middleware\Middleware;
+use Vexo\Weave\Chain\Input;
+use Vexo\Weave\Chain\Output;
+use Vexo\Weave\Pipeline\Middleware\Middleware;
 
 trait SupportsMiddleware
 {

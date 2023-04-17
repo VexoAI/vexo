@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\LLM;
+namespace Vexo\Weave\LLM;
 
 use PHPUnit\Framework\TestCase;
-use Pragmatist\Assistant\Prompt\Prompt;
+use Vexo\Weave\Prompt\Prompt;
 
 final class FakeLLMTest extends TestCase
 {

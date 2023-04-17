@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\LLM;
+namespace Vexo\Weave\LLM;
 
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
-use Pragmatist\Assistant\Prompt\Prompt;
+use Vexo\Weave\Prompt\Prompt;
 use PHPUnit\Framework\TestCase;
 
 final class OpenAIChatLLMTest extends TestCase

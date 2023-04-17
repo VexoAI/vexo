@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline\Middleware;
+namespace Vexo\Weave\Pipeline\Middleware;
 
 use PHPUnit\Framework\TestCase;
-use Pragmatist\Assistant\Chain\Input;
-use Pragmatist\Assistant\Chain\SimpleInput;
-use Pragmatist\Assistant\Chain\SimpleOutput;
+use Vexo\Weave\Chain\Input;
+use Vexo\Weave\Chain\SimpleInput;
+use Vexo\Weave\Chain\SimpleOutput;
 
 final class PassthroughMiddlewareTest extends TestCase
 {

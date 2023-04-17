@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\LLM;
+namespace Vexo\Weave\LLM;
 
 use Assert\Assertion as Ensure;
 
