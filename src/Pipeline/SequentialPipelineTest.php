@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Tests\Chain;
+namespace Pragmatist\Assistant\Pipeline;
 
 use PHPUnit\Framework\TestCase;
-use Pragmatist\Assistant\Chain\Middleware\PassthroughMiddleware;
 use Pragmatist\Assistant\Chain\PassthroughChain;
 use Pragmatist\Assistant\Chain\SimpleInput;
 use Pragmatist\Assistant\Chain\SimpleInputFactory;
-use Pragmatist\Assistant\Chain\SequentialPipeline;
+use Pragmatist\Assistant\Pipeline\Middleware\PassthroughMiddleware;
 
 final class SequentialPipelineTest extends TestCase
 {

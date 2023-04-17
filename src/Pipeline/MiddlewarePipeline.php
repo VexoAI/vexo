@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Chain;
+namespace Pragmatist\Assistant\Pipeline;
 
-use Pragmatist\Assistant\Chain\Middleware\Middleware;
+use Pragmatist\Assistant\Pipeline\Middleware\Middleware;
 
 interface MiddlewarePipeline extends Pipeline
 {

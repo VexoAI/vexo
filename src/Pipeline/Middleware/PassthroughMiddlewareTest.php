@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Tests\Chain\Middleware;
+namespace Pragmatist\Assistant\Pipeline\Middleware;
 
 use PHPUnit\Framework\TestCase;
 use Pragmatist\Assistant\Chain\Input;
-use Pragmatist\Assistant\Chain\Middleware\PassthroughMiddleware;
 use Pragmatist\Assistant\Chain\SimpleInput;
 use Pragmatist\Assistant\Chain\SimpleOutput;
 

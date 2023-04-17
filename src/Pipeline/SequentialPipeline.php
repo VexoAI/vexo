@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Chain;
+namespace Pragmatist\Assistant\Pipeline;
 
 use Assert\Assertion as Ensure;
+use Pragmatist\Assistant\Chain\Chain;
+use Pragmatist\Assistant\Chain\Input;
+use Pragmatist\Assistant\Chain\Output;
 
 final class SequentialPipeline implements MiddlewarePipeline
 {

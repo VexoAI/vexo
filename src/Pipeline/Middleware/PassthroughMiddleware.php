@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Chain\Middleware;
+namespace Pragmatist\Assistant\Pipeline\Middleware;
 
 use Pragmatist\Assistant\Chain\Input;
 use Pragmatist\Assistant\Chain\Output;

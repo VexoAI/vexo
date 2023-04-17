@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Chain;
+namespace Pragmatist\Assistant\Pipeline;
 
 use Pragmatist\Assistant\Chain\Input;
-use Pragmatist\Assistant\Chain\Middleware\Middleware;
 use Pragmatist\Assistant\Chain\Output;
+use Pragmatist\Assistant\Pipeline\Middleware\Middleware;
 
 trait MiddlewareSupport
 {
