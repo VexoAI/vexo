@@ -18,7 +18,7 @@ final class FakeLLM implements LLM
     /**
      * @inheritDoc
      */
-    public function generate(Prompt ...$prompts): Response
+    public function generate(Prompt $prompt, Prompt ...$prompts): Response
     {
         Ensure::notEmpty($this->responses, 'No more responses to return');
 
