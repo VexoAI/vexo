@@ -23,8 +23,8 @@ final class MustacheRenderEngineTest extends TestCase
         $values = ['name' => 'John'];
 
         $expectedResult = 'Hello, John!';
-        $result = $this->renderEngine->render($template, $values);
+        $prompt = $this->renderEngine->render($template, $values);
 
-        $this->assertSame($expectedResult, $result);
+        $this->assertSame($expectedResult, $prompt->text());
     }
 }

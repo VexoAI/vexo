@@ -11,8 +11,8 @@ final class MustacheRenderEngine implements RenderEngine
     ) {
     }
 
-    public function render(string $template, array $values): string
+    public function render(string $template, array $values): Prompt
     {
-        return $this->mustache->render($template, $values);
+        return new Prompt($this->mustache->render($template, $values));
     }
 }

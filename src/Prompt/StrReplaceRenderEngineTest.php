@@ -18,8 +18,8 @@ final class StrReplaceRenderEngineTest extends TestCase
         ];
 
         $expectedResult = 'Hello, John! Welcome to Earth.';
-        $actualResult = $engine->render($template, $values);
+        $prompt = $engine->render($template, $values);
 
-        $this->assertSame($expectedResult, $actualResult);
+        $this->assertSame($expectedResult, $prompt->text());
     }
 }

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Pragmatist\Assistant\Prompt;
 
-interface Prompt
+final class Prompt
 {
-    /**
-     * @param array $values Associative array of names and values to render into the template.
-     * @return string The rendered template.
-     */
-    public function render(array $values): string;
+    public function __construct(private string $text)
+    {
+    }
+
+    public function text(): string
+    {
+        return $this->text;
+    }
 }
