@@ -8,10 +8,11 @@ use Assert\Assertion as Ensure;
 use Pragmatist\Assistant\Chain\Chain;
 use Pragmatist\Assistant\Chain\Input;
 use Pragmatist\Assistant\Chain\Output;
+use Pragmatist\Assistant\Pipeline\Concerns\SupportsMiddleware;
 
 final class SequentialPipeline implements MiddlewarePipeline
 {
-    use MiddlewareSupport;
+    use SupportsMiddleware;
 
     /**
      * @param Chain[] $chains

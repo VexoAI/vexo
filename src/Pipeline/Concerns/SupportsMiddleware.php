@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pragmatist\Assistant\Pipeline;
+namespace Pragmatist\Assistant\Pipeline\Concerns;
 
 use Pragmatist\Assistant\Chain\Input;
 use Pragmatist\Assistant\Chain\Output;
 use Pragmatist\Assistant\Pipeline\Middleware\Middleware;
 
-trait MiddlewareSupport
+trait SupportsMiddleware
 {
     /**
      * @var Middleware[]
