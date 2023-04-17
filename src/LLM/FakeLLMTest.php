@@ -36,4 +36,16 @@ final class FakeLLMTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         new FakeLLM($responsesToReturn);
     }
+
+    public function testGenerateValidatesPromptCount(): void
+    {
+        $responsesToReturn = [
+            new Response([new Generation('one')]),
+        ];
+
+        $fakeLLM = new FakeLLM($responsesToReturn);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $fakeLLM->generate();
+    }
 }

@@ -7,12 +7,12 @@ namespace Pragmatist\Assistant\LLM;
 use Pragmatist\Assistant\Prompt\Prompt;
 
 use Assert\Assertion as Ensure;
+use OpenAI\Contracts\Resources\CompletionsContract;
 
-final class FakeLLM implements LLM
+final class OpenAILLM implements LLM
 {
-    public function __construct(private array $responses)
+    public function __construct(private CompletionsContract $completions)
     {
-        Ensure::allIsInstanceOf($responses, Response::class);
     }
 
     /**
@@ -21,8 +21,6 @@ final class FakeLLM implements LLM
     public function generate(Prompt ...$prompt): Response
     {
         Ensure::notEmpty($prompt, 'No prompts to generate a response for');
-        Ensure::notEmpty($this->responses, 'No more responses to return');
 
-        return array_shift($this->responses);
     }
 }

@@ -9,7 +9,7 @@ use Pragmatist\Assistant\Prompt\Prompt;
 interface LLM
 {
     /**
-     * @param Prompt[] $prompts The prompts to generate a response for.
+     * @param Prompt[] $prompt The prompts to generate a response for.
      */
-    public function generate(Prompt $prompt, Prompt ...$prompts): Response;
+    public function generate(Prompt ...$prompt): Response;
 }
