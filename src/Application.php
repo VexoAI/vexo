@@ -6,8 +6,8 @@ namespace Pragmatist\Assistant;
 
 use OpenAI\Contracts\ClientContract as OpenAIClient;
 use Nette\Utils\Json;
-use Pragmatist\Assistant\Commands\CommandBuilder;
-use Pragmatist\Assistant\Commands\CommandRunner;
+use Pragmatist\Assistant\Command\CommandBuilder;
+use Pragmatist\Assistant\Command\CommandRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
