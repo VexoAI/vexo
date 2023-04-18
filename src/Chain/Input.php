@@ -10,6 +10,11 @@ final class Input
     {
     }
 
+    public function get(string $key, $default = null): mixed
+    {
+        return $this->data[$key] ?? $default;
+    }
+
     public function data(): array
     {
         return $this->data;

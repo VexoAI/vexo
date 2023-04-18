@@ -18,5 +18,6 @@ final class InputTest extends TestCase
         $input = new Input($data);
 
         $this->assertSame($data, $input->data());
+        $this->assertSame($data['key1'], $input->get('key1'));
     }
 }
