@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
-use Vexo\Weave\Prompt\Prompt;
-
 use Assert\Assertion as Ensure;
 use OpenAI\Contracts\Resources\ChatContract;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
+use Vexo\Weave\Concerns\SupportsLogging;
+use Vexo\Weave\Prompt\Prompt;
 
 final class OpenAIChatLLM implements LLM, LoggerAwareInterface
 {
-    use LoggerAwareTrait;
+    use SupportsLogging;
 
     public function __construct(private ChatContract $chat)
     {
-        $this->logger = new NullLogger();
     }
 
     /**
@@ -30,7 +27,7 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
 
         $generations = [];
         foreach ($prompt as $singlePrompt) {
-            $this->logger->debug('Generating response for prompt', ['prompt' => $singlePrompt->text()]);
+            $this->logger()->debug('Generating response for prompt', ['prompt' => $singlePrompt->text()]);
 
             $generation = new Generation(
                 $this->chat->create(
@@ -41,7 +38,7 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
                 )->choices[0]->message->content
             );
 
-            $this->logger->debug('Generated response', ['generation' => $generation->text()]);
+            $this->logger()->debug('Generated response', ['generation' => $generation->text()]);
             $generations[] = $generation;
         }
 

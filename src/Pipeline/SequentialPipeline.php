@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Vexo\Weave\Pipeline;
 
 use Assert\Assertion as Ensure;
+use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Chain\Chain;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\Output;
+use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\Pipeline\Concerns\SupportsMiddleware;
 
-final class SequentialPipeline implements MiddlewarePipeline
+final class SequentialPipeline implements MiddlewarePipeline, LoggerAwareInterface
 {
+    use SupportsLogging;
     use SupportsMiddleware;
 
     /**
