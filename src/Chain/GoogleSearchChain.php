@@ -43,7 +43,7 @@ final class GoogleSearchChain implements Chain
         ]);
     }
 
-    protected function inputConstraints(): Constraint
+    private function inputConstraints(): Constraint
     {
         return new Assert\Collection([
             'query' => [

@@ -27,13 +27,13 @@ trait SupportsMiddleware
     /**
      * @return LoggerInterface
      */
-    protected abstract function logger(): LoggerInterface;
+    private abstract function logger(): LoggerInterface;
 
     /**
      * @param Input $input The input to be processed
      * @param callable $corePipeline The core pipeline function to be executed
      */
-    protected function processWithMiddlewares(Input $input, callable $corePipeline): Output
+    private function processWithMiddlewares(Input $input, callable $corePipeline): Output
     {
         $middlewareCallable = $this->createMiddlewareCallable($this->middlewares, $corePipeline);
         return $middlewareCallable($input);

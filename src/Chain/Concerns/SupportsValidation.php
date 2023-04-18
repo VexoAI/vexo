@@ -10,7 +10,7 @@ use Vexo\Weave\Chain\Input;
 
 trait SupportsValidation
 {
-    protected function validateInput(Input $input): void
+    private function validateInput(Input $input): void
     {
         $validator = Validation::createValidator();
         $constraints = $this->inputConstraints();
