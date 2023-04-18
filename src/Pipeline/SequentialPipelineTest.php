@@ -18,13 +18,6 @@ final class SequentialPipelineTest extends TestCase
         $chainOne = new PassthroughChain($inputFactory);
         $chainTwo = new PassthroughChain($inputFactory);
 
-        $middleware = new PassthroughMiddleware();
-
-        // Valid chains array
-        $sequentialPipeline = new SequentialPipeline([$chainOne, $chainTwo]);
-        $sequentialPipeline->addMiddleware($middleware);
-
-        // Invalid chains array
         $this->expectException(\InvalidArgumentException::class);
         new SequentialPipeline([$chainOne, $chainTwo, 'InvalidChain']);
     }
@@ -34,11 +27,7 @@ final class SequentialPipelineTest extends TestCase
         $inputFactory = new SimpleInputFactory();
         $chainOne = new PassthroughChain($inputFactory);
         $chainTwo = new PassthroughChain($inputFactory);
-
-        $middleware = new PassthroughMiddleware();
-
         $sequentialPipeline = new SequentialPipeline([$chainOne, $chainTwo]);
-        $sequentialPipeline->addMiddleware($middleware);
 
         $input = new SimpleInput(['foo' => 'bar']);
         $output = $sequentialPipeline->process($input);

@@ -14,7 +14,7 @@ trait SupportsMiddleware
     /**
      * @var Middleware[]
      */
-    private array $middlewares;
+    private array $middlewares = [];
 
     /**
      * @param Middleware $middleware The middleware to be added
