@@ -8,14 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class PassthroughChainTest extends TestCase
 {
-    public function testConstructorAndGetters(): void
-    {
-        $simpleInputFactory = new SimpleInputFactory();
-        $passthroughChain = new PassthroughChain($simpleInputFactory);
-
-        $this->assertSame($simpleInputFactory, $passthroughChain->inputFactory());
-    }
-
     public function testProcess(): void
     {
         $inputData = [
@@ -23,8 +15,8 @@ final class PassthroughChainTest extends TestCase
             'key2' => 'value2',
         ];
 
-        $input = new SimpleInput($inputData);
-        $passthroughChain = new PassthroughChain(new SimpleInputFactory());
+        $input = new Input($inputData);
+        $passthroughChain = new PassthroughChain();
 
         $output = $passthroughChain->process($input);
 

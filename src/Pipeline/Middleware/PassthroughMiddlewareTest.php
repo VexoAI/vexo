@@ -6,19 +6,18 @@ namespace Vexo\Weave\Pipeline\Middleware;
 
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Chain\Input;
-use Vexo\Weave\Chain\SimpleInput;
-use Vexo\Weave\Chain\SimpleOutput;
+use Vexo\Weave\Chain\Output;
 
 final class PassthroughMiddlewareTest extends TestCase
 {
     public function testPassthroughMiddleware(): void
     {
         $nextCallable = function (Input $input) {
-            return new SimpleOutput($input->data());
+            return new Output($input->data());
         };
 
         $passthroughMiddleware = new PassthroughMiddleware();
-        $input = new SimpleInput(['foo' => 'bar']);
+        $input = new Input(['foo' => 'bar']);
         $output = $passthroughMiddleware->process($input, $nextCallable);
 
         $this->assertSame($input->data(), $output->data());

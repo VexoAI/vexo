@@ -6,17 +6,8 @@ namespace Vexo\Weave\Chain;
 
 final class PassthroughChain implements Chain
 {
-    public function __construct(private SimpleInputFactory $inputFactory)
-    {
-    }
-
-    public function inputFactory(): InputFactory
-    {
-        return $this->inputFactory;
-    }
-
     public function process(Input $input): Output
     {
-        return new SimpleOutput($input->data());
+        return new Output($input->data());
     }
 }

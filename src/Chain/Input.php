@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
-interface Input
+final class Input
 {
-    public function data(): array;
+    public function __construct(private array $data)
+    {
+    }
+
+    public function data(): array
+    {
+        return $this->data;
+    }
 }

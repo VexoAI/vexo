@@ -42,9 +42,7 @@ final class SequentialPipeline implements MiddlewarePipeline, LoggerAwareInterfa
                 continue;
             }
 
-            $output = $chain->process(
-                $chain->inputFactory()->fromOutput($output)
-            );
+            $output = $chain->process(new Input($output->data()));
         }
 
         return $output;

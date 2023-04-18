@@ -7,8 +7,6 @@ namespace Vexo\Weave\Pipeline\Concerns;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\Output;
-use Vexo\Weave\Chain\SimpleInput;
-use Vexo\Weave\Chain\SimpleOutput;
 use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\Pipeline\Middleware\PassthroughMiddleware;
 
@@ -20,8 +18,8 @@ final class SupportsMiddlewareTest extends TestCase
         $supportsMiddleware = new SupportsMiddlewareSUT();
         $supportsMiddleware->addMiddleware($middleware);
 
-        $input = new SimpleInput(['Some input']);
-        $output = $supportsMiddleware->process($input, fn (Input $input) => new SimpleOutput($input->data()));
+        $input = new Input(['Some input']);
+        $output = $supportsMiddleware->process($input, fn (Input $input) => new Output($input->data()));
 
         $this->assertSame($input->data(), $output->data());
     }
@@ -30,8 +28,8 @@ final class SupportsMiddlewareTest extends TestCase
     {
         $supportsMiddleware = new SupportsMiddlewareSUT();
 
-        $input = new SimpleInput(['Some input']);
-        $output = $supportsMiddleware->process($input, fn (Input $input) => new SimpleOutput($input->data()));
+        $input = new Input(['Some input']);
+        $output = $supportsMiddleware->process($input, fn (Input $input) => new Output($input->data()));
 
         $this->assertSame($input->data(), $output->data());
     }

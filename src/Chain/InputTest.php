@@ -6,7 +6,7 @@ namespace Vexo\Weave\Chain;
 
 use PHPUnit\Framework\TestCase;
 
-final class SimpleOutputTest extends TestCase
+final class InputTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
@@ -15,8 +15,8 @@ final class SimpleOutputTest extends TestCase
             'key2' => 'value2',
         ];
 
-        $simpleOutput = new SimpleOutput($data);
+        $input = new Input($data);
 
-        $this->assertSame($data, $simpleOutput->data());
+        $this->assertSame($data, $input->data());
     }
 }
