@@ -4,35 +4,39 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
-use Assert\Assertion as Ensure;
 use OpenAI\Contracts\Resources\ChatContract;
 use Psr\Log\LoggerAwareInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 use Vexo\Weave\Concerns\CacheAware;
 use Vexo\Weave\Concerns\SupportsCaching;
 use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\Prompt\Prompt;
+use Vexo\Weave\Prompt\Prompts;
 
 final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
 {
     use SupportsLogging;
     use SupportsCaching;
 
-    public function __construct(private ChatContract $chat)
-    {
+    private static array $defaultParameters = ['model' => 'gpt-3.5-turbo'];
+
+    private Parameters $parameters;
+
+    public function __construct(
+        private ChatContract $chat,
+        Parameters $parameters = new Parameters([])
+    ) {
+        $this->parameters = $parameters->withDefaults(self::$defaultParameters);
     }
 
     /**
      * @inheritDoc
      */
-    public function generate(Prompt ...$prompt): Response
+    public function generate(Prompts $prompts, string ...$stops): Response
     {
-        Ensure::notEmpty($prompt, 'No prompts to generate a response for');
-
         $generations = [];
-        foreach ($prompt as $singlePrompt) {
-            $this->logger()->debug('Generating response for prompt', ['prompt' => $singlePrompt->text()]);
-            $generation = $this->generateOrFromCacheForPrompt($singlePrompt);
+        foreach ($prompts as $prompt) {
+            $this->logger()->debug('Generating response for prompt', ['prompt' => $prompt->text()]);
+            $generation = $this->generateOrFromCacheForPrompt($prompt, $stops ?? []);
             $this->logger()->debug('Generated response', ['generation' => $generation->text()]);
             $generations[] = $generation;
         }
@@ -40,25 +44,32 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
         return new Response($generations);
     }
 
-    private function generateOrFromCacheForPrompt(Prompt $prompt): Generation
+    private function generateOrFromCacheForPrompt(Prompt $prompt, array $stops): Generation
     {
         return $this->cached(
             $prompt->text(),
-            function() use ($prompt) {
-                return $this->generateForPrompt($prompt);
+            function() use ($prompt, $stops) {
+                return $this->generateForPrompt($prompt, $stops);
             }
         );
     }
 
-    private function generateForPrompt(Prompt $prompt): Generation
+    private function generateForPrompt(Prompt $prompt, array $stops): Generation
     {
         return new Generation(
-            $this->chat->create(
-                [
-                    'model' => 'gpt-3.5-turbo',
-                    'messages' => ['role' => 'user', 'content' => $prompt->text()]
-                ]
-            )->choices[0]->message->content
+            $this->chat->create($this->buildCreateParameters($prompt, $stops))
+                ->choices[0]->message->content
+        );
+    }
+
+    private function buildCreateParameters(Prompt $prompt, array $stops): array
+    {
+        return array_merge_recursive(
+            $this->parameters->toArray(),
+            [
+                'messages' => ['role' => 'user', 'content' => $prompt->text()],
+                'stop' => $stops,
+            ]
         );
     }
 }

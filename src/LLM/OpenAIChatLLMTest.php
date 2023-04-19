@@ -7,6 +7,7 @@ namespace Vexo\Weave\LLM;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use Vexo\Weave\Prompt\Prompt;
+use Vexo\Weave\Prompt\Prompts;
 use PHPUnit\Framework\TestCase;
 
 final class OpenAIChatLLMTest extends TestCase
@@ -24,20 +25,10 @@ final class OpenAIChatLLMTest extends TestCase
 
         $openAIChatLLM = new OpenAIChatLLM($client->chat());
 
-        $response = $openAIChatLLM->generate($prompt);
+        $response = $openAIChatLLM->generate(new Prompts($prompt), "\n");
         $generations = $response->generations();
 
         $this->assertCount(1, $generations);
         $this->assertEquals($generatedResponse, $generations[0]->text());
-    }
-
-    public function testGenerateEmptyPromptsThrowsException(): void
-    {
-        $client = new ClientFake([]);
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        $openAIChatLLM = new OpenAIChatLLM($client->chat());
-        $openAIChatLLM->generate();
     }
 }
