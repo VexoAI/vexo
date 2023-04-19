@@ -36,7 +36,11 @@
         "phpunit/phpunit": "^10.1"
     },
     "scripts": {
-        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup",
+        "test": ["@phpunit", "@phpstan", "@php-cs-fixer"],
+        "phpunit": "vendor/bin/phpunit --coverage-html tmp/coverage --coverage-text",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "php-cs-fixer": "vendor/bin/php-cs-fixer fix --cache-file=tmp/.php-cs-fixer.cache --diff --dry-run"
     },
     "extra": {
         "google/apiclient-services": [
