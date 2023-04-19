@@ -16,4 +16,13 @@ final class PromptTest extends TestCase
 
         $this->assertSame($text, $prompt->text());
     }
+
+    public function testToString(): void
+    {
+        $text = 'text';
+
+        $prompt = new Prompt($text);
+
+        $this->assertSame($text, (string) $prompt);
+    }
 }

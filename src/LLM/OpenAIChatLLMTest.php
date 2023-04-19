@@ -15,20 +15,32 @@ final class OpenAIChatLLMTest extends TestCase
     public function testGenerate(): void
     {
         $prompt = new Prompt('What is the capital of France?');
-        $generatedResponse = 'The capital of France is Paris.';
 
         $client = new ClientFake([
-            CreateResponse::fake([
-                'choices' => [['message' => ['role' => 'assistant', 'content' => $generatedResponse]]]
+            CreateResponse::from([
+                'id' => 'chatcmpl-555NOEm562iYTOet9ql555znLFWES',
+                'object' => 'chat.completion',
+                'created' => 1681919474,
+                'model' => 'gpt-3.5-turbo-0301',
+                'usage' => [
+                    'prompt_tokens' => 15,
+                    'completion_tokens' => 8,
+                    'total_tokens' => 23
+                ],
+                'choices' => [
+                    ['index' => 0, 'message' => ['role' => 'assistant', 'content' => 'Paris'], 'finish_reason' => 'stop'],
+                    ['index' => 1, 'message' => ['role' => 'assistant', 'content' => 'The capital of France is Paris.'], 'finish_reason' => 'stop']
+                ]
             ])
         ]);
 
-        $openAIChatLLM = new OpenAIChatLLM($client->chat());
+        $openAIChatLLM = new OpenAIChatLLM($client->chat(), new Parameters(['n' => 2]));
 
         $response = $openAIChatLLM->generate(new Prompts($prompt), "\n");
         $generations = $response->generations();
 
-        $this->assertCount(1, $generations);
-        $this->assertEquals($generatedResponse, $generations[0]->text());
+        $this->assertCount(2, $generations);
+        $this->assertEquals('Paris', $generations[0]->text());
+        $this->assertEquals('The capital of France is Paris.', $generations[1]->text());
     }
 }

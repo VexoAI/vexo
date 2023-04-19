@@ -6,51 +6,24 @@ namespace Vexo\Weave\Concerns;
 
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
+use Vexo\Weave\Concerns\SupportsCaching\NoCache;
 
 final class SupportsCachingTest extends TestCase
 {
-    public function testCached(): void
+    public function testCacheSetGet(): void
     {
         $cache = new CacheStub();
         $supportsCache = new SupportsCachingSUT();
         $supportsCache->setCache($cache);
 
-        $firstValue = $supportsCache->cached('my-identifier', function () {
-            return 'The first result, should be cached';
-        });
-        $this->assertEquals('The first result, should be cached', $firstValue);
-
-        $secondValue = $supportsCache->cached('my-identifier', function () {
-            return 'The second result';
-        });
-        $this->assertEquals('The first result, should be cached', $secondValue);
+        $this->assertSame($cache, $supportsCache->cache());
     }
 
-    public function testCustomPrefix(): void
-    {
-        $cache = new CacheStub();
-        $supportsCache = new SupportsCachingSUT();
-        $supportsCache->setCache($cache, 'my-prefix:');
-
-        $supportsCache->cached('my-identifier', function () {
-            return 'The result';
-        });
-
-        $this->assertArrayHasKey(
-            'my-prefix:bd7f41d131ab8224870c9f5e3916665d6ccd8bc9241b21c357ae2cd0c9f40aa7',
-            $cache->items
-        );
-    }
-
-    public function testWithoutCache(): void
+    public function testGetSetsNoCache(): void
     {
         $supportsCache = new SupportsCachingSUT();
 
-        $value = $supportsCache->cached('key', function () {
-            return 'Some result';
-        });
-
-        $this->assertEquals('Some result', $value);
+        $this->assertInstanceOf(NoCache::class, $supportsCache->cache());
     }
 }
 

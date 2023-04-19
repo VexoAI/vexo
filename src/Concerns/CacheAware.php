@@ -11,5 +11,5 @@ interface CacheAware
     /**
      * @param CacheInterface $cache
      */
-    public function setCache(CacheInterface $cache, ?string $keyPrefix): void;
+    public function setCache(CacheInterface $cache): void;
 }

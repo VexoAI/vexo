@@ -28,4 +28,12 @@ final class Prompts implements \IteratorAggregate, \Countable
     {
         return count($this->prompts);
     }
+
+    /**
+     * @return Prompt[]
+     */
+    public function toArray(): array
+    {
+        return $this->prompts;
+    }
 }

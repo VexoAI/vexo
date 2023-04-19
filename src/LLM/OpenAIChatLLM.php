@@ -33,31 +33,33 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
      */
     public function generate(Prompts $prompts, string ...$stops): Response
     {
+        $cacheKey = $this->cacheKeyFromPrompts($prompts);
+
+        $response = $this->cache()->get($cacheKey);
+        if (null === $response) {
+            $response = $this->generateCompletions($prompts, $stops);
+            $this->cache()->set($cacheKey, $response);
+        }
+
+        return $response;
+    }
+
+    private function generateCompletions(Prompts $prompts, array $stops): Response
+    {
         $generations = [];
+
         foreach ($prompts as $prompt) {
-            $this->logger()->debug('Generating response for prompt', ['prompt' => $prompt->text()]);
-            $generation = $this->generateOrFromCacheForPrompt($prompt, $stops);
-            $this->logger()->debug('Generated response', ['generation' => $generation->text()]);
-            $generations[] = $generation;
+            $this->logger()->info('Generating completions for prompt', ['prompt' => $prompt->text()]);
+
+            $parameters = $this->buildCreateParameters($prompt, $stops);
+            $result = $this->chat->create($parameters);
+
+            foreach ($result->choices as $choice) {
+                $generations[] = new Generation($choice->message->content);
+            }
         }
 
         return new Response($generations);
-    }
-
-    private function generateOrFromCacheForPrompt(Prompt $prompt, array $stops): Generation
-    {
-        return $this->cached(
-            $prompt->text(),
-            fn () => $this->generateForPrompt($prompt, $stops)
-        );
-    }
-
-    private function generateForPrompt(Prompt $prompt, array $stops): Generation
-    {
-        return new Generation(
-            $this->chat->create($this->buildCreateParameters($prompt, $stops))
-                ->choices[0]->message->content
-        );
     }
 
     private function buildCreateParameters(Prompt $prompt, array $stops): array
@@ -68,6 +70,18 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
                 'messages' => ['role' => 'user', 'content' => $prompt->text()],
                 'stop' => $stops,
             ]
+        );
+    }
+
+    private function cacheKeyFromPrompts(Prompts $prompts): string
+    {
+        return hash(
+            'sha256',
+            array_reduce(
+                $prompts->toArray(),
+                fn (string $carry, Prompt $prompt): string => $carry . $prompt->text(),
+                ''
+            )
         );
     }
 }
