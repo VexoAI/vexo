@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
-use Assert\Assertion as Ensure;
-
 final class Response
 {
-    /**
-     * @param Generation[] $generations
-     */
-    public function __construct(private array $generations)
-    {
-        Ensure::allIsInstanceOf($generations, Generation::class);
+    public function __construct(
+        private Generations $generations,
+        private ResponseMetadata $metadata = new ResponseMetadata(),
+    ) {
     }
 
-    /**
-     * @return Generation[]
-     */
-    public function generations(): array
+    public function generations(): Generations
     {
         return $this->generations;
+    }
+
+    public function metadata(): ResponseMetadata
+    {
+        return $this->metadata;
     }
 }

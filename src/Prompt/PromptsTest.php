@@ -22,7 +22,7 @@ final class PromptsTest extends TestCase
 
         $prompts = new Prompts($prompt1, $prompt2, $prompt3);
 
-        $this->assertCount(3, $prompts, 'Prompts count should be 3');
+        $this->assertCount(3, $prompts);
     }
 
     public function testIterator(): void
@@ -38,6 +38,17 @@ final class PromptsTest extends TestCase
             $iteratedPrompts[] = $prompt;
         }
 
-        $this->assertSame([$prompt1, $prompt2, $prompt3], $iteratedPrompts, 'Prompts should be iterated correctly');
+        $this->assertSame([$prompt1, $prompt2, $prompt3], $iteratedPrompts);
+    }
+
+    public function testToArray(): void
+    {
+        $prompt1 = new Prompt('one');
+        $prompt2 = new Prompt('two');
+        $prompt3 = new Prompt('three');
+
+        $prompts = new Prompts($prompt1, $prompt2, $prompt3);
+
+        $this->assertSame([$prompt1, $prompt2, $prompt3], $prompts->toArray());
     }
 }

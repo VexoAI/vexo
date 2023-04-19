@@ -42,5 +42,12 @@ final class OpenAIChatLLMTest extends TestCase
         $this->assertCount(2, $generations);
         $this->assertEquals('Paris', $generations[0]->text());
         $this->assertEquals('The capital of France is Paris.', $generations[1]->text());
+
+        $metadata = $response->metadata()->toArray();
+        $this->assertEquals('gpt-3.5-turbo', $metadata['model']);
+        $this->assertEquals(2, $metadata['n']);
+        $this->assertEquals(15, $metadata['usage']['prompt_tokens']);
+        $this->assertEquals(8, $metadata['usage']['completion_tokens']);
+        $this->assertEquals(23, $metadata['usage']['total_tokens']);
     }
 }

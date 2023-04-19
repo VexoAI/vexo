@@ -10,25 +10,16 @@ final class ResponseTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
-        $generations = [
+        $generations = new Generations(
             new Generation('one'),
             new Generation('two'),
-        ];
+        );
 
-        $response = new Response($generations);
+        $metadata = new ResponseMetadata(['key1' => 'value1', 'key2' => 'value2']);
+
+        $response = new Response($generations, $metadata);
 
         $this->assertSame($generations, $response->generations());
-    }
-
-    public function testConstructorValidatesGenerations(): void
-    {
-        $generations = [
-            new Generation('one'),
-            new Generation('two'),
-            'Not a generation'
-        ];
-
-        $this->expectException(\InvalidArgumentException::class);
-        new Response($generations);
+        $this->assertSame($metadata, $response->metadata());
     }
 }

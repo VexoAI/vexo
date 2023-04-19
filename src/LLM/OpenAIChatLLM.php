@@ -46,7 +46,8 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
 
     private function generateCompletions(Prompts $prompts, array $stops): Response
     {
-        $generations = [];
+        $generations = new Generations();
+        $tokenUsage = [];
 
         foreach ($prompts as $prompt) {
             $this->logger()->info('Generating completions for prompt', ['prompt' => $prompt->text()]);
@@ -57,9 +58,14 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
             foreach ($result->choices as $choice) {
                 $generations[] = new Generation($choice->message->content);
             }
+
+            $tokenUsage = $result->usage->toArray();
         }
 
-        return new Response($generations);
+        return new Response(
+            $generations,
+            new ResponseMetadata(array_merge($this->parameters->toArray(), ['usage' => $tokenUsage]))
+        );
     }
 
     private function buildCreateParameters(Prompt $prompt, array $stops): array

@@ -13,8 +13,8 @@ final class FakeLLMTest extends TestCase
     public function testGenerate(): void
     {
         $responsesToReturn = [
-            new Response([new Generation('one')]),
-            new Response([new Generation('two')]),
+            new Response(new Generations(new Generation('one'))),
+            new Response(new Generations(new Generation('two'))),
         ];
 
         $fakeLLM = new FakeLLM($responsesToReturn);
@@ -29,8 +29,8 @@ final class FakeLLMTest extends TestCase
     public function testConstructorValidatesGenerations(): void
     {
         $responsesToReturn = [
-            new Response([new Generation('one')]),
-            new Response([new Generation('two')]),
+            new Response(new Generations(new Generation('one'))),
+            new Response(new Generations(new Generation('two'))),
             'Not a response'
         ];
 
