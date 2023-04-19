@@ -13,7 +13,7 @@ final class SupportsLoggingTest extends TestCase
     public function testSetLoggerAndGetLogger(): void
     {
         $supportsLogging = new SupportsLoggingSUT();
-        $customLogger = new CustomLogger();
+        $customLogger = new LoggerStub();
 
         $supportsLogging->setLogger($customLogger);
         $logger = $supportsLogging->logger();
@@ -36,6 +36,6 @@ final class SupportsLoggingSUT
     use SupportsLogging;
 }
 
-final class CustomLogger extends NullLogger implements LoggerInterface
+final class LoggerStub extends NullLogger implements LoggerInterface
 {
 }

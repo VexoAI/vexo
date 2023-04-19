@@ -11,7 +11,7 @@ final class SupportsCachingTest extends TestCase
 {
     public function testCached(): void
     {
-        $cache = new TestCache();
+        $cache = new CacheStub();
         $supportsCache = new SupportsCachingSUT();
         $supportsCache->setCache($cache);
 
@@ -28,7 +28,7 @@ final class SupportsCachingTest extends TestCase
 
     public function testCustomPrefix(): void
     {
-        $cache = new TestCache();
+        $cache = new CacheStub();
         $supportsCache = new SupportsCachingSUT();
         $supportsCache->setCache($cache, 'my-prefix:');
 
@@ -59,7 +59,7 @@ final class SupportsCachingSUT
     use SupportsCaching;
 }
 
-final class TestCache implements CacheInterface
+final class CacheStub implements CacheInterface
 {
     public array $items = [];
 

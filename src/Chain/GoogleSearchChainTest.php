@@ -18,7 +18,7 @@ final class GoogleSearchChainTest extends TestCase
     public function setUp(): void
     {
         $this->service = new CustomSearchAPI();
-        $this->service->cse = new TestCse();
+        $this->service->cse = new CseStub();
         $this->googleSearchChain = new GoogleSearchChain($this->service, 'abcdef1234567890');
     }
 
@@ -69,7 +69,7 @@ final class GoogleSearchChainTest extends TestCase
     }
 }
 
-final class TestCse
+final class CseStub
 {
     public function __construct(public array $returnItems = [], public array $passedParams = [])
     {
