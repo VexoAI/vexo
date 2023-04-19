@@ -78,6 +78,7 @@ final class TestCse
     public function listCse(array $params): Search
     {
         $this->passedParams = $params;
+
         return new Search(['items' => $this->returnItems]);
     }
 }

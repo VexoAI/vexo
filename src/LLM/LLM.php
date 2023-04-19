@@ -10,7 +10,7 @@ interface LLM
 {
     /**
      * @param Prompts $prompts The prompts to generate a response for.
-     * @param string[] $stop The stop tokens to use for the generation.
+     * @param string $stops The stop tokens to use for the generation.
      */
     public function generate(Prompts $prompts, string ...$stops): Response;
 }

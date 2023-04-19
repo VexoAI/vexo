@@ -6,9 +6,9 @@ namespace Vexo\Weave\LLM;
 
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
+use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Prompt\Prompt;
 use Vexo\Weave\Prompt\Prompts;
-use PHPUnit\Framework\TestCase;
 
 final class OpenAIChatLLMTest extends TestCase
 {

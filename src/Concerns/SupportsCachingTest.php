@@ -61,7 +61,7 @@ final class SupportsCachingSUT
 
 final class TestCache implements CacheInterface
 {
-    public $items = [];
+    public array $items = [];
 
     public function get($key, $default = null): mixed
     {
@@ -71,18 +71,37 @@ final class TestCache implements CacheInterface
     public function set($key, $value, $ttl = null): bool
     {
         $this->items[$key] = $value;
+
         return true;
     }
 
-    public function delete(string $key): bool {}
+    public function delete(string $key): bool
+    {
+        return true;
+    }
 
-    public function clear(): bool {}
+    public function clear(): bool
+    {
+        return true;
+    }
 
-    public function getMultiple(iterable $keys, mixed $default = null): iterable {}
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
+    {
+        return [];
+    }
 
-    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool {}
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
+    {
+        return true;
+    }
 
-    public function deleteMultiple(iterable $keys): bool {}
+    public function deleteMultiple(iterable $keys): bool
+    {
+        return true;
+    }
 
-    public function has(string $key): bool {}
+    public function has(string $key): bool
+    {
+        return true;
+    }
 }

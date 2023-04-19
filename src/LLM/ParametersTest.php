@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Vexo\Weave\LLM;
 
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\LLM\Parameters;
 
 final class ParametersTest extends TestCase
 {

@@ -40,11 +40,6 @@ final class SupportsMiddlewareSUT
     use SupportsMiddleware;
     use SupportsLogging;
 
-    /**
-     * @param Input $input The input to be processed
-     * @param callable $corePipeline The core pipeline function to be executed
-     * @return Output
-     */
     public function process(Input $input, callable $corePipeline): Output
     {
         return $this->processWithMiddlewares($input, $corePipeline);

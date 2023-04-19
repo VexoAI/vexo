@@ -27,7 +27,7 @@ trait SupportsMiddleware
     /**
      * @return LoggerInterface
      */
-    private abstract function logger(): LoggerInterface;
+    abstract private function logger(): LoggerInterface;
 
     /**
      * @param Input $input The input to be processed
@@ -36,6 +36,7 @@ trait SupportsMiddleware
     private function processWithMiddlewares(Input $input, callable $corePipeline): Output
     {
         $middlewareCallable = $this->createMiddlewareCallable($this->middlewares, $corePipeline);
+
         return $middlewareCallable($input);
     }
 
@@ -53,6 +54,7 @@ trait SupportsMiddleware
                 $logger->debug('Executing middleware', ['middleware' => get_class($middleware)]);
                 $newRunner = $middleware->process($input, $middlewareRunner);
                 $logger->debug('End middleware execution', ['middleware' => get_class($middleware)]);
+
                 return $newRunner;
             };
         }

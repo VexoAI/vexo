@@ -33,12 +33,13 @@ trait SupportsCaching
 
     /**
      * @param string $identifier The unique identifier for the cached value
-     * @param callback $callback The callback to generate the value if it is not cached
+     * @param callable $callback The callback to generate the value if it is not cached
+     *
      * @return mixed The cached value
      */
     public function cached(string $identifier, callable $callback): mixed
     {
-        if (!isset($this->cache)) {
+        if ( ! isset($this->cache)) {
             return $callback();
         }
 
@@ -48,6 +49,7 @@ trait SupportsCaching
             $result = $callback();
             $this->cache->set($key, $result);
         }
+
         return $result;
     }
 

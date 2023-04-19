@@ -25,5 +25,5 @@ trait SupportsValidation
         }
     }
 
-    protected abstract function inputConstraints(): Constraint;
+    abstract protected function inputConstraints(): Constraint;
 }

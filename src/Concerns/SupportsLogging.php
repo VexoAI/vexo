@@ -27,7 +27,7 @@ trait SupportsLogging
      */
     public function logger(): LoggerInterface
     {
-        if (!isset($this->logger)) {
+        if ( ! isset($this->logger)) {
             $this->setLogger(new NullLogger());
         }
 

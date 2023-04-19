@@ -8,6 +8,9 @@ use Assert\Assertion as Ensure;
 
 final class Prompts implements \IteratorAggregate, \Countable
 {
+    /**
+     * @var Prompt[]
+     */
     private array $prompts;
 
     public function __construct(Prompt ...$prompts)

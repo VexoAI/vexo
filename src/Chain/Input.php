@@ -10,7 +10,7 @@ final class Input
     {
     }
 
-    public function get(string $key, $default = null): mixed
+    public function get(string $key, mixed $default = null): mixed
     {
         return $this->data[$key] ?? $default;
     }

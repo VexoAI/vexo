@@ -36,7 +36,7 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
         $generations = [];
         foreach ($prompts as $prompt) {
             $this->logger()->debug('Generating response for prompt', ['prompt' => $prompt->text()]);
-            $generation = $this->generateOrFromCacheForPrompt($prompt, $stops ?? []);
+            $generation = $this->generateOrFromCacheForPrompt($prompt, $stops);
             $this->logger()->debug('Generated response', ['generation' => $generation->text()]);
             $generations[] = $generation;
         }
@@ -48,9 +48,7 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface, CacheAware
     {
         return $this->cached(
             $prompt->text(),
-            function() use ($prompt, $stops) {
-                return $this->generateForPrompt($prompt, $stops);
-            }
+            fn () => $this->generateForPrompt($prompt, $stops)
         );
     }
 
