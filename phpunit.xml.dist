@@ -6,6 +6,8 @@
     requireCoverageMetadata="true"
     failOnWarning="true"
     failOnRisky="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    displayDetailsOnTestsThatTriggerErrors="true"
     cacheDirectory="tmp/.phpunit.cache">
     <testsuites>
         <testsuite name="Weave">
