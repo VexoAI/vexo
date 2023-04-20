@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\LLM\FakeLLM;
 use Vexo\Weave\LLM\Generation;
@@ -11,6 +12,7 @@ use Vexo\Weave\LLM\Generations;
 use Vexo\Weave\LLM\Response;
 use Vexo\Weave\Prompt\StrReplaceRenderer;
 
+#[CoversClass(LLMChain::class)]
 final class LLMChainTest extends TestCase
 {
     public function testProcess(): void

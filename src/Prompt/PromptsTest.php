@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Prompt;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Prompts::class)]
 final class PromptsTest extends TestCase
 {
     public function testRequiresAtLeastOnePrompt(): void

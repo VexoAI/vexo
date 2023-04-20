@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Concerns\SupportsCaching;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(NoCache::class)]
 final class NoCacheTest extends TestCase
 {
     private NoCache $noCache;

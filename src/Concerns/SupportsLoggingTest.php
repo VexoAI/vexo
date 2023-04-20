@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Concerns;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+#[CoversClass(SupportsLogging::class)]
 final class SupportsLoggingTest extends TestCase
 {
     public function testSetLoggerAndGetLogger(): void

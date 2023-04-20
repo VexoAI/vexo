@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Prompt;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(MustacheRenderer::class)]
 final class MustacheRendererTest extends TestCase
 {
     private MustacheRenderer $renderer;

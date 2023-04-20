@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Prompt\Prompt;
 use Vexo\Weave\Prompt\Prompts;
 
+#[CoversClass(FakeLLM::class)]
 final class FakeLLMTest extends TestCase
 {
     public function testGenerate(): void

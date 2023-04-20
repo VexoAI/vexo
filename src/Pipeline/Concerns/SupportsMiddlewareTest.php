@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Pipeline\Concerns;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\Output;
 use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\Pipeline\Middleware\PassthroughMiddleware;
 
+#[CoversClass(SupportsMiddleware::class)]
 final class SupportsMiddlewareTest extends TestCase
 {
     public function testProcessWithMiddleware(): void

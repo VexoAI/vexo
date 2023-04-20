@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Prompt;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(StrReplaceRenderer::class)]
 final class StrReplaceRendererTest extends TestCase
 {
     public function testRender(): void

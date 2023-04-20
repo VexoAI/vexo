@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Parameters::class)]
 final class ParametersTest extends TestCase
 {
     public function testToArray(): void

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Generations::class)]
 final class GenerationsTest extends TestCase
 {
     public function testCount(): void

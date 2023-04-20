@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Concerns;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 use Vexo\Weave\Concerns\SupportsCaching\NoCache;
 
+#[CoversClass(SupportsCaching::class)]
 final class SupportsCachingTest extends TestCase
 {
     public function testCacheSetGet(): void

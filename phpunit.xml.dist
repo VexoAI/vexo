@@ -3,6 +3,9 @@
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
     bootstrap="vendor/autoload.php"
     colors="true"
+    requireCoverageMetadata="true"
+    failOnWarning="true"
+    failOnRisky="true"
     cacheDirectory="tmp/.phpunit.cache">
     <testsuites>
         <testsuite name="Weave">

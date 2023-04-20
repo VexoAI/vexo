@@ -7,8 +7,10 @@ namespace Vexo\Weave\Chain;
 use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Search;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(GoogleSearchChain::class)]
 final class GoogleSearchChainTest extends TestCase
 {
     private CustomSearchAPI $service;

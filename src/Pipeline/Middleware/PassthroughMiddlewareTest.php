@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Pipeline\Middleware;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\Output;
 
+#[CoversClass(PassthroughMiddleware::class)]
 final class PassthroughMiddlewareTest extends TestCase
 {
     public function testPassthroughMiddleware(): void

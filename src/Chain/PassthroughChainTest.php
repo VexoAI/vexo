@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(PassthroughChain::class)]
 final class PassthroughChainTest extends TestCase
 {
     public function testProcess(): void
