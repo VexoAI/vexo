@@ -33,9 +33,9 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
         $generations = new Generations();
         $tokenUsage = [];
 
-        foreach ($prompts as $prompt) {
-            $this->logger()->info('Generating completions for prompt', ['prompt' => $prompt->text()]);
+        $this->logger()->debug('Generating completions for prompts', ['prompts' => $prompts]);
 
+        foreach ($prompts as $prompt) {
             $parameters = $this->buildCreateParameters($prompt, $stops);
             $result = $this->chat->create($parameters);
 
@@ -45,6 +45,8 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
 
             $tokenUsage = $result->usage->toArray();
         }
+
+        $this->logger()->debug('Generation complete', ['generations' => $generations]);
 
         return new Response(
             $generations,

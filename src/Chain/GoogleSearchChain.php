@@ -7,9 +7,13 @@ namespace Vexo\Weave\Chain;
 use Assert\Assertion as Ensure;
 use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Result;
+use Psr\Log\LoggerAwareInterface;
+use Vexo\Weave\Concerns\SupportsLogging;
 
-final class GoogleSearchChain implements Chain
+final class GoogleSearchChain implements Chain, LoggerAwareInterface
 {
+    use SupportsLogging;
+
     public function __construct(
         private CustomSearchAPI $search,
         private string $searchEngineId
@@ -21,6 +25,8 @@ final class GoogleSearchChain implements Chain
         $this->validateInput($input);
         $query = (string) $input->get('query');
         $number = (int) $input->get('number', 3);
+
+        $this->logger()->debug('Performing google search', ['query' => $query, 'number' => $number]);
 
         $results = $this->search->cse->listCse([
             'cx' => $this->searchEngineId,

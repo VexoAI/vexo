@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Vexo\Weave\Chain;
 
 use Assert\Assertion as Ensure;
+use Psr\Log\LoggerAwareInterface;
+use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\LLM\LLM;
 use Vexo\Weave\Prompt\Prompts;
 use Vexo\Weave\Prompt\Renderer;
 
-final class LLMChain implements Chain
+final class LLMChain implements Chain, LoggerAwareInterface
 {
+    use SupportsLogging;
+
     public function __construct(
         private LLM $llm,
         private Renderer $promptRenderer,
@@ -23,6 +27,8 @@ final class LLMChain implements Chain
     public function process(Input $input): Output
     {
         $this->validateInput($input);
+
+        $this->logger()->debug('Generating response', ['input' => $input->data()]);
 
         $prompts = $this->createPromptsFromInput($input);
 

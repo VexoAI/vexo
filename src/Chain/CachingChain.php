@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
+use Psr\Log\LoggerAwareInterface;
 use Psr\SimpleCache\CacheInterface;
+use Vexo\Weave\Concerns\SupportsLogging;
 
-final class CachingChain implements Chain
+final class CachingChain implements Chain, LoggerAwareInterface
 {
+    use SupportsLogging;
+
     public function __construct(
         private Chain $chain,
         private CacheInterface $cache,
@@ -21,9 +25,12 @@ final class CachingChain implements Chain
 
         $output = $this->cache->get($cacheKey);
         if ($output !== null) {
+            $this->logger()->debug('Cache hit', ['cacheKey' => $cacheKey]);
+
             return $output;
         }
 
+        $this->logger()->debug('Cache miss', ['cacheKey' => $cacheKey]);
         $output = $this->chain->process($input);
         $this->cache->set($cacheKey, $output, $this->defaultTtl);
 
