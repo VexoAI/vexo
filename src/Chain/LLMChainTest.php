@@ -9,6 +9,7 @@ use Vexo\Weave\LLM\FakeLLM;
 use Vexo\Weave\LLM\Generation;
 use Vexo\Weave\LLM\Generations;
 use Vexo\Weave\LLM\Response;
+use Vexo\Weave\Prompt\StrReplaceRenderer;
 
 final class LLMChainTest extends TestCase
 {
@@ -17,11 +18,16 @@ final class LLMChainTest extends TestCase
         $llm = new FakeLLM([
             new Response(new Generations(new Generation('Paris'))),
         ]);
-        $llmChain = new LLMChain($llm);
+        $renderer = new StrReplaceRenderer();
+        $promptTemplate = 'What is the capital of {{country}}?';
+        $inputVariables = ['country'];
+        $outputVariable = 'capital';
 
-        $input = new Input(['prompt' => 'What is the capital of France?']);
+        $llmChain = new LLMChain($llm, $renderer, $promptTemplate, $inputVariables, $outputVariable);
+
+        $input = new Input(['country' => 'France']);
         $output = $llmChain->process($input);
 
-        $this->assertSame(['text' => 'Paris'], $output->data());
+        $this->assertSame(['capital' => 'Paris'], $output->data());
     }
 }

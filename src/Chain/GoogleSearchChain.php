@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
+use Assert\Assertion as Ensure;
 use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Result;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints as Assert;
-use Vexo\Weave\Chain\Concerns\SupportsValidation;
 
 final class GoogleSearchChain implements Chain
 {
-    use SupportsValidation;
-
     public function __construct(
         private CustomSearchAPI $search,
         private string $searchEngineId
@@ -23,8 +19,8 @@ final class GoogleSearchChain implements Chain
     public function process(Input $input): Output
     {
         $this->validateInput($input);
-        $query = $input->get('query');
-        $number = $input->get('number', 3);
+        $query = (string) $input->get('query');
+        $number = (int) $input->get('number', 3);
 
         $results = $this->search->cse->listCse([
             'cx' => $this->searchEngineId,
@@ -43,17 +39,8 @@ final class GoogleSearchChain implements Chain
         ]);
     }
 
-    private function inputConstraints(): Constraint
+    private function validateInput(Input $input): void
     {
-        return new Assert\Collection([
-            'query' => [
-                new Assert\NotBlank()
-            ],
-            'number' => [
-                new Assert\Optional([
-                    new Assert\Range(['min' => 1, 'max' => 10])
-                ])
-            ]
-        ]);
+        Ensure::keyExists($input->data(), 'query');
     }
 }

@@ -46,25 +46,6 @@ final class GoogleSearchChainTest extends TestCase
         $input = new Input(['number' => 1]);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('[query]: This field is missing.');
-        $this->googleSearchChain->process($input);
-    }
-
-    public function testProcessWithInvalidNumber(): void
-    {
-        $input = new Input(['query' => 'Best restaurant in Amsterdam', 'number' => 11]);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('[number]: This value should be between 1 and 10.');
-        $this->googleSearchChain->process($input);
-    }
-
-    public function testProcessWithNumberBelowRange(): void
-    {
-        $input = new Input(['query' => 'Best restaurant in Amsterdam', 'number' => 0]);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('[number]: This value should be between 1 and 10.');
         $this->googleSearchChain->process($input);
     }
 }

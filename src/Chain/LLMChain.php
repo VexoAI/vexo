@@ -4,40 +4,46 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints as Assert;
-use Vexo\Weave\Chain\Concerns\SupportsValidation;
+use Assert\Assertion as Ensure;
 use Vexo\Weave\LLM\LLM;
-use Vexo\Weave\Prompt\Prompt;
 use Vexo\Weave\Prompt\Prompts;
+use Vexo\Weave\Prompt\Renderer;
 
 final class LLMChain implements Chain
 {
-    use SupportsValidation;
-
-    public function __construct(private LLM $llm)
-    {
+    public function __construct(
+        private LLM $llm,
+        private Renderer $promptRenderer,
+        private string $promptTemplate = '{{text}}',
+        private array $inputVariables = ['text'],
+        private string $outputVariable = 'text'
+    ) {
     }
 
     public function process(Input $input): Output
     {
         $this->validateInput($input);
 
-        $response = $this->llm->generate(
-            new Prompts(new Prompt($input->get('prompt')))
-        );
+        $prompts = $this->createPromptsFromInput($input);
+
+        $response = $this->llm->generate($prompts);
 
         return new Output(
-            ['text' => $response->generations()[0]->text()]
+            [$this->outputVariable => (string) $response->generations()]
         );
     }
 
-    private function inputConstraints(): Constraint
+    private function createPromptsFromInput(Input $input): Prompts
     {
-        return new Assert\Collection([
-            'prompt' => [
-                new Assert\NotBlank()
-            ]
-        ]);
+        return new Prompts(
+            $this->promptRenderer->render($this->promptTemplate, $input->data())
+        );
+    }
+
+    private function validateInput(Input $input): void
+    {
+        foreach ($this->inputVariables as $inputVariable) {
+            Ensure::keyExists($input->data(), $inputVariable);
+        }
     }
 }

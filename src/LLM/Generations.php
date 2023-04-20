@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
-final class Generations implements \IteratorAggregate, \Countable, \ArrayAccess
+final class Generations implements \IteratorAggregate, \Countable, \ArrayAccess, \Stringable
 {
     /**
      * @var Generation[]
@@ -14,6 +14,11 @@ final class Generations implements \IteratorAggregate, \Countable, \ArrayAccess
     public function __construct(Generation ...$generations)
     {
         $this->generations = $generations;
+    }
+
+    public function __toString(): string
+    {
+        return implode("\n", $this->generations);
     }
 
     public function getIterator(): \Iterator
