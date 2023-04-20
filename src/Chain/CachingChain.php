@@ -6,11 +6,13 @@ namespace Vexo\Weave\Chain;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\SimpleCache\CacheInterface;
+use Vexo\Weave\Chain\Validation\SupportsInputValidation;
 use Vexo\Weave\Concerns\SupportsLogging;
 
 final class CachingChain implements Chain, LoggerAwareInterface
 {
     use SupportsLogging;
+    use SupportsInputValidation;
 
     public function __construct(
         private Chain $chain,
@@ -19,8 +21,20 @@ final class CachingChain implements Chain, LoggerAwareInterface
     ) {
     }
 
+    public function inputKeys(): array
+    {
+        return $this->chain->inputKeys();
+    }
+
+    public function outputKeys(): array
+    {
+        return $this->chain->outputKeys();
+    }
+
     public function process(Input $input): Output
     {
+        $this->validateInput($input);
+
         $cacheKey = $this->createCacheKey($input);
 
         $output = $this->cache->get($cacheKey);

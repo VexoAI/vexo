@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
-use Assert\Assertion as Ensure;
 use Psr\Log\LoggerAwareInterface;
+use Vexo\Weave\Chain\Validation\SupportsInputValidation;
 use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\LLM\LLM;
 use Vexo\Weave\Prompt\Prompts;
@@ -14,14 +14,25 @@ use Vexo\Weave\Prompt\Renderer;
 final class LLMChain implements Chain, LoggerAwareInterface
 {
     use SupportsLogging;
+    use SupportsInputValidation;
 
     public function __construct(
         private LLM $llm,
         private Renderer $promptRenderer,
         private string $promptTemplate = '{{text}}',
-        private array $inputVariables = ['text'],
-        private string $outputVariable = 'text'
+        private array $inputKeys = ['text'],
+        private string $outputKey = 'text'
     ) {
+    }
+
+    public function inputKeys(): array
+    {
+        return $this->inputKeys;
+    }
+
+    public function outputKeys(): array
+    {
+        return [$this->outputKey];
     }
 
     public function process(Input $input): Output
@@ -35,7 +46,7 @@ final class LLMChain implements Chain, LoggerAwareInterface
         $response = $this->llm->generate($prompts);
 
         return new Output(
-            [$this->outputVariable => (string) $response->generations()]
+            [$this->outputKey => (string) $response->generations()]
         );
     }
 
@@ -44,12 +55,5 @@ final class LLMChain implements Chain, LoggerAwareInterface
         return new Prompts(
             $this->promptRenderer->render($this->promptTemplate, $input->data())
         );
-    }
-
-    private function validateInput(Input $input): void
-    {
-        foreach ($this->inputVariables as $inputVariable) {
-            Ensure::keyExists($input->data(), $inputVariable);
-        }
     }
 }

@@ -12,16 +12,25 @@ final class PassthroughChainTest extends TestCase
 {
     public function testProcess(): void
     {
-        $inputData = [
-            'key1' => 'value1',
-            'key2' => 'value2',
-        ];
-
-        $input = new Input($inputData);
         $passthroughChain = new PassthroughChain();
 
+        $input = new Input(['foo' => 'bar']);
         $output = $passthroughChain->process($input);
 
-        $this->assertSame($inputData, $output->data());
+        $this->assertSame(['foo' => 'bar'], $output->data());
+    }
+
+    public function testInputKeys(): void
+    {
+        $passthroughChain = new PassthroughChain(inputKeys: ['fudge']);
+
+        $this->assertSame(['fudge'], $passthroughChain->inputKeys());
+    }
+
+    public function testOutputKeys(): void
+    {
+        $passthroughChain = new PassthroughChain(outputKeys: ['fudge']);
+
+        $this->assertSame(['fudge'], $passthroughChain->outputKeys());
     }
 }

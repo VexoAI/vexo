@@ -6,7 +6,6 @@ namespace Vexo\Weave\Chain;
 
 use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Search;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -34,21 +33,23 @@ final class GoogleSearchChainTest extends TestCase
             ]
         ];
 
-        $input = new Input(['query' => 'Best restaurant in Amsterdam', 'number' => 1]);
+        $input = new Input(['query' => 'Best restaurant in Amsterdam']);
         $output = $this->googleSearchChain->process($input);
 
         $this->assertEquals(
-            ['query' => 'Best restaurant in Amsterdam', 'results' => $this->service->cse->returnItems],
+            ['results' => $this->service->cse->returnItems],
             $output->data()
         );
     }
 
-    public function testProcessWithMissingQuery(): void
+    public function testInputKeys(): void
     {
-        $input = new Input(['number' => 1]);
+        $this->assertSame(['query'], $this->googleSearchChain->inputKeys());
+    }
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->googleSearchChain->process($input);
+    public function testOutputKeys(): void
+    {
+        $this->assertSame(['results'], $this->googleSearchChain->outputKeys());
     }
 }
 

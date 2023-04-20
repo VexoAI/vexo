@@ -15,21 +15,36 @@ use Vexo\Weave\Prompt\StrReplaceRenderer;
 #[CoversClass(LLMChain::class)]
 final class LLMChainTest extends TestCase
 {
+    private LLMChain $llmChain;
+
+    public function setUp(): void
+    {
+        $this->llmChain = new LLMChain(
+            llm: new FakeLLM([
+                new Response(new Generations(new Generation('Paris'))),
+            ]),
+            promptRenderer: new StrReplaceRenderer(),
+            promptTemplate: 'What is the capital of {{country}}?',
+            inputKeys: ['country'],
+            outputKey: 'capital'
+        );
+    }
+
     public function testProcess(): void
     {
-        $llm = new FakeLLM([
-            new Response(new Generations(new Generation('Paris'))),
-        ]);
-        $renderer = new StrReplaceRenderer();
-        $promptTemplate = 'What is the capital of {{country}}?';
-        $inputVariables = ['country'];
-        $outputVariable = 'capital';
-
-        $llmChain = new LLMChain($llm, $renderer, $promptTemplate, $inputVariables, $outputVariable);
-
         $input = new Input(['country' => 'France']);
-        $output = $llmChain->process($input);
+        $output = $this->llmChain->process($input);
 
         $this->assertSame(['capital' => 'Paris'], $output->data());
+    }
+
+    public function testInputKeys(): void
+    {
+        $this->assertSame(['country'], $this->llmChain->inputKeys());
+    }
+
+    public function testOutputKeys(): void
+    {
+        $this->assertSame(['capital'], $this->llmChain->outputKeys());
     }
 }
