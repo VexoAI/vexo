@@ -2,36 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Concerns;
+namespace Vexo\Weave\Chain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
-use Vexo\Weave\Concerns\SupportsCaching\NoCache;
 
-#[CoversClass(SupportsCaching::class)]
-final class SupportsCachingTest extends TestCase
+#[CoversClass(CachingChain::class)]
+final class CachingChainTest extends TestCase
 {
-    public function testCacheSetGet(): void
+    public function testProcess(): void
     {
-        $cache = new CacheStub();
-        $supportsCache = new SupportsCachingSUT();
-        $supportsCache->setCache($cache);
+        $cachingChain = new CachingChain(new IncrementorChainStub(), new CacheStub());
 
-        $this->assertSame($cache, $supportsCache->cache());
-    }
+        $firstOutput = $cachingChain->process(new Input([]));
+        $secondOutput = $cachingChain->process(new Input([]));
 
-    public function testGetSetsNoCache(): void
-    {
-        $supportsCache = new SupportsCachingSUT();
-
-        $this->assertInstanceOf(NoCache::class, $supportsCache->cache());
+        $this->assertEquals(1, $firstOutput->data()['incrementor']);
+        $this->assertEquals(1, $secondOutput->data()['incrementor']);
     }
 }
 
-final class SupportsCachingSUT
+final class IncrementorChainStub implements Chain
 {
-    use SupportsCaching;
+    private int $incrementor = 0;
+
+    public function process(Input $input): Output
+    {
+        $this->incrementor++;
+
+        return new Output(['incrementor' => $this->incrementor]);
+    }
 }
 
 final class CacheStub implements CacheInterface
