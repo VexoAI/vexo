@@ -17,4 +17,12 @@ final class GenerationTest extends TestCase
 
         $this->assertSame($text, $generation->text());
     }
+
+    public function testToString(): void
+    {
+        $text = 'text';
+        $generation = new Generation($text);
+
+        $this->assertSame($text, (string) $generation);
+    }
 }

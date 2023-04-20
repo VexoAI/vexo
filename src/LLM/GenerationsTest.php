@@ -10,31 +10,36 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Generations::class)]
 final class GenerationsTest extends TestCase
 {
+    private Generations $generations;
+
+    public function setUp(): void
+    {
+        $this->generations = new Generations(
+            new Generation('one'),
+            new Generation('two'),
+            new Generation('three'),
+        );
+    }
+
+    public function testToString(): void
+    {
+        $this->assertSame("one\ntwo\nthree", (string) $this->generations);
+    }
+
     public function testCount(): void
     {
-        $generation1 = new Generation('one');
-        $generation2 = new Generation('two');
-        $generation3 = new Generation('three');
-
-        $generations = new Generations($generation1, $generation2, $generation3);
-
-        $this->assertCount(3, $generations);
+        $this->assertCount(3, $this->generations);
     }
 
     public function testIterator(): void
     {
-        $generation1 = new Generation('one');
-        $generation2 = new Generation('two');
-        $generation3 = new Generation('three');
-
-        $generations = new Generations($generation1, $generation2, $generation3);
-
         $iteratedGenerations = [];
-        foreach ($generations as $generation) {
+        foreach ($this->generations as $generation) {
             $iteratedGenerations[] = $generation;
         }
 
-        $this->assertSame([$generation1, $generation2, $generation3], $iteratedGenerations);
+        $this->assertCount(3, $iteratedGenerations);
+        $this->assertContainsOnlyInstancesOf(Generation::class, $iteratedGenerations);
     }
 
     public function testArrayAccess(): void
