@@ -8,7 +8,7 @@ use Assert\Assertion as Ensure;
 use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Chain\Validation\SorryValidationFailed;
 use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-use Vexo\Weave\Concerns\SupportsLogging;
+use Vexo\Weave\Logging\SupportsLogging;
 
 final class SequentialChain implements Chain, LoggerAwareInterface
 {

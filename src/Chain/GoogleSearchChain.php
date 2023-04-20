@@ -8,7 +8,7 @@ use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Result;
 use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-use Vexo\Weave\Concerns\SupportsLogging;
+use Vexo\Weave\Logging\SupportsLogging;
 
 final class GoogleSearchChain implements Chain, LoggerAwareInterface
 {

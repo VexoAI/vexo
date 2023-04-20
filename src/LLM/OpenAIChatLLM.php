@@ -6,7 +6,7 @@ namespace Vexo\Weave\LLM;
 
 use OpenAI\Contracts\Resources\ChatContract;
 use Psr\Log\LoggerAwareInterface;
-use Vexo\Weave\Concerns\SupportsLogging;
+use Vexo\Weave\Logging\SupportsLogging;
 use Vexo\Weave\Prompt\Prompt;
 use Vexo\Weave\Prompt\Prompts;
 

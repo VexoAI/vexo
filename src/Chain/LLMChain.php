@@ -6,8 +6,8 @@ namespace Vexo\Weave\Chain;
 
 use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-use Vexo\Weave\Concerns\SupportsLogging;
 use Vexo\Weave\LLM\LLM;
+use Vexo\Weave\Logging\SupportsLogging;
 use Vexo\Weave\Prompt\Prompts;
 use Vexo\Weave\Prompt\Renderer;
 

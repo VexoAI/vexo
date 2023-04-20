@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Concerns;
+namespace Vexo\Weave\Logging;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

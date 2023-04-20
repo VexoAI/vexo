@@ -7,7 +7,7 @@ namespace Vexo\Weave\Chain;
 use Psr\Log\LoggerAwareInterface;
 use Psr\SimpleCache\CacheInterface;
 use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-use Vexo\Weave\Concerns\SupportsLogging;
+use Vexo\Weave\Logging\SupportsLogging;
 
 final class CachingChain implements Chain, LoggerAwareInterface
 {
