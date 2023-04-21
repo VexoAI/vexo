@@ -24,6 +24,8 @@
         "google/apiclient": "^2.13",
         "mustache/mustache": "^2.14",
         "openai-php/client": "^0.4.2",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
         "psr/log": "^3.0",
         "psr/simple-cache": "^3.0"
     },
@@ -31,7 +33,9 @@
         "friendsofphp/php-cs-fixer": "^3.16",
         "phpstan/phpstan": "^1.10",
         "phpunit/php-code-coverage": "^10.1",
-        "phpunit/phpunit": "^10.1"
+        "phpunit/phpunit": "^10.1",
+        "psr-mock/http-client-implementation": "^1.0",
+        "psr-mock/http-factory-implementation": "^1.0"
     },
     "scripts": {
         "pre-autoload-dump": "Google\\Task\\Composer::cleanup",
