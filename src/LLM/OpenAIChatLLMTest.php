@@ -9,15 +9,12 @@ use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Prompt\Prompt;
-use Vexo\Weave\Prompt\Prompts;
 
 #[CoversClass(OpenAIChatLLM::class)]
 final class OpenAIChatLLMTest extends TestCase
 {
     public function testGenerate(): void
     {
-        $prompt = new Prompt('What is the capital of France?');
-
         $client = new ClientFake([
             CreateResponse::from([
                 'id' => 'chatcmpl-555NOEm562iYTOet9ql555znLFWES',
@@ -38,7 +35,7 @@ final class OpenAIChatLLMTest extends TestCase
 
         $openAIChatLLM = new OpenAIChatLLM($client->chat(), new Parameters(['n' => 2]));
 
-        $response = $openAIChatLLM->generate(new Prompts($prompt), "\n");
+        $response = $openAIChatLLM->generate(new Prompt('What is the capital of France?'), "\n");
         $generations = $response->generations();
 
         $this->assertCount(2, $generations);

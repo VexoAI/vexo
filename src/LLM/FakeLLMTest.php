@@ -7,7 +7,6 @@ namespace Vexo\Weave\LLM;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Prompt\Prompt;
-use Vexo\Weave\Prompt\Prompts;
 
 #[CoversClass(FakeLLM::class)]
 final class FakeLLMTest extends TestCase
@@ -21,11 +20,11 @@ final class FakeLLMTest extends TestCase
 
         $fakeLLM = new FakeLLM($responsesToReturn);
 
-        $this->assertSame($responsesToReturn[0], $fakeLLM->generate(new Prompts(new Prompt('one'))));
-        $this->assertSame($responsesToReturn[1], $fakeLLM->generate(new Prompts(new Prompt('two'))));
+        $this->assertSame($responsesToReturn[0], $fakeLLM->generate(new Prompt('one')));
+        $this->assertSame($responsesToReturn[1], $fakeLLM->generate(new Prompt('two')));
 
         $this->expectException(\InvalidArgumentException::class);
-        $fakeLLM->generate(new Prompts(new Prompt('three')));
+        $fakeLLM->generate(new Prompt('three'));
     }
 
     public function testConstructorValidatesGenerations(): void

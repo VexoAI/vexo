@@ -8,7 +8,6 @@ use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Chain\Validation\SupportsInputValidation;
 use Vexo\Weave\LLM\LLM;
 use Vexo\Weave\Logging\SupportsLogging;
-use Vexo\Weave\Prompt\Prompts;
 use Vexo\Weave\Prompt\Renderer;
 
 final class LLMChain implements Chain, LoggerAwareInterface
@@ -41,19 +40,12 @@ final class LLMChain implements Chain, LoggerAwareInterface
 
         $this->logger()->debug('Generating response', ['input' => $input->data()]);
 
-        $prompts = $this->createPromptsFromInput($input);
+        $prompt = $this->promptRenderer->render($this->promptTemplate, $input->data());
 
-        $response = $this->llm->generate($prompts);
+        $response = $this->llm->generate($prompt);
 
         return new Output(
             [$this->outputKey => (string) $response->generations()]
-        );
-    }
-
-    private function createPromptsFromInput(Input $input): Prompts
-    {
-        return new Prompts(
-            $this->promptRenderer->render($this->promptTemplate, $input->data())
         );
     }
 }

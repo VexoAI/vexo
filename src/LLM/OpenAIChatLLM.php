@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Vexo\Weave\LLM;
 
 use OpenAI\Contracts\Resources\ChatContract;
+use OpenAI\Responses\Chat\CreateResponse;
 use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Logging\SupportsLogging;
 use Vexo\Weave\Prompt\Prompt;
-use Vexo\Weave\Prompt\Prompts;
 
 final class OpenAIChatLLM implements LLM, LoggerAwareInterface
 {
@@ -28,40 +28,49 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
     /**
      * @inheritDoc
      */
-    public function generate(Prompts $prompts, string ...$stops): Response
+    public function generate(Prompt $prompt, string ...$stops): Response
     {
-        $generations = new Generations();
-        $tokenUsage = [];
+        $this->logger()->debug('Generating completions for prompt', ['prompt' => $prompt, 'stops' => $stops]);
 
-        $this->logger()->debug('Generating completions for prompts', ['prompts' => $prompts]);
-
-        foreach ($prompts as $prompt) {
-            $parameters = $this->buildCreateParameters($prompt, $stops);
-            $result = $this->chat->create($parameters);
-
-            foreach ($result->choices as $choice) {
-                $generations[] = new Generation($choice->message->content);
-            }
-
-            $tokenUsage = $result->usage->toArray();
-        }
+        $chatResponse = $this->chat->create(
+            $this->prepareParameters($prompt, $stops)
+        );
+        $generations = $this->extractGenerationsFromChatResponse($chatResponse);
 
         $this->logger()->debug('Generation complete', ['generations' => $generations]);
 
-        return new Response(
+        return $this->createResponse(
             $generations,
-            new ResponseMetadata(array_merge($this->parameters->toArray(), ['usage' => $tokenUsage]))
+            $chatResponse->usage->toArray()
         );
     }
 
-    private function buildCreateParameters(Prompt $prompt, array $stops): array
+    private function prepareParameters(Prompt $prompt, array $stops): array
     {
-        return array_merge_recursive(
+        return array_replace_recursive(
             $this->parameters->toArray(),
             [
                 'messages' => ['role' => 'user', 'content' => $prompt->text()],
                 'stop' => $stops,
             ]
+        );
+    }
+
+    private function extractGenerationsFromChatResponse(CreateResponse $response): Generations
+    {
+        return new Generations(
+            ...array_map(
+                fn ($choice) => new Generation($choice->message->content),
+                $response->choices
+            )
+        );
+    }
+
+    private function createResponse(Generations $generations, array $tokenUsage): Response
+    {
+        return new Response(
+            $generations,
+            new ResponseMetadata(array_merge($this->parameters->toArray(), ['usage' => $tokenUsage]))
         );
     }
 }

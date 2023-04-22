@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
-use Vexo\Weave\Prompt\Prompts;
+use Vexo\Weave\Prompt\Prompt;
 
 interface LLM
 {
     /**
-     * @param Prompts $prompts The prompts to generate a response for.
+     * @param Prompt $prompt The prompt to generate a response for.
      * @param string $stops The stop tokens to use for the generation.
      */
-    public function generate(Prompts $prompts, string ...$stops): Response;
+    public function generate(Prompt $prompt, string ...$stops): Response;
 }

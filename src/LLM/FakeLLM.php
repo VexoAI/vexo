@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Weave\LLM;
 
 use Assert\Assertion as Ensure;
-use Vexo\Weave\Prompt\Prompts;
+use Vexo\Weave\Prompt\Prompt;
 
 final class FakeLLM implements LLM
 {
@@ -17,7 +17,7 @@ final class FakeLLM implements LLM
     /**
      * @inheritDoc
      */
-    public function generate(Prompts $prompts, string ...$stops): Response
+    public function generate(Prompt $prompt, string ...$stops): Response
     {
         Ensure::notEmpty($this->responses, 'No more responses to return');
 
