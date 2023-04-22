@@ -7,7 +7,7 @@ namespace Vexo\Weave\Agent;
 use Vexo\Weave\Chain\Chain;
 use Vexo\Weave\Chain\Input;
 
-final class SingleActionAgent implements Agent
+final class BasicSingleActionAgent implements Agent
 {
     public function __construct(
         private Chain $llmChain,
