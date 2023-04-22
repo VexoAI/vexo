@@ -10,7 +10,7 @@ use Vexo\Weave\LLM\FakeLLM;
 use Vexo\Weave\LLM\Generation;
 use Vexo\Weave\LLM\Generations;
 use Vexo\Weave\LLM\Response;
-use Vexo\Weave\Prompt\StrReplaceRenderer;
+use Vexo\Weave\Prompt\BasicPromptTemplate;
 
 #[CoversClass(LLMChain::class)]
 final class LLMChainTest extends TestCase
@@ -23,8 +23,7 @@ final class LLMChainTest extends TestCase
             llm: new FakeLLM([
                 new Response(new Generations(new Generation('Paris'))),
             ]),
-            promptRenderer: new StrReplaceRenderer(),
-            promptTemplate: 'What is the capital of {{country}}?',
+            promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country']),
             inputKeys: ['country'],
             outputKey: 'capital'
         );

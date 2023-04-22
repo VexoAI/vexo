@@ -8,7 +8,7 @@ use Psr\Log\LoggerAwareInterface;
 use Vexo\Weave\Chain\Validation\SupportsInputValidation;
 use Vexo\Weave\LLM\LLM;
 use Vexo\Weave\Logging\SupportsLogging;
-use Vexo\Weave\Prompt\Renderer;
+use Vexo\Weave\Prompt\PromptTemplate;
 
 final class LLMChain implements Chain, LoggerAwareInterface
 {
@@ -17,8 +17,7 @@ final class LLMChain implements Chain, LoggerAwareInterface
 
     public function __construct(
         private LLM $llm,
-        private Renderer $promptRenderer,
-        private string $promptTemplate = '{{text}}',
+        private PromptTemplate $promptTemplate,
         private array $inputKeys = ['text'],
         private string $outputKey = 'text'
     ) {
@@ -40,9 +39,9 @@ final class LLMChain implements Chain, LoggerAwareInterface
 
         $this->logger()->debug('Generating response', ['input' => $input->data()]);
 
-        $prompt = $this->promptRenderer->render($this->promptTemplate, $input->data());
-
-        $response = $this->llm->generate($prompt);
+        $response = $this->llm->generate(
+            $this->promptTemplate->render($input->data())
+        );
 
         return new Output(
             [$this->outputKey => (string) $response->generations()]
