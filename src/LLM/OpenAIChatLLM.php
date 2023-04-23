@@ -47,13 +47,14 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
 
     private function prepareParameters(Prompt $prompt, array $stops): array
     {
-        return array_replace_recursive(
-            $this->parameters->toArray(),
-            [
-                'messages' => ['role' => 'user', 'content' => $prompt->text()],
-                'stop' => $stops,
-            ]
-        );
+        $parameters = $this->parameters->toArray();
+        $parameters['messages'] = [['role' => 'user', 'content' => $prompt->text()]];
+
+        if (!empty($stops)) {
+            $parameters['stop'] = $stops;
+        }
+
+        return $parameters;
     }
 
     private function extractGenerationsFromChatResponse(CreateResponse $response): Generations
