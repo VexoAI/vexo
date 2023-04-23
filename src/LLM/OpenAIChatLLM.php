@@ -50,7 +50,7 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
         $parameters = $this->parameters->toArray();
         $parameters['messages'] = [['role' => 'user', 'content' => $prompt->text()]];
 
-        if (!empty($stops)) {
+        if ( ! empty($stops)) {
             $parameters['stop'] = $stops;
         }
 
