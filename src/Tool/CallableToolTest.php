@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent;
+namespace Vexo\Weave\Tool;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\Tool\CallableTool;
 
 #[CoversClass(CallableTool::class)]
 final class CallableToolTest extends TestCase

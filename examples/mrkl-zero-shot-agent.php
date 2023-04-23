@@ -44,6 +44,8 @@ $tools = [
         }
     ),
 ];
+$tools['google']->useEventDispatcher($eventDispatcher);
+$tools['calculator']->useEventDispatcher($eventDispatcher);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
 
