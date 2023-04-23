@@ -19,7 +19,8 @@ final class LLMChain implements Chain, LoggerAwareInterface
         private LLM $llm,
         private PromptTemplate $promptTemplate,
         private array $inputKeys = ['text'],
-        private string $outputKey = 'text'
+        private string $outputKey = 'text',
+        private array $stops = []
     ) {
     }
 
@@ -40,7 +41,8 @@ final class LLMChain implements Chain, LoggerAwareInterface
         $this->logger()->debug('Generating response', ['input' => $input->data()]);
 
         $response = $this->llm->generate(
-            $this->promptTemplate->render($input->data())
+            $this->promptTemplate->render($input->data()),
+            ...$this->stops
         );
 
         return new Output(
