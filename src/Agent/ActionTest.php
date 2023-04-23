@@ -12,9 +12,9 @@ final class ActionTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
-        $action = new Action('google', ['query' => 'Best restaurants in Amsterdam']);
+        $action = new Action('google', 'Best restaurants in Amsterdam');
 
         $this->assertEquals('google', $action->tool());
-        $this->assertEquals(['query' => 'Best restaurants in Amsterdam'], $action->input());
+        $this->assertEquals('Best restaurants in Amsterdam', $action->input());
     }
 }

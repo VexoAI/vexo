@@ -8,7 +8,7 @@ final class Action
 {
     public function __construct(
         private string $tool,
-        private array $input
+        private string $input
     ) {
     }
 
@@ -17,7 +17,7 @@ final class Action
         return $this->tool;
     }
 
-    public function input(): array
+    public function input(): string
     {
         return $this->input;
     }
