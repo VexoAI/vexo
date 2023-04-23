@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain\Validation;
-
-use Vexo\Weave\Chain\SorryChainFailed;
+namespace Vexo\Weave\Chain;
 
 final class SorryValidationFailed extends SorryChainFailed
 {

@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Chain;
 
-use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-
-final class PassthroughChain implements Chain
+final class PassthroughChain extends BaseChain
 {
-    use SupportsInputValidation;
-
     public function __construct(
         private array $inputKeys = [],
         private array $outputKeys = []
@@ -26,10 +22,8 @@ final class PassthroughChain implements Chain
         return $this->outputKeys;
     }
 
-    public function process(Input $input): Output
+    protected function call(Input $input): Output
     {
-        $this->validateInput($input);
-
         return new Output($input->data());
     }
 }

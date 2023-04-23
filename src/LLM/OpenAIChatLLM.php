@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\LLM;
 
+use League\Event\EventDispatcherAware;
+use League\Event\EventDispatcherAwareBehavior;
 use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
-use Psr\Log\LoggerAwareInterface;
-use Vexo\Weave\Logging\SupportsLogging;
 use Vexo\Weave\Prompt\Prompt;
 
-final class OpenAIChatLLM implements LLM, LoggerAwareInterface
+final class OpenAIChatLLM implements LLM, EventDispatcherAware
 {
-    use SupportsLogging;
+    use EventDispatcherAwareBehavior;
 
     private static array $defaultParameters = ['model' => 'gpt-3.5-turbo'];
 
@@ -30,14 +30,18 @@ final class OpenAIChatLLM implements LLM, LoggerAwareInterface
      */
     public function generate(Prompt $prompt, string ...$stops): Response
     {
-        $this->logger()->debug('Generating completions for prompt', ['prompt' => $prompt, 'stops' => $stops]);
+        $this->eventDispatcher()->dispatch(
+            (new LLMStartedGeneratingCompletion($prompt, $stops))->for($this)
+        );
 
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
         );
         $generations = $this->extractGenerationsFromChatResponse($chatResponse);
 
-        $this->logger()->debug('Generation complete', ['generations' => $generations]);
+        $this->eventDispatcher()->dispatch(
+            (new LLMFinishedGeneratingCompletion($prompt, $stops, $generations))->for($this)
+        );
 
         return $this->createResponse(
             $generations,

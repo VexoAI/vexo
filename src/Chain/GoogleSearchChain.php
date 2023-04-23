@@ -6,15 +6,9 @@ namespace Vexo\Weave\Chain;
 
 use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Result;
-use Psr\Log\LoggerAwareInterface;
-use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-use Vexo\Weave\Logging\SupportsLogging;
 
-final class GoogleSearchChain implements Chain, LoggerAwareInterface
+final class GoogleSearchChain extends BaseChain
 {
-    use SupportsLogging;
-    use SupportsInputValidation;
-
     public function __construct(
         private CustomSearchAPI $search,
         private string $searchEngineId,
@@ -33,12 +27,9 @@ final class GoogleSearchChain implements Chain, LoggerAwareInterface
         return [$this->outputKey];
     }
 
-    public function process(Input $input): Output
+    protected function call(Input $input): Output
     {
-        $this->validateInput($input);
         $query = (string) $input->get($this->inputKey);
-
-        $this->logger()->debug('Performing google search', ['query' => $query]);
 
         $results = $this->search->cse->listCse([
             'cx' => $this->searchEngineId,

@@ -6,7 +6,6 @@ namespace Vexo\Weave\Chain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\Chain\Validation\SorryValidationFailed;
 
 #[CoversClass(SequentialChain::class)]
 final class SequentialChainTest extends TestCase

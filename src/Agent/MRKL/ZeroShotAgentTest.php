@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Agent\MRKL;
 
+use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Agent\Action;
+use Vexo\Weave\Agent\AgentFinishedPlanningNextStep;
+use Vexo\Weave\Agent\AgentStartedPlanningNextStep;
 use Vexo\Weave\Agent\Finish;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\LLM\FakeLLM;
@@ -14,6 +18,8 @@ use Vexo\Weave\LLM\Response;
 use Vexo\Weave\Tool\CallableTool;
 
 #[CoversClass(ZeroShotAgent::class)]
+#[IgnoreClassForCodeCoverage(AgentStartedPlanningNextStep::class)]
+#[IgnoreClassForCodeCoverage(AgentFinishedPlanningNextStep::class)]
 final class ZeroShotAgentTest extends TestCase
 {
     private FakeLLM $llm;
@@ -33,8 +39,10 @@ final class ZeroShotAgentTest extends TestCase
 
     public function testFromLLMAndTools(): void
     {
-        $zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, $this->toolA, $this->toolB);
+        $eventDispatcher = new EventDispatcher();
+        $zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, [$this->toolA, $this->toolB], $eventDispatcher);
         $this->assertInstanceOf(ZeroShotAgent::class, $zeroShotAgent);
+        $this->assertSame($eventDispatcher, $zeroShotAgent->eventDispatcher());
     }
 
     public function testCreatePromptTemplate(): void
@@ -49,7 +57,7 @@ final class ZeroShotAgentTest extends TestCase
 
     public function testPlan(): void
     {
-        $agent = ZeroShotAgent::fromLLMAndTools($this->llm, $this->toolA, $this->toolB);
+        $agent = ZeroShotAgent::fromLLMAndTools($this->llm, [$this->toolA, $this->toolB]);
         $input = new Input(['question' => 'What is the meaning of life?']);
 
         $nextStep = $agent->plan($input);
@@ -68,7 +76,7 @@ final class ZeroShotAgentTest extends TestCase
             Response::fromString('Unparsable output'),
         ]);
 
-        $agent = ZeroShotAgent::fromLLMAndTools($unparsableLLM, $this->toolA, $this->toolB);
+        $agent = ZeroShotAgent::fromLLMAndTools($unparsableLLM, [$this->toolA, $this->toolB]);
         $input = new Input(['question' => 'What is the meaning of life?']);
 
         $this->expectException(\RuntimeException::class);

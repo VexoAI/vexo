@@ -23,6 +23,7 @@
         "beberlei/assert": "^3.3",
         "google/apiclient": "^2.13",
         "justinrainbow/json-schema": "^5.2",
+        "league/event": "^3.0",
         "openai-php/client": "^0.4.2",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
@@ -36,7 +37,8 @@
         "phpunit/php-code-coverage": "^10.1",
         "phpunit/phpunit": "^10.1",
         "psr-mock/http-client-implementation": "^1.0",
-        "psr-mock/http-factory-implementation": "^1.0"
+        "psr-mock/http-factory-implementation": "^1.0",
+        "symfony/monolog-bridge": "^6.2"
     },
     "scripts": {
         "pre-autoload-dump": "Google\\Task\\Composer::cleanup",

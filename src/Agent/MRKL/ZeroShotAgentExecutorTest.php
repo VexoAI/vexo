@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace Vexo\Weave\Agent\MRKL;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
+use Vexo\Weave\Agent\AgentExecutorFinishedProcessing;
+use Vexo\Weave\Agent\AgentExecutorForcedStop;
+use Vexo\Weave\Agent\AgentExecutorStartedProcessing;
+use Vexo\Weave\Agent\AgentExecutorStartedRunIteration;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\Output;
 use Vexo\Weave\LLM\FakeLLM;
@@ -13,6 +18,10 @@ use Vexo\Weave\LLM\Response;
 use Vexo\Weave\Tool\CallableTool;
 
 #[CoversClass(ZeroShotAgentExecutor::class)]
+#[IgnoreClassForCodeCoverage(AgentExecutorStartedProcessing::class)]
+#[IgnoreClassForCodeCoverage(AgentExecutorStartedRunIteration::class)]
+#[IgnoreClassForCodeCoverage(AgentExecutorFinishedProcessing::class)]
+#[IgnoreClassForCodeCoverage(AgentExecutorForcedStop::class)]
 final class ZeroShotAgentExecutorTest extends TestCase
 {
     private FakeLLM $llm;
@@ -31,7 +40,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
         $this->toolA = new CallableTool('toola', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
         $this->toolB = new CallableTool('toolb', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
 
-        $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, $this->toolA, $this->toolB);
+        $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, [$this->toolA, $this->toolB]);
         $this->zeroShotAgentExecutor = new ZeroShotAgentExecutor(
             $this->zeroShotAgent,
             [$this->toolA->name() => $this->toolA, $this->toolB->name() => $this->toolB]

@@ -5,16 +5,9 @@ declare(strict_types=1);
 namespace Vexo\Weave\Chain;
 
 use Assert\Assertion as Ensure;
-use Psr\Log\LoggerAwareInterface;
-use Vexo\Weave\Chain\Validation\SorryValidationFailed;
-use Vexo\Weave\Chain\Validation\SupportsInputValidation;
-use Vexo\Weave\Logging\SupportsLogging;
 
-final class SequentialChain implements Chain, LoggerAwareInterface
+final class SequentialChain extends BaseChain
 {
-    use SupportsLogging;
-    use SupportsInputValidation;
-
     /**
      * @param Chain[] $chains
      */
@@ -38,17 +31,12 @@ final class SequentialChain implements Chain, LoggerAwareInterface
         return $this->outputKeys;
     }
 
-    public function process(Input $input): Output
+    protected function call(Input $input): Output
     {
-        $this->validateInput($input);
-
         $knownValues = $input->data();
 
         foreach ($this->chains as $chain) {
-            $this->logger()->debug('Processing chain', ['chain' => $chain::class, 'knownValues' => $knownValues]);
             $output = $chain->process(new Input($knownValues));
-            $this->logger()->debug('Done processing chain', ['output' => $output->data()]);
-
             $knownValues = array_merge($knownValues, $output->data());
         }
 

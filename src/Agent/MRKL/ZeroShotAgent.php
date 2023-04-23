@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace Vexo\Weave\Agent\MRKL;
 
+use League\Event\EventDispatcher;
+use League\Event\EventDispatcherAware;
+use League\Event\EventDispatcherAwareBehavior;
 use Vexo\Weave\Agent\Action;
 use Vexo\Weave\Agent\Agent;
+use Vexo\Weave\Agent\AgentFinishedPlanningNextStep;
+use Vexo\Weave\Agent\AgentStartedPlanningNextStep;
 use Vexo\Weave\Agent\Finish;
 use Vexo\Weave\Agent\Step;
 use Vexo\Weave\Chain\Chain;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\LLMChain;
 use Vexo\Weave\LLM\LLM;
-use Vexo\Weave\Logging\SupportsLogging;
 use Vexo\Weave\Prompt\BasicPromptTemplate;
 use Vexo\Weave\Tool\Tool;
 
-final class ZeroShotAgent implements Agent
+final class ZeroShotAgent implements Agent, EventDispatcherAware
 {
-    use SupportsLogging;
+    use EventDispatcherAwareBehavior;
 
     public function __construct(
         private Chain $llmChain,
@@ -28,18 +32,32 @@ final class ZeroShotAgent implements Agent
     ) {
     }
 
-    public static function fromLLMAndTools(LLM $llm, Tool ...$tools): ZeroShotAgent
+    /**
+     * @param LLM $llm
+     * @param Tool[] $tools
+     * @param EventDispatcher $eventDispatcher
+     */
+    public static function fromLLMAndTools(LLM $llm, array $tools, ?EventDispatcher $eventDispatcher = null): ZeroShotAgent
     {
-        return new ZeroShotAgent(
-            llmChain: new LLMChain(
-                llm: $llm,
-                promptTemplate: ZeroShotAgent::createPromptTemplate($tools),
-                inputKeys: ['question'],
-                outputKey: 'text',
-                stops: ['Observation:']
-            ),
+        $llmChain = new LLMChain(
+            llm: $llm,
+            promptTemplate: ZeroShotAgent::createPromptTemplate($tools),
+            inputKeys: ['question'],
+            outputKey: 'text',
+            stops: ['Observation:']
+        );
+
+        $agent = new ZeroShotAgent(
+            llmChain: $llmChain,
             outputKey: 'text'
         );
+
+        if ($eventDispatcher !== null) {
+            $llmChain->useEventDispatcher($eventDispatcher);
+            $agent->useEventDispatcher($eventDispatcher);
+        }
+
+        return $agent;
     }
 
     /**
@@ -63,7 +81,9 @@ final class ZeroShotAgent implements Agent
      */
     public function plan(Input $input, array $intermediateSteps = []): Step
     {
-        $this->logger()->debug('Planning action', ['input' => $input->data()]);
+        $this->eventDispatcher()->dispatch(
+            (new AgentStartedPlanningNextStep($input, $intermediateSteps))->for($this)
+        );
 
         $output = $this->llmChain->process(
             $this->buildFullInput($input, $intermediateSteps)
@@ -72,7 +92,13 @@ final class ZeroShotAgent implements Agent
         $outputText = $output->get($this->outputKey);
         $nextAction = $this->parseOutput($outputText);
 
-        return new Step($nextAction, $outputText);
+        $step = new Step($nextAction, $outputText);
+
+        $this->eventDispatcher()->dispatch(
+            (new AgentFinishedPlanningNextStep($input, $intermediateSteps, $step))->for($this)
+        );
+
+        return $step;
     }
 
     private function buildFullInput(Input $input, array $intermediateSteps): Input

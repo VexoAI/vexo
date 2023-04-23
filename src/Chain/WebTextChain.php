@@ -7,16 +7,11 @@ namespace Vexo\Weave\Chain;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Vexo\Weave\Chain\Validation\SupportsInputValidation;
 use Vexo\Weave\Chain\WebTextChain\SorryHttpRequestFailed;
 use Vexo\Weave\Chain\WebTextChain\TextExtractor;
-use Vexo\Weave\Logging\SupportsLogging;
 
-final class WebTextChain implements Chain
+final class WebTextChain extends BaseChain
 {
-    use SupportsLogging;
-    use SupportsInputValidation;
-
     public function __construct(
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
@@ -37,9 +32,8 @@ final class WebTextChain implements Chain
         return [$this->outputKey];
     }
 
-    public function process(Input $input): Output
+    protected function call(Input $input): Output
     {
-        $this->validateInput($input);
         $url = (string) $input->get($this->inputKey);
 
         $html = $this->fetchHtml($url);
@@ -50,8 +44,6 @@ final class WebTextChain implements Chain
 
     private function fetchHtml(string $url): string
     {
-        $this->logger()->debug('Fetching web page', ['url' => $url]);
-
         try {
             $response = $this->httpClient->sendRequest(
                 $this->requestFactory->createRequest('GET', $url)
