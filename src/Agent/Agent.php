@@ -8,5 +8,9 @@ use Vexo\Weave\Chain\Input;
 
 interface Agent
 {
-    public function plan(Input $input): Action|Finish;
+    /**
+     * @param Input $input
+     * @param Step[] $intermediateSteps
+     */
+    public function plan(Input $input, array $intermediateSteps): Step;
 }
