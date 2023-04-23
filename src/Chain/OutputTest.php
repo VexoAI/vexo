@@ -20,5 +20,7 @@ final class OutputTest extends TestCase
         $output = new Output($data);
 
         $this->assertSame($data, $output->data());
+        $this->assertSame($data['key1'], $output->get('key1'));
+        $this->assertSame('foo', $output->get('key3', 'foo'));
     }
 }
