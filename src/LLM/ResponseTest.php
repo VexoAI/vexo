@@ -12,10 +12,7 @@ final class ResponseTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
-        $generations = new Generations(
-            new Generation('one'),
-            new Generation('two'),
-        );
+        $generations = Generations::fromString("one\n\ntwo");
 
         $metadata = new ResponseMetadata(['key1' => 'value1', 'key2' => 'value2']);
 
@@ -23,5 +20,12 @@ final class ResponseTest extends TestCase
 
         $this->assertSame($generations, $response->generations());
         $this->assertSame($metadata, $response->metadata());
+    }
+
+    public function testFromString(): void
+    {
+        $response = Response::fromString("one\n\ntwo");
+
+        $this->assertEquals(Generations::fromString("one\n\ntwo"), $response->generations());
     }
 }

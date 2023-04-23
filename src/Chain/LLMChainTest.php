@@ -7,8 +7,6 @@ namespace Vexo\Weave\Chain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Weave\LLM\FakeLLM;
-use Vexo\Weave\LLM\Generation;
-use Vexo\Weave\LLM\Generations;
 use Vexo\Weave\LLM\Response;
 use Vexo\Weave\Prompt\BasicPromptTemplate;
 
@@ -21,7 +19,7 @@ final class LLMChainTest extends TestCase
     {
         $this->llmChain = new LLMChain(
             llm: new FakeLLM([
-                new Response(new Generations(new Generation('Paris'))),
+                Response::fromString('Paris'),
             ]),
             promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country']),
             inputKeys: ['country'],

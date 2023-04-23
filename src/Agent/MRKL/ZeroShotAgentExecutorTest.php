@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\Chain\Output;
 use Vexo\Weave\LLM\FakeLLM;
-use Vexo\Weave\LLM\Generation;
-use Vexo\Weave\LLM\Generations;
 use Vexo\Weave\LLM\Response;
 use Vexo\Weave\Tool\CallableTool;
 
@@ -26,8 +24,8 @@ final class ZeroShotAgentExecutorTest extends TestCase
     protected function setUp(): void
     {
         $this->llm = new FakeLLM([
-            new Response(new Generations(new Generation("I should do something.\nAction: ToolA\nAction Input: Some input"))),
-            new Response(new Generations(new Generation('Final Answer: 42'))),
+            Response::fromString("I should do something.\nAction: ToolA\nAction Input: Some input"),
+            Response::fromString('Final Answer: 42'),
         ]);
 
         $this->toolA = new CallableTool('toola', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');

@@ -6,6 +6,11 @@ namespace Vexo\Weave\LLM;
 
 final class Response
 {
+    public static function fromString(string $response): Response
+    {
+        return new Response(Generations::fromString($response));
+    }
+
     public function __construct(
         private Generations $generations,
         private ResponseMetadata $metadata = new ResponseMetadata(),

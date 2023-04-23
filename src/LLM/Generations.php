@@ -11,6 +11,14 @@ final class Generations implements \IteratorAggregate, \Countable, \ArrayAccess,
      */
     private array $generations;
 
+    public static function fromString(string $generations): Generations
+    {
+        return new Generations(...array_map(
+            fn (string $generation) => new Generation($generation),
+            explode("\n\n", $generations)
+        ));
+    }
+
     public function __construct(Generation ...$generations)
     {
         $this->generations = $generations;

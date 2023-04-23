@@ -21,6 +21,13 @@ final class GenerationsTest extends TestCase
         );
     }
 
+    public function testFromString(): void
+    {
+        $generations = Generations::fromString("one\n\ntwo\n\nthree");
+
+        $this->assertEquals($this->generations, $generations);
+    }
+
     public function testToString(): void
     {
         $this->assertSame("one\ntwo\nthree", (string) $this->generations);

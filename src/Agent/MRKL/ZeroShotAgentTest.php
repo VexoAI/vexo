@@ -10,8 +10,6 @@ use Vexo\Weave\Agent\Action;
 use Vexo\Weave\Agent\Finish;
 use Vexo\Weave\Chain\Input;
 use Vexo\Weave\LLM\FakeLLM;
-use Vexo\Weave\LLM\Generation;
-use Vexo\Weave\LLM\Generations;
 use Vexo\Weave\LLM\Response;
 use Vexo\Weave\Tool\CallableTool;
 
@@ -25,8 +23,8 @@ final class ZeroShotAgentTest extends TestCase
     protected function setUp(): void
     {
         $this->llm = new FakeLLM([
-            new Response(new Generations(new Generation("I should do something.\nAction: ToolA\nAction Input: Some input"))),
-            new Response(new Generations(new Generation('Final Answer: 42'))),
+            Response::fromString("I should do something.\nAction: ToolA\nAction Input: Some input"),
+            Response::fromString('Final Answer: 42'),
         ]);
 
         $this->toolA = new CallableTool('ToolA', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
@@ -67,7 +65,7 @@ final class ZeroShotAgentTest extends TestCase
     public function testPlanThrowsExceptionOnUnparsableOutput(): void
     {
         $unparsableLLM = new FakeLLM([
-            new Response(new Generations(new Generation('Unparsable output'))),
+            Response::fromString('Unparsable output'),
         ]);
 
         $agent = ZeroShotAgent::fromLLMAndTools($unparsableLLM, $this->toolA, $this->toolB);
