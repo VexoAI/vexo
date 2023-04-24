@@ -15,7 +15,7 @@ use Vexo\Agent\Finish;
 use Vexo\Chain\Input;
 use Vexo\LLM\FakeLLM;
 use Vexo\LLM\Response;
-use Vexo\Tool\CallableTool;
+use Vexo\Tool\Callback;
 
 #[CoversClass(ZeroShotAgent::class)]
 #[IgnoreClassForCodeCoverage(AgentStartedPlanningNextStep::class)]
@@ -23,8 +23,8 @@ use Vexo\Tool\CallableTool;
 final class ZeroShotAgentTest extends TestCase
 {
     private FakeLLM $llm;
-    private CallableTool $toolA;
-    private CallableTool $toolB;
+    private Callback $toolA;
+    private Callback $toolB;
 
     protected function setUp(): void
     {
@@ -33,8 +33,8 @@ final class ZeroShotAgentTest extends TestCase
             Response::fromString('Final Answer: 42'),
         ]);
 
-        $this->toolA = new CallableTool('ToolA', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
-        $this->toolB = new CallableTool('ToolB', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
+        $this->toolA = new Callback('ToolA', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
+        $this->toolB = new Callback('ToolB', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
     }
 
     public function testFromLLMAndTools(): void

@@ -13,7 +13,7 @@ use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
 use Vexo\Chain\Input;
 use Vexo\LLM\OpenAIChatLLM;
 use Vexo\SomethingHappened;
-use Vexo\Tool\CallableTool;
+use Vexo\Tool\Callback;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -29,14 +29,14 @@ $eventDispatcher->subscribeTo(
 );
 
 $tools = [
-    'google' => new CallableTool(
+    'google' => new Callback(
         'google',
         'Search the internet',
         function (string $input) {
             return 'The current weather is 22 degrees celsius, cloudy with a chance of rain';
         }
     ),
-    'calculator' => new CallableTool(
+    'calculator' => new Callback(
         'calculator',
         'Useful for doing math',
         function (string $input) {

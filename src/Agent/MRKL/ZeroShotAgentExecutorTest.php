@@ -15,7 +15,7 @@ use Vexo\Chain\Input;
 use Vexo\Chain\Output;
 use Vexo\LLM\FakeLLM;
 use Vexo\LLM\Response;
-use Vexo\Tool\CallableTool;
+use Vexo\Tool\Callback;
 
 #[CoversClass(ZeroShotAgentExecutor::class)]
 #[IgnoreClassForCodeCoverage(AgentExecutorStartedProcessing::class)]
@@ -25,8 +25,8 @@ use Vexo\Tool\CallableTool;
 final class ZeroShotAgentExecutorTest extends TestCase
 {
     private FakeLLM $llm;
-    private CallableTool $toolA;
-    private CallableTool $toolB;
+    private Callback $toolA;
+    private Callback $toolB;
     private ZeroShotAgent $zeroShotAgent;
     private ZeroShotAgentExecutor $zeroShotAgentExecutor;
 
@@ -37,8 +37,8 @@ final class ZeroShotAgentExecutorTest extends TestCase
             Response::fromString('Final Answer: 42'),
         ]);
 
-        $this->toolA = new CallableTool('toola', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
-        $this->toolB = new CallableTool('toolb', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
+        $this->toolA = new Callback('toola', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
+        $this->toolB = new Callback('toolb', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
 
         $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, [$this->toolA, $this->toolB]);
         $this->zeroShotAgentExecutor = new ZeroShotAgentExecutor(

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Tool;
 
-final class CallableTool extends BaseTool
+final class Callback extends BaseTool
 {
     public function __construct(
         protected string $name,
