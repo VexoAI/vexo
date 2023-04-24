@@ -14,6 +14,7 @@ use Vexo\Chain\Input;
 use Vexo\LLM\OpenAIChatLLM;
 use Vexo\SomethingHappened;
 use Vexo\Tool\Callback;
+use Vexo\Tool\GoogleSearch;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -28,23 +29,24 @@ $eventDispatcher->subscribeTo(
     }
 );
 
-$tools = [
-    'google' => new Callback(
-        'google',
-        'Search the internet',
-        function (string $input) {
-            return 'The current weather is 22 degrees celsius, cloudy with a chance of rain';
-        }
-    ),
-    'calculator' => new Callback(
-        'calculator',
-        'Useful for doing math',
-        function (string $input) {
-            return 'The answer is 42';
-        }
-    ),
-];
-$tools['google']->useEventDispatcher($eventDispatcher);
+$google = new \Google\Client();
+$google->setApplicationName('Vexo');
+$google->setDeveloperKey(getenv('GOOGLE_API_KEY'));
+
+$tools = [];
+$tools['google search'] = new GoogleSearch(
+    new \Google\Service\CustomSearchAPI($google),
+    getenv('GOOGLE_CUSTOM_SEARCH_ENGINE_ID')
+);
+$tools['calculator'] = new Callback(
+    'calculator',
+    'Useful for doing math',
+    function (string $input) {
+        return 'The answer is 42';
+    }
+);
+
+$tools['google search']->useEventDispatcher($eventDispatcher);
 $tools['calculator']->useEventDispatcher($eventDispatcher);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
