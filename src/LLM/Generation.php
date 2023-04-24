@@ -12,7 +12,7 @@ final class Generation implements \Stringable
 
     public function __toString(): string
     {
-        return $this->text;
+        return $this->text();
     }
 
     public function text(): string

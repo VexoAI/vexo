@@ -28,7 +28,8 @@
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "psr/log": "^3.0",
-        "psr/simple-cache": "^3.0"
+        "psr/simple-cache": "^3.0",
+        "ramsey/collection": "^2.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.16",

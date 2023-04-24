@@ -64,7 +64,7 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
     private function extractGenerationsFromChatResponse(CreateResponse $response): Generations
     {
         return new Generations(
-            ...array_map(
+            array_map(
                 fn ($choice) => new Generation($choice->message->content),
                 $response->choices
             )
