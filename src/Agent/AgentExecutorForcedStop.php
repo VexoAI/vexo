@@ -8,11 +8,8 @@ use Vexo\SomethingHappened;
 
 final class AgentExecutorForcedStop extends SomethingHappened
 {
-    /**
-     * @param Step[] $intermediateSteps
-     */
     public function __construct(
-        public array $intermediateSteps,
+        public Steps $intermediateSteps,
         public int $iterations,
         public int $timeElapsed
     ) {

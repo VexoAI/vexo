@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Tool\Callback;
 use Vexo\Tool\Tool;
+use Vexo\Tool\Tools;
 
 #[CoversClass(NameResolver::class)]
 #[IgnoreClassForCodeCoverage(ResolverLookupStarted::class)]
@@ -21,7 +22,7 @@ final class NameResolverTest extends TestCase
     public function setUp(): void
     {
         $this->resolver = new NameResolver(
-            [new Callback('my_tool', 'Useful for things', fn ($input) => 'Received: ' . $input)]
+            new Tools([new Callback('my_tool', 'Useful for things', fn ($input) => 'Received: ' . $input)])
         );
     }
 

@@ -16,6 +16,7 @@ use Vexo\SomethingHappened;
 use Vexo\Tool\Callback;
 use Vexo\Tool\GoogleSearch;
 use Vexo\Tool\Resolver\NameResolver;
+use Vexo\Tool\Tools;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -34,21 +35,22 @@ $google = new \Google\Client();
 $google->setApplicationName('Vexo');
 $google->setDeveloperKey(getenv('GOOGLE_API_KEY'));
 
-$tools = [];
-$tools['google search'] = new GoogleSearch(
+$tools = new Tools();
+$googleSearchTool = new GoogleSearch(
     new \Google\Service\CustomSearchAPI($google),
     getenv('GOOGLE_CUSTOM_SEARCH_ENGINE_ID')
 );
-$tools['calculator'] = new Callback(
+$googleSearchTool->useEventDispatcher($eventDispatcher);
+$tools->add($googleSearchTool);
+
+$calculatorTool = new Callback(
     'calculator',
     'Useful for doing math',
-    function (string $input) {
-        return 'The answer is 42';
-    }
+    fn (string $input) => 'The answer is 42'
 );
+$calculatorTool->useEventDispatcher($eventDispatcher);
+$tools->add($calculatorTool);
 
-$tools['google search']->useEventDispatcher($eventDispatcher);
-$tools['calculator']->useEventDispatcher($eventDispatcher);
 $toolResolver = new NameResolver($tools);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();

@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-use Assert\Assertion as Ensure;
-
 final class SequentialChain extends BaseChain
 {
-    /**
-     * @param Chain[] $chains
-     */
     public function __construct(
-        private array $chains,
+        private Chains $chains,
         private array $inputKeys = [],
         private array $outputKeys = [],
         private bool $outputAll = false
     ) {
-        $this->validateChains();
         $this->validateExpectedInputsAndOutputs();
     }
 
@@ -41,16 +35,6 @@ final class SequentialChain extends BaseChain
         }
 
         return new Output(array_intersect_key($knownValues, array_flip($this->outputKeys)));
-    }
-
-    private function validateChains(): void
-    {
-        $this->try(
-            function () {
-                Ensure::allIsInstanceOf($this->chains, Chain::class);
-                Ensure::minCount($this->chains, 1, 'At least one chain is required');
-            }
-        );
     }
 
     private function validateExpectedInputsAndOutputs(): void
@@ -111,7 +95,7 @@ final class SequentialChain extends BaseChain
 
         // If no final output variables are specified, use the output variables of the last chain
         if (empty($this->outputKeys)) {
-            $this->outputKeys = end($this->chains)->outputKeys();
+            $this->outputKeys = $this->chains->last()->outputKeys();
 
             return;
         }

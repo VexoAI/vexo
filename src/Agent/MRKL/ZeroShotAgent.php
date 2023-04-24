@@ -13,12 +13,14 @@ use Vexo\Agent\AgentFinishedPlanningNextStep;
 use Vexo\Agent\AgentStartedPlanningNextStep;
 use Vexo\Agent\Finish;
 use Vexo\Agent\Step;
+use Vexo\Agent\Steps;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\LLMChain;
 use Vexo\LLM\LLM;
 use Vexo\Prompt\BasicPromptTemplate;
 use Vexo\Tool\Tool;
+use Vexo\Tool\Tools;
 
 final class ZeroShotAgent implements Agent, EventDispatcherAware
 {
@@ -32,12 +34,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     ) {
     }
 
-    /**
-     * @param LLM $llm
-     * @param Tool[] $tools
-     * @param EventDispatcher $eventDispatcher
-     */
-    public static function fromLLMAndTools(LLM $llm, array $tools, ?EventDispatcher $eventDispatcher = null): ZeroShotAgent
+    public static function fromLLMAndTools(LLM $llm, Tools $tools, ?EventDispatcher $eventDispatcher = null): ZeroShotAgent
     {
         $llmChain = new LLMChain(
             llm: $llm,
@@ -60,15 +57,13 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         return $agent;
     }
 
-    /**
-     * @param Tool[] $tools
-     */
-    public static function createPromptTemplate(array $tools): BasicPromptTemplate
+    public static function createPromptTemplate(Tools $tools): BasicPromptTemplate
     {
-        $toolNames = implode(', ', array_map(fn (Tool $tool) => $tool->name(), $tools));
+        // Should simply use $tools->columns('name') here, but https://github.com/ramsey/collection/issues/122
+        $toolNames = implode(', ', $tools->map(fn (Tool $tool) => $tool->name())->toArray());
         $formatInstructions = str_replace('{{tool_names}}', $toolNames, Prompt::FORMAT_INSTRUCTIONS);
 
-        $toolList = implode("\n", array_map(fn (Tool $tool) => $tool->name() . ': ' . $tool->description(), $tools));
+        $toolList = implode("\n", $tools->map(fn (Tool $tool) => $tool->name() . ': ' . $tool->description())->toArray());
 
         return new BasicPromptTemplate(
             implode("\n\n", [Prompt::PREFIX, $toolList, $formatInstructions, Prompt::SUFFIX]),
@@ -76,10 +71,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         );
     }
 
-    /**
-     * @param Step[] $intermediateSteps
-     */
-    public function plan(Input $input, array $intermediateSteps = []): Step
+    public function plan(Input $input, Steps $intermediateSteps = new Steps()): Step
     {
         $this->eventDispatcher()->dispatch(
             (new AgentStartedPlanningNextStep($input, $intermediateSteps))->for($this)
@@ -101,22 +93,21 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         return $step;
     }
 
-    private function buildFullInput(Input $input, array $intermediateSteps): Input
+    private function buildFullInput(Input $input, Steps $intermediateSteps): Input
     {
         return new Input(
             array_merge($input->data(), ['scratchpad' => $this->createScratchpad($intermediateSteps)])
         );
     }
 
-    private function createScratchpad(array $intermediateSteps): string
+    private function createScratchpad(Steps $intermediateSteps): string
     {
-        $scratchpad = '';
-        foreach ($intermediateSteps as $step) {
-            $scratchpad .= $step->log();
-            $scratchpad .= $this->observationPrefix . $step->observation() . "\n" . $this->llmPrefix;
-        }
-
-        return $scratchpad;
+        return $intermediateSteps->reduce(
+            function (string $scratchpad, Step $step) {
+                return $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->llmPrefix;
+            },
+            ''
+        );
     }
 
     private function parseOutput(string $output): Action|Finish

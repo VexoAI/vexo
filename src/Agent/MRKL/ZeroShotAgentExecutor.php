@@ -13,6 +13,7 @@ use Vexo\Agent\AgentExecutorStartedProcessing;
 use Vexo\Agent\AgentExecutorStartedRunIteration;
 use Vexo\Agent\Finish;
 use Vexo\Agent\Step;
+use Vexo\Agent\Steps;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
@@ -49,7 +50,7 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
         $startTime = time();
         $timeElapsed = 0;
         $iterations = 0;
-        $intermediateSteps = [];
+        $intermediateSteps = new Steps();
 
         $this->eventDispatcher()->dispatch(
             (new AgentExecutorStartedProcessing($input))->for($this)
@@ -61,7 +62,7 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
             );
 
             $nextStep = $this->takeNextStep($input, $intermediateSteps);
-            $intermediateSteps[] = $nextStep;
+            $intermediateSteps->add($nextStep);
 
             if ($nextStep->action() instanceof Finish) {
                 $results = $nextStep->action()->results();
@@ -101,7 +102,7 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
         return true;
     }
 
-    private function takeNextStep(Input $input, array $intermediateSteps): Step
+    private function takeNextStep(Input $input, Steps $intermediateSteps): Step
     {
         $nextStep = $this->agent->plan($input, $intermediateSteps);
         if ($nextStep->action() instanceof Finish) {

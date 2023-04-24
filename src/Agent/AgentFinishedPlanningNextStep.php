@@ -11,7 +11,7 @@ final class AgentFinishedPlanningNextStep extends SomethingHappened
 {
     public function __construct(
         public Input $input,
-        public array $intermediateSteps,
+        public Steps $intermediateSteps,
         public Step $step
     ) {
     }

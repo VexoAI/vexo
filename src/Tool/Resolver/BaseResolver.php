@@ -4,21 +4,17 @@ declare(strict_types=1);
 
 namespace Vexo\Tool\Resolver;
 
-use Assert\Assertion as Ensure;
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
 use Vexo\Tool\Tool;
+use Vexo\Tool\Tools;
 
 abstract class BaseResolver implements Resolver, EventDispatcherAware
 {
     use EventDispatcherAwareBehavior;
 
-    /**
-     * @param Tool[] $tools
-     */
-    public function __construct(protected array $tools)
+    public function __construct(protected Tools $tools)
     {
-        Ensure::allIsInstanceOf($this->tools, Tool::class);
     }
 
     public function resolve(string $query, string $input): Tool

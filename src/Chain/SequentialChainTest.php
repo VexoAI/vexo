@@ -13,7 +13,7 @@ final class SequentialChainTest extends TestCase
     public function testProcess(): void
     {
         $sequentialChain = new SequentialChain(
-            [new PassthroughChain(), new PassthroughChain()],
+            new Chains([new PassthroughChain(), new PassthroughChain()]),
             inputKeys: ['foo', 'fudge'],
             outputKeys: ['foo']
         );
@@ -27,7 +27,7 @@ final class SequentialChainTest extends TestCase
     public function testProcessWithOutputAll(): void
     {
         $sequentialChain = new SequentialChain(
-            [new PassthroughChain(), new PassthroughChain()],
+            new Chains([new PassthroughChain(), new PassthroughChain()]),
             inputKeys: ['foo', 'fudge'],
             outputAll: true
         );
@@ -41,7 +41,7 @@ final class SequentialChainTest extends TestCase
     public function testInputKeys(): void
     {
         $sequentialChain = new SequentialChain(
-            chains: [new PassthroughChain(), new PassthroughChain()],
+            chains: new Chains([new PassthroughChain(), new PassthroughChain()]),
             inputKeys: ['fudge'],
             outputKeys: ['fudge']
         );
@@ -52,7 +52,7 @@ final class SequentialChainTest extends TestCase
     public function testUsesAllAvailableVariablesAsOutputKeys(): void
     {
         $sequentialChain = new SequentialChain(
-            chains: [new PassthroughChain(outputKeys: ['foo']), new PassthroughChain(outputKeys: ['bar'])],
+            chains: new Chains([new PassthroughChain(outputKeys: ['foo']), new PassthroughChain(outputKeys: ['bar'])]),
             inputKeys: ['baz'],
             outputAll: true
         );
@@ -63,7 +63,7 @@ final class SequentialChainTest extends TestCase
     public function testUsesLastChainOutputKeysAsOutputKeys(): void
     {
         $sequentialChain = new SequentialChain(
-            chains: [new PassthroughChain(outputKeys: ['foo']), new PassthroughChain(outputKeys: ['bar'])]
+            chains: new Chains([new PassthroughChain(outputKeys: ['foo']), new PassthroughChain(outputKeys: ['bar'])])
         );
 
         $this->assertSame(['bar'], $sequentialChain->outputKeys());
@@ -77,7 +77,7 @@ final class SequentialChainTest extends TestCase
         );
 
         new SequentialChain(
-            chains: [new PassthroughChain(inputKeys: ['foo']), new PassthroughChain()],
+            chains: new Chains([new PassthroughChain(inputKeys: ['foo']), new PassthroughChain()]),
             inputKeys: ['fudge']
         );
     }
@@ -90,7 +90,7 @@ final class SequentialChainTest extends TestCase
         );
 
         new SequentialChain(
-            chains: [new PassthroughChain(outputKeys: ['fudge']), new PassthroughChain()],
+            chains: new Chains([new PassthroughChain(outputKeys: ['fudge']), new PassthroughChain()]),
             inputKeys: ['fudge']
         );
     }
@@ -101,7 +101,7 @@ final class SequentialChainTest extends TestCase
         $this->expectExceptionMessage('Output variables are not produced by this sequence: bar');
 
         new SequentialChain(
-            chains: [new PassthroughChain(), new PassthroughChain()],
+            chains: new Chains([new PassthroughChain(), new PassthroughChain()]),
             inputKeys: ['foo'],
             outputKeys: ['bar']
         );
