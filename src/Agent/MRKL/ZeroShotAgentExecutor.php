@@ -16,7 +16,7 @@ use Vexo\Agent\Step;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
-use Vexo\Tool\Tool;
+use Vexo\Tool\Resolver\Resolver;
 
 final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 {
@@ -24,11 +24,11 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 
     /**
      * @param Agent $agent
-     * @param Tool[] $tools
+     * @param Resolver $toolResolver
      */
     public function __construct(
         private Agent $agent,
-        private array $tools,
+        private Resolver $toolResolver,
         private ?int $maxIterations = 15,
         private ?int $maxTime = null
     ) {
@@ -109,7 +109,7 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
         }
 
         $action = $nextStep->action();
-        $tool = $this->tools[trim(strtolower($action->tool()))];
+        $tool = $this->toolResolver->resolve($action->tool(), $action->input());
         $observation = $tool->run($action->input());
 
         return $nextStep->withObservation($observation);

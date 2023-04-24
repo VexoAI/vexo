@@ -16,6 +16,7 @@ use Vexo\Chain\Output;
 use Vexo\LLM\FakeLLM;
 use Vexo\LLM\Response;
 use Vexo\Tool\Callback;
+use Vexo\Tool\Resolver\NameResolver;
 
 #[CoversClass(ZeroShotAgentExecutor::class)]
 #[IgnoreClassForCodeCoverage(AgentExecutorStartedProcessing::class)]
@@ -27,6 +28,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
     private FakeLLM $llm;
     private Callback $toolA;
     private Callback $toolB;
+    private NameResolver $toolResolver;
     private ZeroShotAgent $zeroShotAgent;
     private ZeroShotAgentExecutor $zeroShotAgentExecutor;
 
@@ -39,11 +41,12 @@ final class ZeroShotAgentExecutorTest extends TestCase
 
         $this->toolA = new Callback('toola', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
         $this->toolB = new Callback('toolb', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
+        $this->toolResolver = new NameResolver([$this->toolA, $this->toolB]);
 
         $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, [$this->toolA, $this->toolB]);
         $this->zeroShotAgentExecutor = new ZeroShotAgentExecutor(
             $this->zeroShotAgent,
-            [$this->toolA->name() => $this->toolA, $this->toolB->name() => $this->toolB]
+            $this->toolResolver
         );
     }
 
@@ -61,7 +64,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
     {
         $zeroShotAgentExecutor = new ZeroShotAgentExecutor(
             $this->zeroShotAgent,
-            [$this->toolA->name() => $this->toolA, $this->toolB->name() => $this->toolB],
+            $this->toolResolver,
             maxIterations: 1
         );
 
@@ -75,7 +78,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
     {
         $zeroShotAgentExecutor = new ZeroShotAgentExecutor(
             $this->zeroShotAgent,
-            [$this->toolA->name() => $this->toolA, $this->toolB->name() => $this->toolB],
+            $this->toolResolver,
             maxTime: 0
         );
 

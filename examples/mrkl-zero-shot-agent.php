@@ -15,6 +15,7 @@ use Vexo\LLM\OpenAIChatLLM;
 use Vexo\SomethingHappened;
 use Vexo\Tool\Callback;
 use Vexo\Tool\GoogleSearch;
+use Vexo\Tool\Resolver\NameResolver;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -48,6 +49,7 @@ $tools['calculator'] = new Callback(
 
 $tools['google search']->useEventDispatcher($eventDispatcher);
 $tools['calculator']->useEventDispatcher($eventDispatcher);
+$toolResolver = new NameResolver($tools);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
 
@@ -56,8 +58,8 @@ $llm->useEventDispatcher($eventDispatcher);
 
 $agent = ZeroShotAgent::fromLLMAndTools($llm, $tools, $eventDispatcher);
 
-$executor = new ZeroShotAgentExecutor($agent, $tools);
+$executor = new ZeroShotAgentExecutor($agent, $toolResolver);
 $executor->useEventDispatcher($eventDispatcher);
 
 $output = $executor->process(new Input(['question' => 'What is the weather in Amsterdam?']));
-echo PHP_EOL . PHP_EOL . $output->get('result') . PHP_EOL;
+echo "\n{$output->get('result')}\n\n";
