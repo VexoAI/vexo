@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent\MRKL;
+namespace Vexo\Agent\MRKL;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\Agent\AgentExecutorFinishedProcessing;
-use Vexo\Weave\Agent\AgentExecutorForcedStop;
-use Vexo\Weave\Agent\AgentExecutorStartedProcessing;
-use Vexo\Weave\Agent\AgentExecutorStartedRunIteration;
-use Vexo\Weave\Chain\Input;
-use Vexo\Weave\Chain\Output;
-use Vexo\Weave\LLM\FakeLLM;
-use Vexo\Weave\LLM\Response;
-use Vexo\Weave\Tool\CallableTool;
+use Vexo\Agent\AgentExecutorFinishedProcessing;
+use Vexo\Agent\AgentExecutorForcedStop;
+use Vexo\Agent\AgentExecutorStartedProcessing;
+use Vexo\Agent\AgentExecutorStartedRunIteration;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
+use Vexo\LLM\FakeLLM;
+use Vexo\LLM\Response;
+use Vexo\Tool\CallableTool;
 
 #[CoversClass(ZeroShotAgentExecutor::class)]
 #[IgnoreClassForCodeCoverage(AgentExecutorStartedProcessing::class)]

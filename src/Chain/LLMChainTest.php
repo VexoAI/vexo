@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain;
+namespace Vexo\Chain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\LLM\FakeLLM;
-use Vexo\Weave\LLM\Response;
-use Vexo\Weave\Prompt\BasicPromptTemplate;
+use Vexo\LLM\FakeLLM;
+use Vexo\LLM\Response;
+use Vexo\Prompt\BasicPromptTemplate;
 
 #[CoversClass(LLMChain::class)]
 final class LLMChainTest extends TestCase

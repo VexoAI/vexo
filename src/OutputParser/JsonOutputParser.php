@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\OutputParser;
+namespace Vexo\OutputParser;
 
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\Exception\ValidationException;

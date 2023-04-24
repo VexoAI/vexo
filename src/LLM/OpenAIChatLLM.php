@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\LLM;
+namespace Vexo\LLM;
 
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
 use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
-use Vexo\Weave\Prompt\Prompt;
+use Vexo\Prompt\Prompt;
 
 final class OpenAIChatLLM implements LLM, EventDispatcherAware
 {

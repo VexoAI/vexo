@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain;
+namespace Vexo\Chain;
 
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Vexo\Weave\Chain\WebTextChain\SorryHttpRequestFailed;
-use Vexo\Weave\Chain\WebTextChain\TextExtractor;
+use Vexo\Chain\WebTextChain\SorryHttpRequestFailed;
+use Vexo\Chain\WebTextChain\TextExtractor;
 
 final class WebTextChain extends BaseChain
 {

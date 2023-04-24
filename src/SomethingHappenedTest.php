@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave;
+namespace Vexo;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

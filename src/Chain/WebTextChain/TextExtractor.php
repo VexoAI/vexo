@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain\WebTextChain;
+namespace Vexo\Chain\WebTextChain;
 
 final class TextExtractor
 {

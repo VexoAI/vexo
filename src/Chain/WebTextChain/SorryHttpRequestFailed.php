@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain\WebTextChain;
+namespace Vexo\Chain\WebTextChain;
 
-use Vexo\Weave\Chain\SorryChainFailed;
+use Vexo\Chain\SorryChainFailed;
 
 final class SorryHttpRequestFailed extends SorryChainFailed
 {

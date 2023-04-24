@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent;
+namespace Vexo\Agent;
 
 final class Action
 {

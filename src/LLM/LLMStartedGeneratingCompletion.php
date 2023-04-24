@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\LLM;
+namespace Vexo\LLM;
 
-use Vexo\Weave\Prompt\Prompt;
-use Vexo\Weave\SomethingHappened;
+use Vexo\Prompt\Prompt;
+use Vexo\SomethingHappened;
 
 final class LLMStartedGeneratingCompletion extends SomethingHappened
 {

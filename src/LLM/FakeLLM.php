@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\LLM;
+namespace Vexo\LLM;
 
 use Assert\Assertion as Ensure;
-use Vexo\Weave\Prompt\Prompt;
+use Vexo\Prompt\Prompt;
 
 final class FakeLLM implements LLM
 {

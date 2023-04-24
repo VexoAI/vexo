@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent;
+namespace Vexo\Agent;
 
 use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
-use Vexo\Weave\SomethingHappened;
+use Vexo\SomethingHappened;
 
 #[CodeCoverageIgnore]
 final class AgentExecutorFinishedProcessing extends SomethingHappened

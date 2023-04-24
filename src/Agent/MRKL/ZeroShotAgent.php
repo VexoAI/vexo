@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent\MRKL;
+namespace Vexo\Agent\MRKL;
 
 use League\Event\EventDispatcher;
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
-use Vexo\Weave\Agent\Action;
-use Vexo\Weave\Agent\Agent;
-use Vexo\Weave\Agent\AgentFinishedPlanningNextStep;
-use Vexo\Weave\Agent\AgentStartedPlanningNextStep;
-use Vexo\Weave\Agent\Finish;
-use Vexo\Weave\Agent\Step;
-use Vexo\Weave\Chain\Chain;
-use Vexo\Weave\Chain\Input;
-use Vexo\Weave\Chain\LLMChain;
-use Vexo\Weave\LLM\LLM;
-use Vexo\Weave\Prompt\BasicPromptTemplate;
-use Vexo\Weave\Tool\Tool;
+use Vexo\Agent\Action;
+use Vexo\Agent\Agent;
+use Vexo\Agent\AgentFinishedPlanningNextStep;
+use Vexo\Agent\AgentStartedPlanningNextStep;
+use Vexo\Agent\Finish;
+use Vexo\Agent\Step;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Input;
+use Vexo\Chain\LLMChain;
+use Vexo\LLM\LLM;
+use Vexo\Prompt\BasicPromptTemplate;
+use Vexo\Tool\Tool;
 
 final class ZeroShotAgent implements Agent, EventDispatcherAware
 {

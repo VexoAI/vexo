@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent\MRKL;
+namespace Vexo\Agent\MRKL;
 
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\Agent\Action;
-use Vexo\Weave\Agent\AgentFinishedPlanningNextStep;
-use Vexo\Weave\Agent\AgentStartedPlanningNextStep;
-use Vexo\Weave\Agent\Finish;
-use Vexo\Weave\Chain\Input;
-use Vexo\Weave\LLM\FakeLLM;
-use Vexo\Weave\LLM\Response;
-use Vexo\Weave\Tool\CallableTool;
+use Vexo\Agent\Action;
+use Vexo\Agent\AgentFinishedPlanningNextStep;
+use Vexo\Agent\AgentStartedPlanningNextStep;
+use Vexo\Agent\Finish;
+use Vexo\Chain\Input;
+use Vexo\LLM\FakeLLM;
+use Vexo\LLM\Response;
+use Vexo\Tool\CallableTool;
 
 #[CoversClass(ZeroShotAgent::class)]
 #[IgnoreClassForCodeCoverage(AgentStartedPlanningNextStep::class)]

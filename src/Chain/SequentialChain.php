@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain;
+namespace Vexo\Chain;
 
 use Assert\Assertion as Ensure;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent;
+namespace Vexo\Agent;
 
-use Vexo\Weave\Chain\Input;
+use Vexo\Chain\Input;
 
 interface Agent
 {

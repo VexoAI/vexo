@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Chain;
+namespace Vexo\Chain;
 
-use Vexo\Weave\LLM\LLM;
-use Vexo\Weave\Prompt\PromptTemplate;
+use Vexo\LLM\LLM;
+use Vexo\Prompt\PromptTemplate;
 
 final class LLMChain extends BaseChain
 {

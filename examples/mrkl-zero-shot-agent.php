@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Examples;
+namespace Vexo\Examples;
 
 use League\Event\EventDispatcher;
 use Monolog\Logger;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Vexo\Weave\Agent\MRKL\ZeroShotAgent;
-use Vexo\Weave\Agent\MRKL\ZeroShotAgentExecutor;
-use Vexo\Weave\Chain\Input;
-use Vexo\Weave\LLM\OpenAIChatLLM;
-use Vexo\Weave\SomethingHappened;
-use Vexo\Weave\Tool\CallableTool;
+use Vexo\Agent\MRKL\ZeroShotAgent;
+use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
+use Vexo\Chain\Input;
+use Vexo\LLM\OpenAIChatLLM;
+use Vexo\SomethingHappened;
+use Vexo\Tool\CallableTool;
 
 require __DIR__ . '/../vendor/autoload.php';
 

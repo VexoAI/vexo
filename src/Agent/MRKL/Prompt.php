@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent\MRKL;
+namespace Vexo\Agent\MRKL;
 
 final class Prompt
 {

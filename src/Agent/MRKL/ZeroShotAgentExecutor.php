@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent\MRKL;
+namespace Vexo\Agent\MRKL;
 
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
-use Vexo\Weave\Agent\Agent;
-use Vexo\Weave\Agent\AgentExecutorFinishedProcessing;
-use Vexo\Weave\Agent\AgentExecutorForcedStop;
-use Vexo\Weave\Agent\AgentExecutorStartedProcessing;
-use Vexo\Weave\Agent\AgentExecutorStartedRunIteration;
-use Vexo\Weave\Agent\Finish;
-use Vexo\Weave\Agent\Step;
-use Vexo\Weave\Chain\Chain;
-use Vexo\Weave\Chain\Input;
-use Vexo\Weave\Chain\Output;
-use Vexo\Weave\Tool\Tool;
+use Vexo\Agent\Agent;
+use Vexo\Agent\AgentExecutorFinishedProcessing;
+use Vexo\Agent\AgentExecutorForcedStop;
+use Vexo\Agent\AgentExecutorStartedProcessing;
+use Vexo\Agent\AgentExecutorStartedRunIteration;
+use Vexo\Agent\Finish;
+use Vexo\Agent\Step;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
+use Vexo\Tool\Tool;
 
 final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 {

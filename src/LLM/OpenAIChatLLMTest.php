@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\LLM;
+namespace Vexo\LLM;
 
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
-use Vexo\Weave\Prompt\Prompt;
+use Vexo\Prompt\Prompt;
 
 #[CoversClass(OpenAIChatLLM::class)]
 #[IgnoreClassForCodeCoverage(LLMStartedGeneratingCompletion::class)]

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent;
+namespace Vexo\Agent;
 
-use Vexo\Weave\SomethingHappened;
+use Vexo\SomethingHappened;
 
 final class AgentExecutorForcedStop extends SomethingHappened
 {

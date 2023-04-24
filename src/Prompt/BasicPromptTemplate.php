@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Prompt;
+namespace Vexo\Prompt;
 
 final class BasicPromptTemplate implements PromptTemplate
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Agent;
+namespace Vexo\Agent;
 
-use Vexo\Weave\Chain\Input;
-use Vexo\Weave\SomethingHappened;
+use Vexo\Chain\Input;
+use Vexo\SomethingHappened;
 
 final class AgentStartedPlanningNextStep extends SomethingHappened
 {

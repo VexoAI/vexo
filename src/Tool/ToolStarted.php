@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Tool;
+namespace Vexo\Tool;
 
-use Vexo\Weave\SomethingHappened;
+use Vexo\SomethingHappened;
 
 final class ToolStarted extends SomethingHappened
 {

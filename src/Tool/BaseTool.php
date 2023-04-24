@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Weave\Tool;
+namespace Vexo\Tool;
 
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
