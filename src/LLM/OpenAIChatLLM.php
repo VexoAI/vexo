@@ -14,15 +14,13 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
 {
     use EventDispatcherAwareBehavior;
 
-    private static array $defaultParameters = ['model' => 'gpt-3.5-turbo'];
-
-    private Parameters $parameters;
+    private static string $defaultModel = 'gpt-3.5-turbo';
 
     public function __construct(
         private ChatContract $chat,
-        Parameters $parameters = new Parameters([])
+        private Parameters $defaultParameters = new Parameters()
     ) {
-        $this->parameters = $parameters->withDefaults(self::$defaultParameters);
+        $this->defaultParameters->putIfAbsent('model', self::$defaultModel);
     }
 
     public function generate(Prompt $prompt, string ...$stops): Response
@@ -48,8 +46,8 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
 
     private function prepareParameters(Prompt $prompt, array $stops): array
     {
-        $parameters = $this->parameters->toArray();
-        $parameters['messages'] = [['role' => 'user', 'content' => $prompt->text()]];
+        $parameters = $this->defaultParameters->toArray();
+        $parameters['messages'][] = ['role' => 'user', 'content' => $prompt->text()];
 
         if ( ! empty($stops)) {
             $parameters['stop'] = $stops;
@@ -72,7 +70,7 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
     {
         return new Response(
             $generations,
-            new ResponseMetadata(array_merge($this->parameters->toArray(), ['usage' => $tokenUsage]))
+            new ResponseMetadata(array_merge($this->defaultParameters->toArray(), ['usage' => $tokenUsage]))
         );
     }
 }
