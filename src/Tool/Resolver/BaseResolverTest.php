@@ -19,7 +19,7 @@ final class BaseResolverTest extends TestCase
 {
     private BaseResolver $resolver;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->resolver = new BaseResolverStub(
             new Tools([new Callback('my_tool', 'Useful for things', fn ($input) => 'Received: ' . $input)])

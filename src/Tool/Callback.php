@@ -15,6 +15,6 @@ final class Callback extends BaseTool
 
     protected function call(string $input): string
     {
-        return (string) call_user_func($this->callable, $input);
+        return (string) \call_user_func($this->callable, $input);
     }
 }

@@ -59,14 +59,7 @@ final class SequentialChain extends BaseChain
     {
         $missingVariables = array_diff_key(array_flip($chain->inputKeys()), array_flip($availableVariables));
         if ( ! empty($missingVariables)) {
-            throw new SorryValidationFailed(
-                sprintf(
-                    'Chain %s has input variables that are not known: %s, only had %s',
-                    $chain::class,
-                    implode(', ', array_keys($missingVariables)),
-                    implode(', ', $availableVariables)
-                )
-            );
+            throw new SorryValidationFailed(sprintf('Chain %s has input variables that are not known: %s, only had %s', $chain::class, implode(', ', array_keys($missingVariables)), implode(', ', $availableVariables)));
         }
     }
 
@@ -74,13 +67,7 @@ final class SequentialChain extends BaseChain
     {
         $overlappingVariables = array_intersect_key(array_flip($chain->outputKeys()), array_flip($availableVariables));
         if ( ! empty($overlappingVariables)) {
-            throw new SorryValidationFailed(
-                sprintf(
-                    'Chain %s has output variables that would override known variables: %s',
-                    $chain::class,
-                    implode(', ', array_keys($overlappingVariables))
-                )
-            );
+            throw new SorryValidationFailed(sprintf('Chain %s has output variables that would override known variables: %s', $chain::class, implode(', ', array_keys($overlappingVariables))));
         }
     }
 
@@ -103,12 +90,7 @@ final class SequentialChain extends BaseChain
         // Check if our final output variables are known at the end of the sequence
         $missingVariables = array_diff_key(array_flip($this->outputKeys), array_flip($availableVariables));
         if ( ! empty($missingVariables)) {
-            throw new SorryValidationFailed(
-                sprintf(
-                    'Output variables are not produced by this sequence: %s',
-                    implode(', ', array_keys($missingVariables))
-                )
-            );
+            throw new SorryValidationFailed(sprintf('Output variables are not produced by this sequence: %s', implode(', ', array_keys($missingVariables))));
         }
     }
 }

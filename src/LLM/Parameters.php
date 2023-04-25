@@ -15,8 +15,8 @@ final class Parameters
         return $this->parameters;
     }
 
-    public function withDefaults(array $defaultParameters): Parameters
+    public function withDefaults(array $defaultParameters): self
     {
-        return new Parameters(array_merge($defaultParameters, $this->parameters));
+        return new self(array_merge($defaultParameters, $this->parameters));
     }
 }

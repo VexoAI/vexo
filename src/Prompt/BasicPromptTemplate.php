@@ -28,7 +28,7 @@ final class BasicPromptTemplate implements PromptTemplate
     private function validateValues(array $values): void
     {
         $missingValues = array_diff($this->variables, array_keys($values));
-        if (count($missingValues) > 0) {
+        if (\count($missingValues) > 0) {
             throw SorryNotAllRequiredValuesWereGiven::with($missingValues);
         }
     }

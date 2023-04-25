@@ -15,7 +15,7 @@ final class LLMChainTest extends TestCase
 {
     private LLMChain $llmChain;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->llmChain = new LLMChain(
             llm: new FakeLLM([

@@ -38,7 +38,7 @@ abstract class BaseChain implements Chain, EventDispatcherAware
     {
         foreach ($this->inputKeys() as $inputKey) {
             $this->try(
-                function () use ($input, $inputKey) {
+                function () use ($input, $inputKey): void {
                     Ensure::keyExists(
                         $input->data(),
                         $inputKey,

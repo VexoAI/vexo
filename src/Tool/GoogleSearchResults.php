@@ -34,7 +34,7 @@ final class GoogleSearchResults extends BaseTool
 
         return json_encode(
             array_map(
-                fn (Result $result) => [ 'title' => $result->title, 'link' => $result->link, 'snippet' => $result->snippet],
+                fn (Result $result) => ['title' => $result->title, 'link' => $result->link, 'snippet' => $result->snippet],
                 $results->getItems()
             )
         );

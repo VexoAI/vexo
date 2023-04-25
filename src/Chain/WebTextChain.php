@@ -59,7 +59,7 @@ final class WebTextChain extends BaseChain
     {
         $text = $this->textExtractor->extract($html);
 
-        if (strlen($text) > $this->maxTextLength) {
+        if (\strlen($text) > $this->maxTextLength) {
             $text = substr($text, 0, $this->maxTextLength);
         }
 

@@ -6,9 +6,9 @@ namespace Vexo\LLM;
 
 final class Response
 {
-    public static function fromString(string $response): Response
+    public static function fromString(string $response): self
     {
-        return new Response(Generations::fromString($response));
+        return new self(Generations::fromString($response));
     }
 
     public function __construct(

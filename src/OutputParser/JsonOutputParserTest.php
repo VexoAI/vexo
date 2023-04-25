@@ -24,7 +24,7 @@ final class JsonOutputParserTest extends TestCase
 
     public function testFormatInstructions(): void
     {
-        $expected = "The output should be a markdown code snippet formatted in the following schema, "
+        $expected = 'The output should be a markdown code snippet formatted in the following schema, '
             . "including the leading and trailing \"```json\" and \"```\":\n\n```json\n{$this->schema}\n```";
         $this->assertSame($expected, $this->outputParser->formatInstructions());
     }
@@ -54,7 +54,7 @@ final class JsonOutputParserTest extends TestCase
 
     public function testParseMissingDelimiters(): void
     {
-        $input = "{\"name\": \"John Doe\"}";
+        $input = '{"name": "John Doe"}';
         $this->expectException(SorryFailedToParseOutput::class);
         $this->expectExceptionMessage('Failed to extract JSON from output');
         $this->outputParser->parse($input);

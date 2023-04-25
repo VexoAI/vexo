@@ -14,7 +14,7 @@ final class OutputParserTest extends TestCase
 {
     private OutputParser $outputParser;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->outputParser = new OutputParser();
     }

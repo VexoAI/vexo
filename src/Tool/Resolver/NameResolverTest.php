@@ -19,7 +19,7 @@ final class NameResolverTest extends TestCase
 {
     private NameResolver $resolver;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->resolver = new NameResolver(
             new Tools([new Callback('my_tool', 'Useful for things', fn ($input) => 'Received: ' . $input)])

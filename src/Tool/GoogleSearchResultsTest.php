@@ -16,10 +16,10 @@ final class GoogleSearchResultsTest extends TestCase
 
     private GoogleSearchResults $googleSearch;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new CustomSearchAPI();
-        $this->service->cse = new class {
+        $this->service->cse = new class() {
             public function __construct(
                 public array $returnItems = [],
                 public array $passedParams = []

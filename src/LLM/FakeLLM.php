@@ -15,7 +15,7 @@ final class FakeLLM implements LLM
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function generate(Prompt $prompt, string ...$stops): Response
     {

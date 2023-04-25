@@ -8,9 +8,9 @@ use Ramsey\Collection\AbstractCollection;
 
 final class Generations extends AbstractCollection
 {
-    public static function fromString(string $text): Generations
+    public static function fromString(string $text): self
     {
-        return new Generations([new Generation($text)]);
+        return new self([new Generation($text)]);
     }
 
     public function getType(): string

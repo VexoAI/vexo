@@ -6,17 +6,17 @@ $finder = PhpCsFixer\Finder::create()
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR2' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'binary_operator_spaces' => true,
-        'single_line_after_imports' => true,
-        'blank_line_before_statement' => ['statements' => ['return']],
-        'cast_spaces' => true,
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        '@PHP82Migration' => true,
+        '@PHP80Migration:risky' => true,
         'concat_space' => ['spacing' => 'one'],
+        'increment_style' => false,
+        'no_empty_comment' => true,
         'no_singleline_whitespace_before_semicolons' => true,
-        'not_operator_with_space' => true,
+        'no_superfluous_phpdoc_tags' => true,
         'no_unused_imports' => true,
-        'phpdoc_align' => false,
+        'not_operator_with_space' => true,
         'phpdoc_indent' => true,
         'phpdoc_no_access' => true,
         'phpdoc_no_alias_tag' => true,
@@ -27,12 +27,8 @@ return (new PhpCsFixer\Config())
         'phpdoc_to_comment' => true,
         'phpdoc_trim' => true,
         'single_blank_line_at_eof' => true,
-        'ternary_operator_spaces' => true,
-        'ordered_imports' => [
-            'sort_algorithm' => 'alpha',
-            'imports_order' => ['const', 'class', 'function'],
-        ],
-        'no_extra_blank_lines' => true,
-        'no_whitespace_in_blank_line' => true,
+        'single_line_after_imports' => true,
+        'trailing_comma_in_multiline' => false,
+        'yoda_style' => false
     ])
     ->setFinder($finder);

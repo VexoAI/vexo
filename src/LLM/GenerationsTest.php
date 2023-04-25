@@ -12,7 +12,7 @@ final class GenerationsTest extends TestCase
 {
     private Generations $generations;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->generations = new Generations([
             new Generation('one'),
@@ -23,7 +23,7 @@ final class GenerationsTest extends TestCase
 
     public function testFromString(): void
     {
-        $generations = Generations::fromString("My text");
+        $generations = Generations::fromString('My text');
 
         $this->assertTrue($generations->contains(new Generation('My text'), false));
     }

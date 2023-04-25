@@ -15,7 +15,7 @@ final class SomethingHappenedTest extends TestCase
         $somethingHappened = (new StubSomethingHappened('foo', 42))->for($this);
 
         $this->assertSame(
-            ['emitter' => SomethingHappenedTest::class, 'foo' => 'foo', 'bar' => 42],
+            ['emitter' => self::class, 'foo' => 'foo', 'bar' => 42],
             $somethingHappened->payload()
         );
     }

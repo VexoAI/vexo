@@ -15,7 +15,7 @@ final class Step
 
     public function withObservation(string $observation): self
     {
-        return new Step(
+        return new self(
             $this->action(),
             $this->log(),
             $observation

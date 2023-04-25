@@ -29,11 +29,7 @@ abstract class BaseResolver implements Resolver, EventDispatcherAware
             $this->eventDispatcher()->dispatch(
                 (new ResolverLookupFailed($query, $input, $e))->for($this)
             );
-            throw new SorryFailedToResolveTool(
-                sprintf('Failed to resolve tool %s: %s', $query, $e->getMessage()),
-                $e->getCode(),
-                $e
-            );
+            throw new SorryFailedToResolveTool(sprintf('Failed to resolve tool %s: %s', $query, $e->getMessage()), $e->getCode(), $e);
         }
 
         $this->eventDispatcher()->dispatch(

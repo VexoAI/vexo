@@ -34,17 +34,17 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     ) {
     }
 
-    public static function fromLLMAndTools(LLM $llm, Tools $tools, ?EventDispatcher $eventDispatcher = null): ZeroShotAgent
+    public static function fromLLMAndTools(LLM $llm, Tools $tools, ?EventDispatcher $eventDispatcher = null): self
     {
         $llmChain = new LLMChain(
             llm: $llm,
-            promptTemplate: ZeroShotAgent::createPromptTemplate($tools),
+            promptTemplate: self::createPromptTemplate($tools),
             inputKeys: ['question'],
             outputKey: 'text',
             stops: ['Observation:']
         );
 
-        $agent = new ZeroShotAgent(
+        $agent = new self(
             llmChain: $llmChain,
             outputParser: new OutputParser(),
             outputKey: 'text'
@@ -104,9 +104,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     private function createScratchpad(Steps $intermediateSteps): string
     {
         return $intermediateSteps->reduce(
-            function (string $scratchpad, Step $step) {
-                return $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->llmPrefix;
-            },
+            fn (string $scratchpad, Step $step) => $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->llmPrefix,
             ''
         );
     }

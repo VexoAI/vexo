@@ -10,13 +10,13 @@ use JsonSchema\Validator;
 
 class JsonOutputParser implements OutputParser
 {
-    const INSTRUCTIONS = <<<INSTRUCTIONS
-The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "```json" and "```":
+    public const INSTRUCTIONS = <<<INSTRUCTIONS
+        The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "```json" and "```":
 
-```json
-{{schema}}
-```
-INSTRUCTIONS;
+        ```json
+        {{schema}}
+        ```
+        INSTRUCTIONS;
 
     public function __construct(
         private Validator $validator,
@@ -51,7 +51,7 @@ INSTRUCTIONS;
         $startDelimiter = '```json';
         $endDelimiter = '```';
 
-        $startPosition = strpos($text, $startDelimiter) + strlen($startDelimiter);
+        $startPosition = strpos($text, $startDelimiter) + \strlen($startDelimiter);
         $endPosition = strpos($text, $endDelimiter, $startPosition);
 
         /* @phpstan-ignore-next-line */
@@ -67,7 +67,7 @@ INSTRUCTIONS;
     {
         $decoded = json_decode($json);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (json_last_error() !== \JSON_ERROR_NONE) {
             throw new SorryFailedToParseOutput('Failed to decode JSON: ' . json_last_error_msg());
         }
 

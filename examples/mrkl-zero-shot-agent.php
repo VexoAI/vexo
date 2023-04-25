@@ -26,8 +26,8 @@ $logger->pushHandler(new ConsoleHandler(new ConsoleOutput(ConsoleOutput::VERBOSI
 $eventDispatcher = new EventDispatcher();
 $eventDispatcher->subscribeTo(
     SomethingHappened::class,
-    function (SomethingHappened $event) use ($logger) {
-        $logger->debug(get_class($event), $event->payload());
+    function (SomethingHappened $event) use ($logger): void {
+        $logger->debug($event::class, $event->payload());
     }
 );
 

@@ -13,7 +13,7 @@ final class CachingChainTest extends TestCase
 {
     private CachingChain $cachingChain;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->cachingChain = new CachingChain(new ChainStub(), new CacheStub());
     }
