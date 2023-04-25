@@ -23,10 +23,6 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 {
     use EventDispatcherAwareBehavior;
 
-    /**
-     * @param Agent $agent
-     * @param Resolver $toolResolver
-     */
     public function __construct(
         private Agent $agent,
         private Resolver $toolResolver,

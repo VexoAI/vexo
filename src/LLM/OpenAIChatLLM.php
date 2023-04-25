@@ -25,9 +25,6 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
         $this->parameters = $parameters->withDefaults(self::$defaultParameters);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function generate(Prompt $prompt, string ...$stops): Response
     {
         $this->eventDispatcher()->dispatch(
