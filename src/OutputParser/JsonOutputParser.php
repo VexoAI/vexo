@@ -51,13 +51,14 @@ class JsonOutputParser implements OutputParser
         $startDelimiter = '```json';
         $endDelimiter = '```';
 
-        $startPosition = strpos($text, $startDelimiter) + \strlen($startDelimiter);
-        $endPosition = strpos($text, $endDelimiter, $startPosition);
+        $startPosition = strpos($text, $startDelimiter);
+        $endPosition = strpos($text, $endDelimiter, $startPosition + \strlen($startDelimiter));
 
-        /* @phpstan-ignore-next-line */
         if ($startPosition === false || $endPosition === false) {
             throw new SorryFailedToParseOutput('Failed to extract JSON from output');
         }
+
+        $startPosition += \strlen($startDelimiter);
 
         // Extract the JSON string using the positions
         return trim(substr($text, $startPosition, $endPosition - $startPosition));
