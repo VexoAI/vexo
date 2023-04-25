@@ -71,20 +71,4 @@ final class ZeroShotAgentTest extends TestCase
         $this->assertInstanceOf(Finish::class, $nextStep->action());
         $this->assertEquals('42', $nextStep->action()->results()['result']);
     }
-
-    public function testPlanThrowsExceptionOnUnparsableOutput(): void
-    {
-        $unparsableLLM = new FakeLLM([
-            Response::fromString('Unparsable output'),
-        ]);
-
-        $agent = ZeroShotAgent::fromLLMAndTools($unparsableLLM, new Tools([$this->toolA, $this->toolB]));
-        $input = new Input(['question' => 'What is the meaning of life?']);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Could not parse output');
-
-        $agent->plan($input);
-    }
-
 }

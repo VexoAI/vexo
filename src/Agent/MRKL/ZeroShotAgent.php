@@ -7,11 +7,10 @@ namespace Vexo\Agent\MRKL;
 use League\Event\EventDispatcher;
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
-use Vexo\Agent\Action;
 use Vexo\Agent\Agent;
 use Vexo\Agent\AgentFinishedPlanningNextStep;
+use Vexo\Agent\AgentOutputParser;
 use Vexo\Agent\AgentStartedPlanningNextStep;
-use Vexo\Agent\Finish;
 use Vexo\Agent\Step;
 use Vexo\Agent\Steps;
 use Vexo\Chain\Chain;
@@ -28,6 +27,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
 
     public function __construct(
         private Chain $llmChain,
+        private AgentOutputParser $outputParser,
         private string $outputKey,
         private string $llmPrefix = 'Thought: ',
         private string $observationPrefix = 'Observation: '
@@ -46,6 +46,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
 
         $agent = new ZeroShotAgent(
             llmChain: $llmChain,
+            outputParser: new OutputParser(),
             outputKey: 'text'
         );
 
@@ -82,7 +83,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         );
 
         $outputText = $output->get($this->outputKey);
-        $nextAction = $this->parseOutput($outputText);
+        $nextAction = $this->outputParser->parse($outputText);
 
         $step = new Step($nextAction, $outputText);
 
@@ -108,21 +109,5 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
             },
             ''
         );
-    }
-
-    private function parseOutput(string $output): Action|Finish
-    {
-        if (preg_match('/Final Answer:/', $output)) {
-            $answer = explode('Final Answer:', $output);
-
-            return new Finish(['result' => trim(end($answer))]);
-        }
-
-        $matches = [];
-        if (preg_match('/Action:\s*(.*?)\nAction\s*Input:\s*(.*)/', $output, $matches)) {
-            return new Action($matches[1], trim($matches[2]));
-        }
-
-        throw new \RuntimeException('Could not parse output');
     }
 }

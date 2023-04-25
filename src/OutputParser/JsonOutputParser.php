@@ -8,7 +8,7 @@ use JsonSchema\Constraints\Constraint;
 use JsonSchema\Exception\ValidationException;
 use JsonSchema\Validator;
 
-final class JsonOutputParser implements OutputParser
+class JsonOutputParser implements OutputParser
 {
     const INSTRUCTIONS = <<<INSTRUCTIONS
 The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "```json" and "```":
