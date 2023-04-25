@@ -14,9 +14,6 @@ final class FakeLLM implements LLM
         Ensure::allIsInstanceOf($responses, Response::class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function generate(Prompt $prompt, string ...$stops): Response
     {
         Ensure::notEmpty($this->responses, 'No more responses to return');
