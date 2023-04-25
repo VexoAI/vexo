@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\LLM;
 
-final class ResponseMetadata
-{
-    public function __construct(private array $values = [])
-    {
-    }
+use Ramsey\Collection\Map\AbstractMap;
 
-    public function toArray(): array
-    {
-        return $this->values;
-    }
+final class ResponseMetadata extends AbstractMap
+{
 }
