@@ -10,15 +10,11 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Generations::class)]
 final class GenerationsTest extends TestCase
 {
-    private Generations $generations;
-
-    protected function setUp(): void
+    public function testGetType(): void
     {
-        $this->generations = new Generations([
-            new Generation('one'),
-            new Generation('two'),
-            new Generation('three'),
-        ]);
+        $generations = new Generations();
+
+        $this->assertSame(Generation::class, $generations->getType());
     }
 
     public function testFromString(): void
@@ -30,6 +26,8 @@ final class GenerationsTest extends TestCase
 
     public function testToString(): void
     {
-        $this->assertSame("one\ntwo\nthree", (string) $this->generations);
+        $generations = new Generations([new Generation('one'), new Generation('two')]);
+
+        $this->assertSame("one\ntwo", (string) $generations);
     }
 }
