@@ -24,6 +24,7 @@
         "google/apiclient": "^2.13",
         "justinrainbow/json-schema": "^5.2",
         "league/event": "^3.0",
+        "league/flysystem": "^3.14",
         "openai-php/client": "^0.4.2",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
@@ -33,6 +34,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.16",
+        "league/flysystem-memory": "^3.13",
         "monolog/monolog": "^3.3",
         "phpstan/phpstan": "^1.10",
         "phpunit/php-code-coverage": "^10.1",
