@@ -1,5 +1,5 @@
 {
-    "name": "vexo/weave",
+    "name": "vexo/vexo",
     "description": "A library to implement AI agents and LLMs into your application",
     "type": "library",
     "config": {
