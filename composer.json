@@ -1,12 +1,7 @@
 {
     "name": "vexo/weave",
     "description": "A library to implement AI agents and LLMs into your application",
-    "keywords": [
-        "ai", "llm", "openai", "gpt", "gpt-3", "gpt-4", "agent"
-    ],
     "type": "library",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "config": {
         "allow-plugins": {
             "php-http/discovery": true
