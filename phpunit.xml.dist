@@ -10,7 +10,7 @@
     displayDetailsOnTestsThatTriggerErrors="true"
     cacheDirectory="tmp/.phpunit.cache">
     <testsuites>
-        <testsuite name="Weave">
+        <testsuite name="unit">
             <directory suffix="Test.php">src/</directory>
         </testsuite>
     </testsuites>
