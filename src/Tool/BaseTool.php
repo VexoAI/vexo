@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Tool;
 
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 
 abstract class BaseTool implements Tool, EventDispatcherAware
 {
@@ -29,15 +29,11 @@ abstract class BaseTool implements Tool, EventDispatcherAware
 
     public function run(string $input): string
     {
-        $this->eventDispatcher()->dispatch(
-            (new ToolStarted($input))->for($this)
-        );
+        $this->emit(new ToolStarted($input));
 
         $output = $this->call($input);
 
-        $this->eventDispatcher()->dispatch(
-            (new ToolFinished($input, $output))->for($this)
-        );
+        $this->emit(new ToolFinished($input, $output));
 
         return $output;
     }

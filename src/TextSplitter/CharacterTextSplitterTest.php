@@ -7,7 +7,7 @@ namespace Vexo\TextSplitter;
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\SomethingHappened;
+use Vexo\Event\SomethingHappened;
 
 #[CoversClass(CharacterTextSplitter::class)]
 final class CharacterTextSplitterTest extends TestCase

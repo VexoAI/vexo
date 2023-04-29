@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Tool\Resolver;
 
-use Vexo\SomethingHappened;
+use Vexo\Event\SomethingHappened;
 
 final class ResolverLookupStarted extends SomethingHappened
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo;
+namespace Vexo\Event;
 
 class SomethingHappened
 {

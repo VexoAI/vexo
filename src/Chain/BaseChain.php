@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vexo\Chain;
 
 use Assert\Assertion as Ensure;
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 
 abstract class BaseChain implements Chain, EventDispatcherAware
 {
@@ -18,16 +18,12 @@ abstract class BaseChain implements Chain, EventDispatcherAware
 
     public function process(Input $input): Output
     {
-        $this->eventDispatcher()->dispatch(
-            (new ChainStarted($input))->for($this)
-        );
+        $this->emit(new ChainStarted($input));
 
         $this->validateInput($input);
         $output = $this->call($input);
 
-        $this->eventDispatcher()->dispatch(
-            (new ChainFinished($input, $output))->for($this)
-        );
+        $this->emit(new ChainFinished($input, $output));
 
         return $output;
     }

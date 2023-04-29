@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-use Vexo\SomethingHappened;
+use Vexo\Event\SomethingHappened;
 
 final class ChainStarted extends SomethingHappened
 {

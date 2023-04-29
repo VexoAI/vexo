@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
-use Vexo\SomethingHappened;
+use Vexo\Event\SomethingHappened;
 
 #[CoversClass(BaseTextSplitter::class)]
 #[IgnoreClassForCodeCoverage(ChunkSizeExceeded::class)]

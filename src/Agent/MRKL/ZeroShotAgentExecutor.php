@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Vexo\Agent\MRKL;
 
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
 use Vexo\Agent\Agent;
 use Vexo\Agent\AgentExecutorFinishedProcessing;
 use Vexo\Agent\AgentExecutorForcedStop;
@@ -17,6 +15,8 @@ use Vexo\Agent\Steps;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Tool\Resolver\Resolver;
 
 final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
@@ -48,14 +48,10 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
         $iterations = 0;
         $intermediateSteps = new Steps();
 
-        $this->eventDispatcher()->dispatch(
-            (new AgentExecutorStartedProcessing($input))->for($this)
-        );
+        $this->emit(new AgentExecutorStartedProcessing($input));
 
         while ($this->shouldContinue($timeElapsed, $iterations)) {
-            $this->eventDispatcher()->dispatch(
-                (new AgentExecutorStartedRunIteration($intermediateSteps, $iterations, $timeElapsed))->for($this)
-            );
+            $this->emit(new AgentExecutorStartedRunIteration($intermediateSteps, $iterations, $timeElapsed));
 
             $nextStep = $this->takeNextStep($input, $intermediateSteps);
             $intermediateSteps->add($nextStep);
@@ -64,9 +60,7 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
                 $results = $nextStep->action()->results();
                 $results['intermediateSteps'] = $intermediateSteps;
 
-                $this->eventDispatcher()->dispatch(
-                    (new AgentExecutorFinishedProcessing($results, $iterations, $timeElapsed))->for($this)
-                );
+                $this->emit(new AgentExecutorFinishedProcessing($results, $iterations, $timeElapsed));
 
                 return new Output($results);
             }
@@ -75,9 +69,7 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
             $iterations++;
         }
 
-        $this->eventDispatcher()->dispatch(
-            (new AgentExecutorForcedStop($intermediateSteps, $iterations, $timeElapsed))->for($this)
-        );
+        $this->emit(new AgentExecutorForcedStop($intermediateSteps, $iterations, $timeElapsed));
 
         return new Output([
             'result' => 'Failed to answer question. Max iterations or time reached',

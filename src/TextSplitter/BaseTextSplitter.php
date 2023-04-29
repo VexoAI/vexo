@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\TextSplitter;
 
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 
 abstract class BaseTextSplitter implements EventDispatcherAware
 {
@@ -80,9 +80,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
             // If the size is exceeded we will continue, but raise an event in case this needs to be handled.
             //
             if ($currentChunkSize > $this->chunkSize) {
-                $this->eventDispatcher()->dispatch(
-                    (new ChunkSizeExceeded($this->chunkSize, $this->minChunkOverlap, $currentChunkSplits))->for($this)
-                );
+                $this->emit(new ChunkSizeExceeded($this->chunkSize, $this->minChunkOverlap, $currentChunkSplits));
             }
 
             // Adding the current split to our current chunk would exceed the chunk size, so this chunk is complete. We
@@ -113,9 +111,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
 
         // If the last chunk exceeds the chunk size, we will raise an event in case this needs to be handled.
         if ($currentChunkSize > $this->chunkSize) {
-            $this->eventDispatcher()->dispatch(
-                (new ChunkSizeExceeded($this->chunkSize, $this->minChunkOverlap, $currentChunkSplits))->for($this)
-            );
+            $this->emit(new ChunkSizeExceeded($this->chunkSize, $this->minChunkOverlap, $currentChunkSplits));
         }
 
         return $chunks;

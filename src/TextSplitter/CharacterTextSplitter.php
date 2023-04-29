@@ -21,9 +21,7 @@ final class CharacterTextSplitter extends BaseTextSplitter
             $splits = [$text];
 
             if ($this->size($text) > $this->chunkSize) {
-                $this->eventDispatcher()->dispatch(
-                    (new ChunkSizeExceeded($this->chunkSize, $this->minChunkOverlap, $splits))->for($this)
-                );
+                $this->emit(new ChunkSizeExceeded($this->chunkSize, $this->minChunkOverlap, $splits));
             }
 
             return $splits;

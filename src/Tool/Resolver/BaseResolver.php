@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Tool\Resolver;
 
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Tool\Tool;
 use Vexo\Tool\Tools;
 
@@ -19,22 +19,16 @@ abstract class BaseResolver implements Resolver, EventDispatcherAware
 
     public function resolve(string $query, string $input): Tool
     {
-        $this->eventDispatcher()->dispatch(
-            (new ResolverLookupStarted($query, $input))->for($this)
-        );
+        $this->emit(new ResolverLookupStarted($query, $input));
 
         try {
             $tool = $this->lookup($query, $input);
         } catch (\Throwable $e) {
-            $this->eventDispatcher()->dispatch(
-                (new ResolverLookupFailed($query, $input, $e))->for($this)
-            );
+            $this->emit(new ResolverLookupFailed($query, $input, $e));
             throw new SorryFailedToResolveTool(sprintf('Failed to resolve tool %s: %s', $query, $e->getMessage()), $e->getCode(), $e);
         }
 
-        $this->eventDispatcher()->dispatch(
-            (new ResolverLookupFinished($query, $input, $tool))->for($this)
-        );
+        $this->emit(new ResolverLookupFinished($query, $input, $tool));
 
         return $tool;
     }

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Vexo\Agent\MRKL;
 
 use League\Event\EventDispatcher;
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
 use Vexo\Agent\Agent;
 use Vexo\Agent\AgentFinishedPlanningNextStep;
 use Vexo\Agent\AgentOutputParser;
@@ -16,6 +14,8 @@ use Vexo\Agent\Steps;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\LanguageModelChain;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Model\LanguageModel;
 use Vexo\Prompt\BasicPromptTemplate;
 use Vexo\Tool\Tool;
@@ -74,9 +74,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
 
     public function plan(Input $input, Steps $intermediateSteps = new Steps()): Step
     {
-        $this->eventDispatcher()->dispatch(
-            (new AgentStartedPlanningNextStep($input, $intermediateSteps))->for($this)
-        );
+        $this->emit(new AgentStartedPlanningNextStep($input, $intermediateSteps));
 
         $output = $this->llmChain->process(
             $this->buildFullInput($input, $intermediateSteps)
@@ -87,9 +85,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
 
         $step = new Step($nextAction, $outputText);
 
-        $this->eventDispatcher()->dispatch(
-            (new AgentFinishedPlanningNextStep($input, $intermediateSteps, $step))->for($this)
-        );
+        $this->emit(new AgentFinishedPlanningNextStep($input, $intermediateSteps, $step));
 
         return $step;
     }

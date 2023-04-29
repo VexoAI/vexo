@@ -16,19 +16,19 @@ $eventDispatcher->subscribeTo(
 );
 ```
 
-The example above adds a listener for the StartedGeneratingCompletion event, but if you simply want to listen to all Vexo events, you can pass `Vexo\SomethingHappened::class` instead.
+The example above adds a listener for the StartedGeneratingCompletion event, but if you simply want to listen to all Vexo events, you can pass `Vexo\Event\SomethingHappened::class` instead.
 
-If you want the model you use your own event dispatcher, you can do so by calling the `LanguageModel::useEventDispatcher()` method.
+If you want the model you use your own event dispatcher, you can do so by calling the `LanguageModel::useEventDispatcher()` method and pass in a [PSR-14](https://www.php-fig.org/psr/psr-14/) compatible dispatcher.
 
 ```php
-// Create our event dispatcher
+// Create our own event dispatcher
 $eventDispatcher = new League\Event\EventDispatcher();
 
 // Assumes $model is an implementation of Vexo\Model\LanguageModel
 $model->useEventDispatcher($eventDispatcher);
 ```
 
-Vexo relies on the [league/event](https://event.thephpleague.com/) library for its event handling and dispatching needs. Please refer to that library's documentation for more advanced use cases.
+Vexo itself depends on [league/event](https://event.thephpleague.com/) for its default event dispatcher. If you're going to use this dispatcher and would like to know more about more advanced use cases, please refer to that library's documentation.
 
 ## Emitted events
 

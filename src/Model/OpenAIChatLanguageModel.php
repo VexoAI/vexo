@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Model;
 
-use League\Event\EventDispatcherAware;
-use League\Event\EventDispatcherAwareBehavior;
 use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Prompt\Prompt;
 
 final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAware
@@ -25,18 +25,14 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
 
     public function generate(Prompt $prompt, string ...$stops): Response
     {
-        $this->eventDispatcher()->dispatch(
-            (new StartedGeneratingCompletion($prompt, $stops))->for($this)
-        );
+        $this->emit(new StartedGeneratingCompletion($prompt, $stops));
 
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
         );
         $completions = $this->extractCompletionsFromChatResponse($chatResponse);
 
-        $this->eventDispatcher()->dispatch(
-            (new FinishedGeneratingCompletion($prompt, $stops, $completions))->for($this)
-        );
+        $this->emit(new FinishedGeneratingCompletion($prompt, $stops, $completions));
 
         return $this->createResponse(
             $completions,

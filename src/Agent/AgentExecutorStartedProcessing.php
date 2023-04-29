@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Agent;
 
 use Vexo\Chain\Input;
-use Vexo\SomethingHappened;
+use Vexo\Event\SomethingHappened;
 
 final class AgentExecutorStartedProcessing extends SomethingHappened
 {
