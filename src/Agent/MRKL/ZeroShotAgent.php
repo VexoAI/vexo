@@ -15,8 +15,8 @@ use Vexo\Agent\Step;
 use Vexo\Agent\Steps;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
-use Vexo\Chain\LLMChain;
-use Vexo\LLM\LLM;
+use Vexo\Chain\LanguageModelChain;
+use Vexo\Model\LanguageModel;
 use Vexo\Prompt\BasicPromptTemplate;
 use Vexo\Tool\Tool;
 use Vexo\Tool\Tools;
@@ -34,9 +34,9 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     ) {
     }
 
-    public static function fromLLMAndTools(LLM $llm, Tools $tools, ?EventDispatcher $eventDispatcher = null): self
+    public static function fromLLMAndTools(LanguageModel $llm, Tools $tools, ?EventDispatcher $eventDispatcher = null): self
     {
-        $llmChain = new LLMChain(
+        $llmChain = new LanguageModelChain(
             llm: $llm,
             promptTemplate: self::createPromptTemplate($tools),
             inputKeys: ['question'],

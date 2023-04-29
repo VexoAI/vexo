@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
@@ -11,10 +11,10 @@ use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Prompt\Prompt;
 
-#[CoversClass(OpenAIChatLLM::class)]
-#[IgnoreClassForCodeCoverage(LLMStartedGeneratingCompletion::class)]
-#[IgnoreClassForCodeCoverage(LLMFinishedGeneratingCompletion::class)]
-final class OpenAIChatLLMTest extends TestCase
+#[CoversClass(OpenAIChatLanguageModel::class)]
+#[IgnoreClassForCodeCoverage(LanguageModelStartedGeneratingCompletion::class)]
+#[IgnoreClassForCodeCoverage(LanguageModelFinishedGeneratingCompletion::class)]
+final class OpenAIChatLanguageModelTest extends TestCase
 {
     public function testGenerate(): void
     {
@@ -36,14 +36,14 @@ final class OpenAIChatLLMTest extends TestCase
             ])
         ]);
 
-        $openAIChatLLM = new OpenAIChatLLM($client->chat(), new Parameters(['n' => 2]));
+        $openAIChatLLM = new OpenAIChatLanguageModel($client->chat(), new Parameters(['n' => 2]));
 
         $response = $openAIChatLLM->generate(new Prompt('What is the capital of France?'), "\n");
-        $generations = $response->generations();
+        $completions = $response->completions();
 
-        $this->assertCount(2, $generations);
-        $this->assertEquals('Paris', $generations[0]->text());
-        $this->assertEquals('The capital of France is Paris.', $generations[1]->text());
+        $this->assertCount(2, $completions);
+        $this->assertEquals('Paris', $completions[0]->text());
+        $this->assertEquals('The capital of France is Paris.', $completions[1]->text());
 
         $metadata = $response->metadata()->toArray();
         $this->assertEquals('gpt-3.5-turbo', $metadata['model']);

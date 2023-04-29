@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 final class Response
 {
     public static function fromString(string $response): self
     {
-        return new self(Generations::fromString($response));
+        return new self(Completions::fromString($response));
     }
 
     public function __construct(
-        private Generations $generations,
+        private Completions $completions,
         private ResponseMetadata $metadata = new ResponseMetadata(),
     ) {
     }
 
-    public function generations(): Generations
+    public function completions(): Completions
     {
-        return $this->generations;
+        return $this->completions;
     }
 
     public function metadata(): ResponseMetadata

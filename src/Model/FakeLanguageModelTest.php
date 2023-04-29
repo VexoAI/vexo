@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Prompt\Prompt;
 
-#[CoversClass(FakeLLM::class)]
-final class FakeLLMTest extends TestCase
+#[CoversClass(FakeLanguageModel::class)]
+final class FakeLanguageModelTest extends TestCase
 {
     public function testGenerate(): void
     {
@@ -18,7 +18,7 @@ final class FakeLLMTest extends TestCase
             Response::fromString('two'),
         ];
 
-        $fakeLLM = new FakeLLM($responsesToReturn);
+        $fakeLLM = new FakeLanguageModel($responsesToReturn);
 
         $this->assertSame($responsesToReturn[0], $fakeLLM->generate(new Prompt('one')));
         $this->assertSame($responsesToReturn[1], $fakeLLM->generate(new Prompt('two')));
@@ -27,7 +27,7 @@ final class FakeLLMTest extends TestCase
         $fakeLLM->generate(new Prompt('three'));
     }
 
-    public function testConstructorValidatesGenerations(): void
+    public function testConstructorValidatesCompletions(): void
     {
         $responsesToReturn = [
             Response::fromString('one'),
@@ -36,6 +36,6 @@ final class FakeLLMTest extends TestCase
         ];
 
         $this->expectException(\InvalidArgumentException::class);
-        new FakeLLM($responsesToReturn);
+        new FakeLanguageModel($responsesToReturn);
     }
 }

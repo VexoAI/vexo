@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -12,13 +12,13 @@ final class ResponseTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
-        $generations = Generations::fromString("one\n\ntwo");
+        $completions = Completions::fromString("one\n\ntwo");
 
         $metadata = new ResponseMetadata(['key1' => 'value1', 'key2' => 'value2']);
 
-        $response = new Response($generations, $metadata);
+        $response = new Response($completions, $metadata);
 
-        $this->assertSame($generations, $response->generations());
+        $this->assertSame($completions, $response->completions());
         $this->assertSame($metadata, $response->metadata());
     }
 
@@ -26,6 +26,6 @@ final class ResponseTest extends TestCase
     {
         $response = Response::fromString("one\n\ntwo");
 
-        $this->assertEquals(Generations::fromString("one\n\ntwo"), $response->generations());
+        $this->assertEquals(Completions::fromString("one\n\ntwo"), $response->completions());
     }
 }

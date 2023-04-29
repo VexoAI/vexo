@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
-final class Generation implements \Stringable
+final class Completion implements \Stringable
 {
     public function __construct(private string $text)
     {

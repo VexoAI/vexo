@@ -14,8 +14,8 @@ use Vexo\Agent\AgentStartedPlanningNextStep;
 use Vexo\Agent\Finish;
 use Vexo\Agent\Steps;
 use Vexo\Chain\Input;
-use Vexo\LLM\FakeLLM;
-use Vexo\LLM\Response;
+use Vexo\Model\FakeLanguageModel;
+use Vexo\Model\Response;
 use Vexo\Tool\Callback;
 use Vexo\Tool\Tools;
 
@@ -24,13 +24,13 @@ use Vexo\Tool\Tools;
 #[IgnoreClassForCodeCoverage(AgentFinishedPlanningNextStep::class)]
 final class ZeroShotAgentTest extends TestCase
 {
-    private FakeLLM $llm;
+    private FakeLanguageModel $llm;
     private Callback $toolA;
     private Callback $toolB;
 
     protected function setUp(): void
     {
-        $this->llm = new FakeLLM([
+        $this->llm = new FakeLanguageModel([
             Response::fromString("I should do something.\nAction: ToolA\nAction Input: Some input"),
             Response::fromString('Final Answer: 42'),
         ]);

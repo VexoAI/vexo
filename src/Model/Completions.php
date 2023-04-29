@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use Ramsey\Collection\AbstractCollection;
 
-final class Generations extends AbstractCollection
+final class Completions extends AbstractCollection
 {
     public static function fromString(string $text): self
     {
-        return new self([new Generation($text)]);
+        return new self([new Completion($text)]);
     }
 
     public function getType(): string
     {
-        return Generation::class;
+        return Completion::class;
     }
 
     public function __toString(): string

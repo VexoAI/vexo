@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use Vexo\Prompt\Prompt;
 
-interface LLM
+interface LanguageModel
 {
     public function generate(Prompt $prompt, string ...$stops): Response;
 }

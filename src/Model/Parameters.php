@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use Ramsey\Collection\Map\AbstractMap;
 

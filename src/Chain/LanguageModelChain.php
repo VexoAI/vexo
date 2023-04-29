@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-use Vexo\LLM\LLM;
+use Vexo\Model\LanguageModel;
 use Vexo\Prompt\PromptTemplate;
 
-final class LLMChain extends BaseChain
+final class LanguageModelChain extends BaseChain
 {
     public function __construct(
-        private LLM $llm,
+        private LanguageModel $llm,
         private PromptTemplate $promptTemplate,
         private array $inputKeys = ['text'],
         private string $outputKey = 'text',
@@ -36,7 +36,7 @@ final class LLMChain extends BaseChain
         );
 
         return new Output(
-            [$this->outputKey => (string) $response->generations()]
+            [$this->outputKey => (string) $response->completions()]
         );
     }
 }

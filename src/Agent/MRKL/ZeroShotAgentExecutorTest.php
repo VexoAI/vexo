@@ -13,8 +13,8 @@ use Vexo\Agent\AgentExecutorStartedProcessing;
 use Vexo\Agent\AgentExecutorStartedRunIteration;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
-use Vexo\LLM\FakeLLM;
-use Vexo\LLM\Response;
+use Vexo\Model\FakeLanguageModel;
+use Vexo\Model\Response;
 use Vexo\Tool\Callback;
 use Vexo\Tool\Resolver\NameResolver;
 use Vexo\Tool\Tools;
@@ -26,7 +26,7 @@ use Vexo\Tool\Tools;
 #[IgnoreClassForCodeCoverage(AgentExecutorForcedStop::class)]
 final class ZeroShotAgentExecutorTest extends TestCase
 {
-    private FakeLLM $llm;
+    private FakeLanguageModel $llm;
     private Callback $toolA;
     private Callback $toolB;
     private NameResolver $toolResolver;
@@ -35,7 +35,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->llm = new FakeLLM([
+        $this->llm = new FakeLanguageModel([
             Response::fromString("I should do something.\nAction: ToolA\nAction Input: Some input"),
             Response::fromString('Final Answer: 42'),
         ]);

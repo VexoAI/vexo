@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use Assert\Assertion as Ensure;
 use Vexo\Prompt\Prompt;
 
-final class FakeLLM implements LLM
+final class FakeLanguageModel implements LanguageModel
 {
     public function __construct(private array $responses)
     {

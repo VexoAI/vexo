@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Vexo\Agent\MRKL\ZeroShotAgent;
 use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
 use Vexo\Chain\Input;
-use Vexo\LLM\OpenAIChatLLM;
+use Vexo\Model\OpenAIChatLanguageModel;
 use Vexo\SomethingHappened;
 use Vexo\Tool\Callback;
 use Vexo\Tool\GoogleSearch;
@@ -55,7 +55,7 @@ $toolResolver = new NameResolver($tools);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
 
-$llm = new OpenAIChatLLM($chat);
+$llm = new OpenAIChatLanguageModel($chat);
 $llm->useEventDispatcher($eventDispatcher);
 
 $agent = ZeroShotAgent::fromLLMAndTools($llm, $tools, $eventDispatcher);

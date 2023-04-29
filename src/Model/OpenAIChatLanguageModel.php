@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LLM;
+namespace Vexo\Model;
 
 use League\Event\EventDispatcherAware;
 use League\Event\EventDispatcherAwareBehavior;
@@ -10,7 +10,7 @@ use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
 use Vexo\Prompt\Prompt;
 
-final class OpenAIChatLLM implements LLM, EventDispatcherAware
+final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAware
 {
     use EventDispatcherAwareBehavior;
 
@@ -26,20 +26,20 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
     public function generate(Prompt $prompt, string ...$stops): Response
     {
         $this->eventDispatcher()->dispatch(
-            (new LLMStartedGeneratingCompletion($prompt, $stops))->for($this)
+            (new LanguageModelStartedGeneratingCompletion($prompt, $stops))->for($this)
         );
 
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
         );
-        $generations = $this->extractGenerationsFromChatResponse($chatResponse);
+        $completions = $this->extractCompletionsFromChatResponse($chatResponse);
 
         $this->eventDispatcher()->dispatch(
-            (new LLMFinishedGeneratingCompletion($prompt, $stops, $generations))->for($this)
+            (new LanguageModelFinishedGeneratingCompletion($prompt, $stops, $completions))->for($this)
         );
 
         return $this->createResponse(
-            $generations,
+            $completions,
             $chatResponse->usage->toArray()
         );
     }
@@ -56,20 +56,20 @@ final class OpenAIChatLLM implements LLM, EventDispatcherAware
         return $parameters;
     }
 
-    private function extractGenerationsFromChatResponse(CreateResponse $response): Generations
+    private function extractCompletionsFromChatResponse(CreateResponse $response): Completions
     {
-        return new Generations(
+        return new Completions(
             array_map(
-                fn ($choice) => new Generation($choice->message->content),
+                fn ($choice) => new Completion($choice->message->content),
                 $response->choices
             )
         );
     }
 
-    private function createResponse(Generations $generations, array $tokenUsage): Response
+    private function createResponse(Completions $completions, array $tokenUsage): Response
     {
         return new Response(
-            $generations,
+            $completions,
             new ResponseMetadata(array_merge($this->defaultParameters->toArray(), ['usage' => $tokenUsage]))
         );
     }

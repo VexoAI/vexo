@@ -6,19 +6,19 @@ namespace Vexo\Chain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\LLM\FakeLLM;
-use Vexo\LLM\Response;
+use Vexo\Model\FakeLanguageModel;
+use Vexo\Model\Response;
 use Vexo\Prompt\BasicPromptTemplate;
 
-#[CoversClass(LLMChain::class)]
-final class LLMChainTest extends TestCase
+#[CoversClass(LanguageModelChain::class)]
+final class LanguageModelChainTest extends TestCase
 {
-    private LLMChain $llmChain;
+    private LanguageModelChain $llmChain;
 
     protected function setUp(): void
     {
-        $this->llmChain = new LLMChain(
-            llm: new FakeLLM([
+        $this->llmChain = new LanguageModelChain(
+            llm: new FakeLanguageModel([
                 Response::fromString('Paris'),
             ]),
             promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country']),
