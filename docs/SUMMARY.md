@@ -5,6 +5,7 @@
 * [What is Vexo?](README.md)
 * [Terminology](vexo/terminology.md)
 * [Installation](vexo/installation.md)
+* [Changelog](vexo/changelog.md)
 * [GitHub](https://github.com/VexoAI/)
 
 ## Models
