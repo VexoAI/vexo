@@ -4,7 +4,7 @@ Your contributions are very much appreciated! To keep things consistent, please 
 following guidelines:
 
 - Tests live alongside the tested code.
-- Code is formatted according to rules outlined in [.php-cs-fixer.dist.php]
+- Code is formatted according to rules outlined in .php-cs-fixer.dist.php
 
 ## Considerations when contributing
 
