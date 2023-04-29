@@ -1,14 +1,10 @@
----
-description: A PHP library to implement AI agents and LLMs into your application.
----
-
 # What is Vexo?
 
 {% hint style="danger" %}
 **This library is still in heavy development and very much subject to change. No stable release currently exists.**
 {% endhint %}
 
-Vexo is a library to help you develop applications powered by language models. It is heavily inspired by [LangChain](https://github.com/hwchase17/langchain) and builds on many of the same concepts.
+Vexo is a PHP library to help you develop applications powered by language models. It is heavily inspired by [LangChain](https://github.com/hwchase17/langchain) and builds on many of the same concepts.
 
 The goals of the project are as follows:
 
