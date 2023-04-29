@@ -19,11 +19,6 @@ jobs:
         composer-flags: [ '' ]
         stability: ['prefer-lowest', 'prefer-stable']
         experimental: [false]
-        include:
-          - php: 8.0
-            stability: 'prefer-stable'
-            composer-flags: '--ignore-platform-reqs'
-            experimental: true
 
     steps:
       - name: Checkout code
