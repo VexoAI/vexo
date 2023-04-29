@@ -1,7 +1,16 @@
 # Table of contents
 
-## Getting Started
+## Vexo
 
 * [What is Vexo?](README.md)
-* [Installation](getting-started/installation.md)
+* [Terminology](vexo/terminology.md)
+* [Installation](vexo/installation.md)
 * [GitHub](https://github.com/VexoAI/)
+
+## Models
+
+* [Getting Started](models/getting-started.md)
+* [Providers](models/providers/README.md)
+  * [OpenAI Chat](models/providers/openai-chat.md)
+* [Testing Models](models/testing-models.md)
+* [Event Listeners](models/event-listeners.md)
