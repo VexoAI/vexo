@@ -41,7 +41,7 @@ $promptTemplate = new \Vexo\Prompt\BasicPromptTemplate(
 $prompt = $promptTemplate->render(['country' => 'France']);
 ```
 
-Currently Vexo only comes with the `BasicPromptTemplate`, but more may be added the in the future.
+Currently Vexo only comes with the `BasicPromptTemplate`, but more may be added in the future.
 
 ## 2. Calling the Language Model
 
