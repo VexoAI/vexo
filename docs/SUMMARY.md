@@ -6,7 +6,7 @@
 * [Terminology](vexo/terminology.md)
 * [Installation](vexo/installation.md)
 * [Changelog](vexo/changelog.md)
-* [GitHub](https://github.com/VexoAI/)
+* [GitHub](https://github.com/VexoAI/vexo/)
 
 ## Models
 
