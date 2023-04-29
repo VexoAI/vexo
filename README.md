@@ -21,4 +21,4 @@ See the documentation at [docs.vexo.ai](https://docs.vexo.ai/).
 ## Contributing
 
 Vexo is an open source project, and contributions are very welcome! To contribute, please
-familiarize yourself with the [CONTRIBUTING.md](contributing guidelines).
+familiarize yourself with the [contributing guidelines](CONTRIBUTING.md).
