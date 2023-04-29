@@ -12,8 +12,8 @@ use PHPUnit\Framework\TestCase;
 use Vexo\Prompt\Prompt;
 
 #[CoversClass(OpenAIChatLanguageModel::class)]
-#[IgnoreClassForCodeCoverage(LanguageModelStartedGeneratingCompletion::class)]
-#[IgnoreClassForCodeCoverage(LanguageModelFinishedGeneratingCompletion::class)]
+#[IgnoreClassForCodeCoverage(StartedGeneratingCompletion::class)]
+#[IgnoreClassForCodeCoverage(FinishedGeneratingCompletion::class)]
 final class OpenAIChatLanguageModelTest extends TestCase
 {
     public function testGenerate(): void

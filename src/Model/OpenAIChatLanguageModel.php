@@ -26,7 +26,7 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
     public function generate(Prompt $prompt, string ...$stops): Response
     {
         $this->eventDispatcher()->dispatch(
-            (new LanguageModelStartedGeneratingCompletion($prompt, $stops))->for($this)
+            (new StartedGeneratingCompletion($prompt, $stops))->for($this)
         );
 
         $chatResponse = $this->chat->create(
@@ -35,7 +35,7 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
         $completions = $this->extractCompletionsFromChatResponse($chatResponse);
 
         $this->eventDispatcher()->dispatch(
-            (new LanguageModelFinishedGeneratingCompletion($prompt, $stops, $completions))->for($this)
+            (new FinishedGeneratingCompletion($prompt, $stops, $completions))->for($this)
         );
 
         return $this->createResponse(

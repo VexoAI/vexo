@@ -7,12 +7,11 @@ namespace Vexo\Model;
 use Vexo\Prompt\Prompt;
 use Vexo\SomethingHappened;
 
-final class LanguageModelFinishedGeneratingCompletion extends SomethingHappened
+final class StartedGeneratingCompletion extends SomethingHappened
 {
     public function __construct(
         public Prompt $prompt,
-        public array $stops,
-        public Completions $completions
+        public array $stops
     ) {
     }
 }
