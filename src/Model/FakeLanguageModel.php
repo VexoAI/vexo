@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Vexo\Model;
 
 use Assert\Assertion as Ensure;
+use Vexo\Event\EventDispatcherAware;
+use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Prompt\Prompt;
 
-final class FakeLanguageModel implements LanguageModel
+final class FakeLanguageModel implements LanguageModel, EventDispatcherAware
 {
+    use EventDispatcherAwareBehavior;
+
     public function __construct(private array $responses)
     {
         Ensure::allIsInstanceOf($responses, Response::class);
