@@ -1,7 +1,7 @@
 # What is Vexo?
 
 {% hint style="danger" %}
-**This library is still in heavy development and very much subject to change. No stable release currently exists.**
+**This library is still in heavy development and very much subject to change. No stable release currently exists. The documentation is incomplete.**
 {% endhint %}
 
 Vexo is a PHP library to help you develop applications powered by language models. It is heavily inspired by [LangChain](https://github.com/hwchase17/langchain) and builds on many of the same concepts.
