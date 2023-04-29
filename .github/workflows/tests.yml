@@ -1,0 +1,60 @@
+---
+name: Tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  phpunit:
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1, 8.2]
+        composer-flags: [ '' ]
+        stability: ['prefer-lowest', 'prefer-stable']
+        experimental: [false]
+        include:
+          - php: 8.0
+            stability: 'prefer-stable'
+            composer-flags: '--ignore-platform-reqs'
+            experimental: true
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.stability }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.stability }}-
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer update --${{ matrix.stability }} ${{ matrix.composer-flags }} --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --coverage-text
+
+      - name: Run PHP CS Fixer
+        if: ${{ matrix.experimental == false }}
+        run: vendor/bin/php-cs-fixer fix --cache-file=tmp/.php-cs-fixer.cache -v --dry-run --using-cache=no || true
+
+      - name: Run PHPStan
+        if: ${{ matrix.experimental == false }}
+        run: vendor/bin/phpstan analyze
