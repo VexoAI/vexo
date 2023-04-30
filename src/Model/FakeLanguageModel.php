@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vexo\Model;
 
-use Assert\Assertion as Ensure;
 use Vexo\Event\EventDispatcherAware;
 use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Prompt\Prompt;
@@ -13,14 +12,28 @@ final class FakeLanguageModel implements LanguageModel, EventDispatcherAware
 {
     use EventDispatcherAwareBehavior;
 
-    public function __construct(private array $responses)
+    /**
+     * @var Response[]
+     */
+    private array $responses = [];
+
+    public function __construct(array $responses = [])
     {
-        Ensure::allIsInstanceOf($responses, Response::class);
+        foreach ($responses as $response) {
+            $this->addResponse($response);
+        }
+    }
+
+    public function addResponse(Response $response): void
+    {
+        $this->responses[] = $response;
     }
 
     public function generate(Prompt $prompt, string ...$stops): Response
     {
-        Ensure::notEmpty($this->responses, 'No more responses to return');
+        if (empty($this->responses)) {
+            throw new \LogicException('No more responses to return.');
+        }
 
         return array_shift($this->responses);
     }

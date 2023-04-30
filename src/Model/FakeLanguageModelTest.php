@@ -18,24 +18,22 @@ final class FakeLanguageModelTest extends TestCase
             Response::fromString('two'),
         ];
 
-        $fakeLLM = new FakeLanguageModel($responsesToReturn);
+        $fakeLanguageModel = new FakeLanguageModel($responsesToReturn);
 
-        $this->assertSame($responsesToReturn[0], $fakeLLM->generate(new Prompt('one')));
-        $this->assertSame($responsesToReturn[1], $fakeLLM->generate(new Prompt('two')));
+        $this->assertSame($responsesToReturn[0], $fakeLanguageModel->generate(new Prompt('one')));
+        $this->assertSame($responsesToReturn[1], $fakeLanguageModel->generate(new Prompt('two')));
 
-        $this->expectException(\InvalidArgumentException::class);
-        $fakeLLM->generate(new Prompt('three'));
+        $this->expectException(\LogicException::class);
+        $fakeLanguageModel->generate(new Prompt('three'));
     }
 
-    public function testConstructorValidatesCompletions(): void
+    public function testAddResponse(): void
     {
-        $responsesToReturn = [
-            Response::fromString('one'),
-            Response::fromString('two'),
-            'Not a response'
-        ];
+        $response = Response::fromString('one');
 
-        $this->expectException(\InvalidArgumentException::class);
-        new FakeLanguageModel($responsesToReturn);
+        $fakeLanguageModel = new FakeLanguageModel();
+        $fakeLanguageModel->addResponse($response);
+
+        $this->assertSame($response, $fakeLanguageModel->generate(new Prompt('one')));
     }
 }
