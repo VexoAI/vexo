@@ -7,14 +7,14 @@ namespace Vexo\Chain\WebTextChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(TextExtractor::class)]
-final class TextExtractorTest extends TestCase
+#[CoversClass(HtmlTextExtractor::class)]
+final class HtmlTextExtractorTest extends TestCase
 {
-    private TextExtractor $textExtractor;
+    private HtmlTextExtractor $textExtractor;
 
     protected function setUp(): void
     {
-        $this->textExtractor = new TextExtractor();
+        $this->textExtractor = new HtmlTextExtractor();
     }
 
     public function testExtractEmptyString(): void

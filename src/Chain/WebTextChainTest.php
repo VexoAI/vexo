@@ -10,8 +10,8 @@ use PsrMock\Psr17\RequestFactory;
 use PsrMock\Psr18\Client;
 use PsrMock\Psr7\Response;
 use PsrMock\Psr7\Stream;
+use Vexo\Chain\WebTextChain\HtmlTextExtractor;
 use Vexo\Chain\WebTextChain\SorryHttpRequestFailed;
-use Vexo\Chain\WebTextChain\TextExtractor;
 
 #[CoversClass(WebTextChain::class)]
 final class WebTextChainTest extends TestCase
@@ -22,7 +22,6 @@ final class WebTextChainTest extends TestCase
         $webTextChain = new WebTextChain(
             httpClient: $httpClient,
             requestFactory: new RequestFactory(),
-            textExtractor: new TextExtractor(),
             maxTextLength: 27
         );
 
@@ -45,8 +44,7 @@ final class WebTextChainTest extends TestCase
     {
         $webTextChain = new WebTextChain(
             httpClient: new Client(),
-            requestFactory: new RequestFactory(),
-            textExtractor: new TextExtractor()
+            requestFactory: new RequestFactory()
         );
 
         $this->expectException(SorryHttpRequestFailed::class);
@@ -58,7 +56,6 @@ final class WebTextChainTest extends TestCase
         $webTextChain = new WebTextChain(
             httpClient: new Client(),
             requestFactory: new RequestFactory(),
-            textExtractor: new TextExtractor(),
             inputKey: 'link'
         );
 
@@ -70,7 +67,6 @@ final class WebTextChainTest extends TestCase
         $webTextChain = new WebTextChain(
             httpClient: new Client(),
             requestFactory: new RequestFactory(),
-            textExtractor: new TextExtractor(),
             outputKey: 'contents'
         );
 

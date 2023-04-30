@@ -9,6 +9,7 @@ use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Vexo\Chain\WebTextChain\HtmlTextExtractor;
 use Vexo\Chain\WebTextChain\SorryHttpRequestFailed;
 use Vexo\Chain\WebTextChain\TextExtractor;
 
@@ -24,7 +25,7 @@ final class WebTextChain extends BaseChain
     ) {
         $this->httpClient ??= Psr18ClientDiscovery::find();
         $this->requestFactory ??= Psr17FactoryDiscovery::findRequestFactory();
-        $this->textExtractor ??= new TextExtractor();
+        $this->textExtractor ??= new HtmlTextExtractor();
     }
 
     public function inputKeys(): array
