@@ -21,9 +21,12 @@
         "league/event": "^3.0",
         "league/flysystem": "^3.14",
         "openai-php/client": "^0.4.2",
+        "php-http/discovery": "^1.17",
         "psr/event-dispatcher": "^1.0",
         "psr/http-client": "^1.0",
+        "psr/http-client-implementation": "^1.0",
         "psr/http-factory": "^1.0",
+        "psr/http-factory-implementation": "^1.0",
         "psr/log": "^3.0",
         "psr/simple-cache": "^3.0",
         "ramsey/collection": "^2.0"

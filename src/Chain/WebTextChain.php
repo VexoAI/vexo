@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -13,13 +15,16 @@ use Vexo\Chain\WebTextChain\TextExtractor;
 final class WebTextChain extends BaseChain
 {
     public function __construct(
-        private ClientInterface $httpClient,
-        private RequestFactoryInterface $requestFactory,
-        private TextExtractor $textExtractor,
+        private ?ClientInterface $httpClient = null,
+        private ?RequestFactoryInterface $requestFactory = null,
+        private ?TextExtractor $textExtractor = null,
         private string $inputKey = 'url',
         private string $outputKey = 'text',
         private int $maxTextLength = 8000
     ) {
+        $this->httpClient ??= Psr18ClientDiscovery::find();
+        $this->requestFactory ??= Psr17FactoryDiscovery::findRequestFactory();
+        $this->textExtractor ??= new TextExtractor();
     }
 
     public function inputKeys(): array
