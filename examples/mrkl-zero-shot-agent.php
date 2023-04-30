@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Vexo\Examples;
 
 use League\Event\EventDispatcher;
-use Monolog\Logger;
-use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Vexo\Agent\MRKL\ZeroShotAgent;
 use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
 use Vexo\Chain\Input;
@@ -20,16 +17,8 @@ use Vexo\Tool\Tools;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$logger = new Logger('weave');
-$logger->pushHandler(new ConsoleHandler(new ConsoleOutput(ConsoleOutput::VERBOSITY_DEBUG)));
-
 $eventDispatcher = new EventDispatcher();
-$eventDispatcher->subscribeTo(
-    SomethingHappened::class,
-    function (SomethingHappened $event) use ($logger): void {
-        $logger->debug($event::class, $event->payload());
-    }
-);
+$eventDispatcher->subscribeTo(SomethingHappened::class, 'dump');
 
 $google = new \Google\Client();
 $google->setApplicationName('Vexo');
@@ -64,4 +53,5 @@ $executor = new ZeroShotAgentExecutor($agent, $toolResolver);
 $executor->useEventDispatcher($eventDispatcher);
 
 $output = $executor->process(new Input(['question' => 'What is the weather in Amsterdam?']));
+
 echo "\n{$output->get('result')}\n\n";

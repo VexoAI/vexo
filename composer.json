@@ -2,12 +2,6 @@
     "name": "vexo/vexo",
     "description": "A PHP library to help you develop applications powered by language models.",
     "type": "library",
-    "config": {
-        "allow-plugins": {
-            "php-http/discovery": true
-        },
-        "sort-packages": true
-    },
     "autoload": {
         "psr-4": {
             "Vexo\\": "src/"
@@ -22,7 +16,6 @@
         "openai-php/client": "^0.4.2",
         "php-http/discovery": "^1.17",
         "psr/event-dispatcher": "^1.0",
-        "psr/event-dispatcher-implementation": "^1.0",
         "psr/http-client": "^1.0",
         "psr/http-client-implementation": "^1.0",
         "psr/http-factory": "^1.0",
@@ -33,13 +26,18 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.16",
         "league/flysystem-memory": "^3.13",
-        "monolog/monolog": "^3.3",
         "phpstan/phpstan": "^1.10",
         "phpunit/php-code-coverage": "^10.1",
         "phpunit/phpunit": "^10.1",
         "psr-mock/http-client-implementation": "^1.0",
         "psr-mock/http-factory-implementation": "^1.0",
-        "symfony/monolog-bridge": "^6.2"
+        "symfony/var-dumper": "^6.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        },
+        "sort-packages": true
     },
     "scripts": {
         "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
