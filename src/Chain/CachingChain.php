@@ -11,8 +11,10 @@ final class CachingChain extends BaseChain
     public function __construct(
         private Chain $chain,
         private CacheInterface $cache,
-        private ?int $defaultTtl = null
+        private ?int $lifetime = null,
+        private ?string $cacheKeyPrefix = null
     ) {
+        $this->cacheKeyPrefix ??= strtolower(str_replace('\\', '.', $this->chain::class));
     }
 
     public function inputKeys(): array
@@ -35,7 +37,7 @@ final class CachingChain extends BaseChain
         }
 
         $output = $this->chain->process($input);
-        $this->cache->set($cacheKey, $output, $this->defaultTtl);
+        $this->cache->set($cacheKey, $output, $this->lifetime);
 
         return $output;
     }
@@ -44,7 +46,7 @@ final class CachingChain extends BaseChain
     {
         return sprintf(
             '%s.%s',
-            strtolower(str_replace('\\', '.', $this->chain::class)),
+            $this->cacheKeyPrefix,
             hash('sha256', json_encode($input->toArray()))
         );
     }
