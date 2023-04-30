@@ -45,7 +45,7 @@ CachingChain bases the cache keys on the class name of the nested chain, and a S
 vexo.chain.webtextchain.1fe906a36169711200b28ac6f2c5d4abda77d2d6b58025eb62c1a1de1041a6f9
 ```
 
-This means that in some scenarios, if the cache is shared between multiple CachingChains each wrapping an instance of the chain, they may return eachother's cache entries if the input is the same.
+This means that in some scenarios, if the cache is shared between multiple CachingChains each wrapping an instance of the same chain, they may return eachother's cache entries if the input is the same.
 
 You can override the cache key prefix by providing the `cacheKeyPrefix` argument.
 
