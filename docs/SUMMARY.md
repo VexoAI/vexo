@@ -13,7 +13,7 @@
 * [Providers](models/providers/README.md)
   * [OpenAI Chat](models/providers/openai-chat.md)
 * [Testing with Models](models/testing-with-models.md)
-* [Event Listeners](models/event-listeners.md)
+* [Events](models/events.md)
 
 ## Prompts
 
@@ -29,3 +29,8 @@
   * [Sequential Chain](chains/standard-chains/sequential-chain.md)
   * [Caching Chain](chains/standard-chains/caching-chain.md)
 * [Testing with Chains](chains/testing-with-chains.md)
+
+
+## Advanced Topics
+
+* [Event Handling](advanced/event-handling.md)
