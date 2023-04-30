@@ -26,7 +26,7 @@ use Vexo\Tool\Tools;
 #[IgnoreClassForCodeCoverage(AgentExecutorForcedStop::class)]
 final class ZeroShotAgentExecutorTest extends TestCase
 {
-    private FakeLanguageModel $llm;
+    private FakeLanguageModel $languageModel;
     private Callback $toolA;
     private Callback $toolB;
     private NameResolver $toolResolver;
@@ -35,7 +35,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->llm = new FakeLanguageModel([
+        $this->languageModel = new FakeLanguageModel([
             Response::fromString("I should do something.\nAction: ToolA\nAction Input: Some input"),
             Response::fromString('Final Answer: 42'),
         ]);
@@ -44,7 +44,7 @@ final class ZeroShotAgentExecutorTest extends TestCase
         $this->toolB = new Callback('toolb', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
         $this->toolResolver = new NameResolver(new Tools([$this->toolA, $this->toolB]));
 
-        $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, new Tools([$this->toolA, $this->toolB]));
+        $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]));
         $this->zeroShotAgentExecutor = new ZeroShotAgentExecutor(
             $this->zeroShotAgent,
             $this->toolResolver

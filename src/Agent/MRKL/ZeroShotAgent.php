@@ -26,18 +26,18 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     use EventDispatcherAwareBehavior;
 
     public function __construct(
-        private Chain $llmChain,
+        private Chain $languageModelChain,
         private AgentOutputParser $outputParser,
         private string $outputKey,
-        private string $llmPrefix = 'Thought: ',
+        private string $languageModelPrefix = 'Thought: ',
         private string $observationPrefix = 'Observation: '
     ) {
     }
 
-    public static function fromLLMAndTools(LanguageModel $llm, Tools $tools, ?EventDispatcher $eventDispatcher = null): self
+    public static function fromLLMAndTools(LanguageModel $languageModel, Tools $tools, ?EventDispatcher $eventDispatcher = null): self
     {
-        $llmChain = new LanguageModelChain(
-            llm: $llm,
+        $languageModelChain = new LanguageModelChain(
+            languageModel: $languageModel,
             promptTemplate: self::createPromptTemplate($tools),
             inputKeys: ['question'],
             outputKey: 'text',
@@ -45,13 +45,13 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         );
 
         $agent = new self(
-            llmChain: $llmChain,
+            languageModelChain: $languageModelChain,
             outputParser: new OutputParser(),
             outputKey: 'text'
         );
 
         if ($eventDispatcher !== null) {
-            $llmChain->useEventDispatcher($eventDispatcher);
+            $languageModelChain->useEventDispatcher($eventDispatcher);
             $agent->useEventDispatcher($eventDispatcher);
         }
 
@@ -76,7 +76,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     {
         $this->emit(new AgentStartedPlanningNextStep($input, $intermediateSteps));
 
-        $output = $this->llmChain->process(
+        $output = $this->languageModelChain->process(
             $this->buildFullInput($input, $intermediateSteps)
         );
 
@@ -100,7 +100,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     private function createScratchpad(Steps $intermediateSteps): string
     {
         return $intermediateSteps->reduce(
-            fn (string $scratchpad, Step $step) => $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->llmPrefix,
+            fn (string $scratchpad, Step $step) => $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->languageModelPrefix,
             ''
         );
     }

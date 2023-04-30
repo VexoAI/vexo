@@ -24,13 +24,13 @@ use Vexo\Tool\Tools;
 #[IgnoreClassForCodeCoverage(AgentFinishedPlanningNextStep::class)]
 final class ZeroShotAgentTest extends TestCase
 {
-    private FakeLanguageModel $llm;
+    private FakeLanguageModel $languageModel;
     private Callback $toolA;
     private Callback $toolB;
 
     protected function setUp(): void
     {
-        $this->llm = new FakeLanguageModel([
+        $this->languageModel = new FakeLanguageModel([
             Response::fromString("I should do something.\nAction: ToolA\nAction Input: Some input"),
             Response::fromString('Final Answer: 42'),
         ]);
@@ -42,7 +42,7 @@ final class ZeroShotAgentTest extends TestCase
     public function testFromLLMAndTools(): void
     {
         $eventDispatcher = new EventDispatcher();
-        $zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->llm, new Tools([$this->toolA, $this->toolB]), $eventDispatcher);
+        $zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]), $eventDispatcher);
         $this->assertInstanceOf(ZeroShotAgent::class, $zeroShotAgent);
         $this->assertSame($eventDispatcher, $zeroShotAgent->eventDispatcher());
     }
@@ -59,7 +59,7 @@ final class ZeroShotAgentTest extends TestCase
 
     public function testPlan(): void
     {
-        $agent = ZeroShotAgent::fromLLMAndTools($this->llm, new Tools([$this->toolA, $this->toolB]));
+        $agent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]));
         $input = new Input(['question' => 'What is the meaning of life?']);
 
         $nextStep = $agent->plan($input);

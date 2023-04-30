@@ -10,7 +10,7 @@ use Vexo\Prompt\PromptTemplate;
 final class LanguageModelChain extends BaseChain
 {
     public function __construct(
-        private LanguageModel $llm,
+        private LanguageModel $languageModel,
         private PromptTemplate $promptTemplate,
         private array $inputKeys = ['text'],
         private string $outputKey = 'text',
@@ -30,7 +30,7 @@ final class LanguageModelChain extends BaseChain
 
     protected function call(Input $input): Output
     {
-        $response = $this->llm->generate(
+        $response = $this->languageModel->generate(
             $this->promptTemplate->render($input->toArray()),
             ...$this->stops
         );

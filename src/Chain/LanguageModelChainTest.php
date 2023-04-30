@@ -13,12 +13,12 @@ use Vexo\Prompt\BasicPromptTemplate;
 #[CoversClass(LanguageModelChain::class)]
 final class LanguageModelChainTest extends TestCase
 {
-    private LanguageModelChain $llmChain;
+    private LanguageModelChain $languageModelChain;
 
     protected function setUp(): void
     {
-        $this->llmChain = new LanguageModelChain(
-            llm: new FakeLanguageModel([
+        $this->languageModelChain = new LanguageModelChain(
+            languageModel: new FakeLanguageModel([
                 Response::fromString('Paris'),
             ]),
             promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country']),
@@ -30,18 +30,18 @@ final class LanguageModelChainTest extends TestCase
     public function testProcess(): void
     {
         $input = new Input(['country' => 'France']);
-        $output = $this->llmChain->process($input);
+        $output = $this->languageModelChain->process($input);
 
         $this->assertSame(['capital' => 'Paris'], $output->toArray());
     }
 
     public function testInputKeys(): void
     {
-        $this->assertSame(['country'], $this->llmChain->inputKeys());
+        $this->assertSame(['country'], $this->languageModelChain->inputKeys());
     }
 
     public function testOutputKeys(): void
     {
-        $this->assertSame(['capital'], $this->llmChain->outputKeys());
+        $this->assertSame(['capital'], $this->languageModelChain->outputKeys());
     }
 }
