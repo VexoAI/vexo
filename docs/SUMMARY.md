@@ -14,3 +14,8 @@
   * [OpenAI Chat](models/providers/openai-chat.md)
 * [Testing Models](models/testing-models.md)
 * [Event Listeners](models/event-listeners.md)
+
+## Prompts
+
+* [Simple Prompts](prompts/simple-prompts.md)
+* [Templates](prompts/templates.md)
