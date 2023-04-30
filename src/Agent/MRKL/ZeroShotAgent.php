@@ -93,7 +93,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     private function buildFullInput(Input $input, Steps $intermediateSteps): Input
     {
         return new Input(
-            array_merge($input->data(), ['scratchpad' => $this->createScratchpad($intermediateSteps)])
+            array_merge($input->toArray(), ['scratchpad' => $this->createScratchpad($intermediateSteps)])
         );
     }
 

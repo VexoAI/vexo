@@ -23,8 +23,8 @@ final class CachingChainTest extends TestCase
         $firstOutput = $this->cachingChain->process(new Input([]));
         $secondOutput = $this->cachingChain->process(new Input([]));
 
-        $this->assertEquals(1, $firstOutput->data()['incrementor']);
-        $this->assertEquals(1, $secondOutput->data()['incrementor']);
+        $this->assertEquals(1, $firstOutput->toArray()['incrementor']);
+        $this->assertEquals(1, $secondOutput->toArray()['incrementor']);
     }
 
     public function testInputKeysDelegatesToChain(): void

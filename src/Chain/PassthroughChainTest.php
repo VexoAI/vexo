@@ -17,7 +17,7 @@ final class PassthroughChainTest extends TestCase
         $input = new Input(['foo' => 'bar']);
         $output = $passthroughChain->process($input);
 
-        $this->assertSame(['foo' => 'bar'], $output->data());
+        $this->assertSame(['foo' => 'bar'], $output->toArray());
     }
 
     public function testInputKeys(): void

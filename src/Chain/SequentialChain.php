@@ -27,11 +27,11 @@ final class SequentialChain extends BaseChain
 
     protected function call(Input $input): Output
     {
-        $knownValues = $input->data();
+        $knownValues = $input->toArray();
 
         foreach ($this->chains as $chain) {
             $output = $chain->process(new Input($knownValues));
-            $knownValues = array_merge($knownValues, $output->data());
+            $knownValues = array_merge($knownValues, $output->toArray());
         }
 
         return new Output(array_intersect_key($knownValues, array_flip($this->outputKeys)));

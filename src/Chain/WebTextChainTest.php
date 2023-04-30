@@ -37,7 +37,7 @@ final class WebTextChainTest extends TestCase
 
         $this->assertEquals(
             ['text' => 'This is an amazing website!'],
-            $output->data()
+            $output->toArray()
         );
     }
 

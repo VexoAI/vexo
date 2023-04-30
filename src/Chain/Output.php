@@ -4,19 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-final class Output
+use Ramsey\Collection\Map\AbstractMap;
+
+final class Output extends AbstractMap
 {
-    public function __construct(private array $data)
-    {
-    }
-
-    public function get(string $key, mixed $default = null): mixed
-    {
-        return $this->data[$key] ?? $default;
-    }
-
-    public function data(): array
-    {
-        return $this->data;
-    }
 }

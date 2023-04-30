@@ -31,7 +31,7 @@ final class LanguageModelChain extends BaseChain
     protected function call(Input $input): Output
     {
         $response = $this->llm->generate(
-            $this->promptTemplate->render($input->data()),
+            $this->promptTemplate->render($input->toArray()),
             ...$this->stops
         );
 

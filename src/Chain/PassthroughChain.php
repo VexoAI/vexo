@@ -24,6 +24,6 @@ final class PassthroughChain extends BaseChain
 
     protected function call(Input $input): Output
     {
-        return new Output($input->data());
+        return new Output($input->toArray());
     }
 }

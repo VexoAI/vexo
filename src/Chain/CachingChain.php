@@ -45,7 +45,7 @@ final class CachingChain extends BaseChain
         return sprintf(
             '%s.%s',
             strtolower(str_replace('\\', '.', $this->chain::class)),
-            hash('sha256', json_encode($input->data()))
+            hash('sha256', json_encode($input->toArray()))
         );
     }
 }

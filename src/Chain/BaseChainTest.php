@@ -20,7 +20,7 @@ final class BaseChainTest extends TestCase
         $input = new Input(['foo' => 'bar']);
         $output = $baseChain->process($input);
 
-        $this->assertSame(['foo' => 'bar'], $output->data());
+        $this->assertSame(['foo' => 'bar'], $output->toArray());
     }
 
     public function testProcessValidatesInput(): void
@@ -46,6 +46,6 @@ final class StubBaseChain extends BaseChain
 
     public function call(Input $input): Output
     {
-        return new Output($input->data());
+        return new Output($input->toArray());
     }
 }

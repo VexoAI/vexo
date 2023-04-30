@@ -36,12 +36,12 @@ abstract class BaseChain implements Chain, EventDispatcherAware
             $this->try(
                 function () use ($input, $inputKey): void {
                     Ensure::keyExists(
-                        $input->data(),
+                        $input->toArray(),
                         $inputKey,
                         sprintf(
                             'Input data is missing required key "%s". Recieved: %s',
                             $inputKey,
-                            implode(', ', array_keys($input->data()))
+                            implode(', ', array_keys($input->toArray()))
                         )
                     );
                 }

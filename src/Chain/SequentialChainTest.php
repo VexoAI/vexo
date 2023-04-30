@@ -21,7 +21,7 @@ final class SequentialChainTest extends TestCase
         $input = new Input(['foo' => 'bar', 'fudge' => 'cake']);
         $output = $sequentialChain->process($input);
 
-        $this->assertSame(['foo' => 'bar'], $output->data());
+        $this->assertSame(['foo' => 'bar'], $output->toArray());
     }
 
     public function testProcessWithOutputAll(): void
@@ -35,7 +35,7 @@ final class SequentialChainTest extends TestCase
         $input = new Input(['foo' => 'bar', 'fudge' => 'cake']);
         $output = $sequentialChain->process($input);
 
-        $this->assertSame(['foo' => 'bar', 'fudge' => 'cake'], $output->data());
+        $this->assertSame(['foo' => 'bar', 'fudge' => 'cake'], $output->toArray());
     }
 
     public function testInputKeys(): void

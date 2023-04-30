@@ -32,7 +32,7 @@ final class LanguageModelChainTest extends TestCase
         $input = new Input(['country' => 'France']);
         $output = $this->llmChain->process($input);
 
-        $this->assertSame(['capital' => 'Paris'], $output->data());
+        $this->assertSame(['capital' => 'Paris'], $output->toArray());
     }
 
     public function testInputKeys(): void
