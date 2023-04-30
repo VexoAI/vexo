@@ -10,7 +10,6 @@ use PsrMock\Psr17\RequestFactory;
 use PsrMock\Psr18\Client;
 use PsrMock\Psr7\Response;
 use PsrMock\Psr7\Stream;
-use Vexo\Chain\WebTextChain\HtmlTextExtractor;
 use Vexo\Chain\WebTextChain\SorryHttpRequestFailed;
 
 #[CoversClass(WebTextChain::class)]
