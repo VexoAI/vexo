@@ -27,9 +27,13 @@ final class OutputParser extends RegexOutputParser implements AgentOutputParser
                     Action\s*Input:\s*      # Match "Action Input:" followed by optional whitespace
                     (?P<input>.*)           # Capture the action input
                 )
-            /sx',                           // s and x modifiers: s makes . match newlines, x enables free-spacing mode
-            Prompt::FORMAT_INSTRUCTIONS
+            /sx'                            // s and x modifiers: s makes . match newlines, x enables free-spacing mode
         );
+    }
+
+    public function formatInstructions(): string
+    {
+        return Prompt::FORMAT_INSTRUCTIONS;
     }
 
     public function parse(string $text): Action|Finish

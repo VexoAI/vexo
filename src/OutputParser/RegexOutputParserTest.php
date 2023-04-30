@@ -12,9 +12,12 @@ final class RegexOutputParserTest extends TestCase
 {
     public function testFormatInstructions(): void
     {
-        $outputParser = new RegexOutputParser('/^Hello, (.*)!$/', 'The output should be a greeting in the format "Hello, {name}!"');
+        $regex = '/^Hello, (?P<name>.*)!$/';
+        $outputParser = new RegexOutputParser('/^Hello, (?P<name>.*)!$/');
 
-        $expected = 'The output should be a greeting in the format "Hello, {name}!"';
+        $expected = 'The output should be text which matches the following PCRE regex, '
+            . "including the leading and trailing \"```output\" and \"```\":\n\n```output\n{$regex}\n```";
+
         $this->assertSame($expected, $outputParser->formatInstructions());
     }
 

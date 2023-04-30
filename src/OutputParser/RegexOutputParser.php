@@ -6,15 +6,22 @@ namespace Vexo\OutputParser;
 
 class RegexOutputParser implements OutputParser
 {
+    public const INSTRUCTIONS = <<<INSTRUCTIONS
+        The output should be text which matches the following PCRE regex, including the leading and trailing "```output" and "```":
+
+        ```output
+        {{regex}}
+        ```
+        INSTRUCTIONS;
+
     public function __construct(
-        private string $regex,
-        private string $formatInstructions = ''
+        private string $regex
     ) {
     }
 
     public function formatInstructions(): string
     {
-        return $this->formatInstructions;
+        return str_replace('{{regex}}', $this->regex, self::INSTRUCTIONS);
     }
 
     public function parse(string $text): mixed
