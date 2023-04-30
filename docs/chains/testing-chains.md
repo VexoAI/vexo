@@ -1,6 +1,8 @@
-# Passthrough Chain
+# Testing Chains
 
-This chain simply outputs whatever its been given as input. Useful for testing.
+Vexo provides an implementation of `Vexo\Model\Chain` which you can use for testing classes that depend on it.
+
+This `PassthroughChain` simply outputs whatever its been given as input.
 
 ```php
 use Vexo\Chain\Input;

@@ -4,7 +4,6 @@ Vexo comes with a few standard chains out of the box.
 
 * [Language Model Chain](language-model-chain.md): A chain wrapped around a language model.
 * [WebText Chain](webtext-chain.md): A chain that can extract text from a website.
-* [Passthrough Chain](passthrough-chain.md): A chain that simply outputs its input. Useful for testing.
 
 Then there are also a few chains which nest other chains to add additional functionality:
 

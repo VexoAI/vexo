@@ -26,8 +26,6 @@
 * [Standard Chains](chains/standard-chains/README.md)
   * [Language Model Chain](chains/standard-chains/language-model-chain.md)
   * [WebText Chain](chains/standard-chains/webtext-chain.md)
-  * [Passthrough Chain](chains/standard-chains/passthrough-chain.md)
   * [Sequential Chain](chains/standard-chains/sequential-chain.md)
   * [Caching Chain](chains/standard-chains/caching-chain.md)
 * [Testing Chains](chains/testing-chains.md)
-* [Event Listeners](chains/event-listeners.md)
