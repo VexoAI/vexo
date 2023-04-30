@@ -10,8 +10,8 @@
 ## Models
 
 * [Getting Started](models/getting-started.md)
-* [Providers](models/providers/README.md)
-  * [OpenAI Chat](models/providers/openai-chat.md)
+* [Available Models](models/available-models/README.md)
+  * [OpenAI Chat](models/available-models/openai-chat.md)
 * [Events](models/events.md)
 * [Testing with Models](models/testing-with-models.md)
 
