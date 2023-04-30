@@ -25,7 +25,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
             throw new \InvalidArgumentException('Minimum chunk overlap cannot be greater than chunk size');
         }
 
-        $this->sizeFunction = $sizeFunction ?? fn (string $text) => mb_strlen($text);
+        $this->sizeFunction = $sizeFunction ?? fn (string $text): int => mb_strlen($text);
     }
 
     /**

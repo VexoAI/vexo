@@ -40,8 +40,8 @@ final class ZeroShotAgentExecutorTest extends TestCase
             Response::fromString('Final Answer: 42'),
         ]);
 
-        $this->toolA = new Callback('toola', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
-        $this->toolB = new Callback('toolb', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
+        $this->toolA = new Callback('toola', 'ToolA description', fn (string $input): string => $input . ' - processed by ToolA');
+        $this->toolB = new Callback('toolb', 'ToolB description', fn (string $input): string => $input . ' - processed by ToolB');
         $this->toolResolver = new NameResolver(new Tools([$this->toolA, $this->toolB]));
 
         $this->zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]));

@@ -12,7 +12,7 @@ final class CallbackTest extends TestCase
 {
     public function testRun(): void
     {
-        $tool = new Callback('google', 'Useful for search', fn ($input) => 'I received: ' . $input);
+        $tool = new Callback('google', 'Useful for search', fn ($input): string => 'I received: ' . $input);
 
         $this->assertEquals('google', $tool->name());
         $this->assertEquals('Useful for search', $tool->description());

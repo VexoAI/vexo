@@ -35,8 +35,8 @@ final class ZeroShotAgentTest extends TestCase
             Response::fromString('Final Answer: 42'),
         ]);
 
-        $this->toolA = new Callback('ToolA', 'ToolA description', fn (string $input) => $input . ' - processed by ToolA');
-        $this->toolB = new Callback('ToolB', 'ToolB description', fn (string $input) => $input . ' - processed by ToolB');
+        $this->toolA = new Callback('ToolA', 'ToolA description', fn (string $input): string => $input . ' - processed by ToolA');
+        $this->toolB = new Callback('ToolB', 'ToolB description', fn (string $input): string => $input . ' - processed by ToolB');
     }
 
     public function testFromLLMAndTools(): void

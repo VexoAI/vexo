@@ -22,7 +22,7 @@ final class BaseResolverTest extends TestCase
     protected function setUp(): void
     {
         $this->resolver = new BaseResolverStub(
-            new Tools([new Callback('my_tool', 'Useful for things', fn ($input) => 'Received: ' . $input)])
+            new Tools([new Callback('my_tool', 'Useful for things', fn ($input): string => 'Received: ' . $input)])
         );
     }
 

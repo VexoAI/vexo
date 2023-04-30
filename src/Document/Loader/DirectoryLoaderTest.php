@@ -50,7 +50,7 @@ final class DirectoryLoaderTest extends TestCase
         $loader = new DirectoryLoader(
             filesystem: $this->filesystem,
             path: '/',
-            filter: fn (StorageAttributes $attributes) => $attributes->path() === 'baz.txt'
+            filter: fn (StorageAttributes $attributes): bool => $attributes->path() === 'baz.txt'
         );
         $documents = $loader->load();
 
@@ -63,7 +63,7 @@ final class DirectoryLoaderTest extends TestCase
         $loader = new DirectoryLoader(
             filesystem: $this->filesystem,
             path: '/',
-            fileLoader: fn (FilesystemReader $filesystem, string $path) => new Documents([new Document('Custom loader')])
+            fileLoader: fn (FilesystemReader $filesystem, string $path): \Vexo\Document\Documents => new Documents([new Document('Custom loader')])
         );
         $documents = $loader->load();
 

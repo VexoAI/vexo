@@ -61,10 +61,10 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     public static function createPromptTemplate(Tools $tools): BasicPromptTemplate
     {
         // Should simply use $tools->columns('name') here, but https://github.com/ramsey/collection/issues/122
-        $toolNames = implode(', ', $tools->map(fn (Tool $tool) => $tool->name())->toArray());
+        $toolNames = implode(', ', $tools->map(fn (Tool $tool): string => $tool->name())->toArray());
         $formatInstructions = str_replace('{{tool_names}}', $toolNames, Prompt::FORMAT_INSTRUCTIONS);
 
-        $toolList = implode("\n", $tools->map(fn (Tool $tool) => $tool->name() . ': ' . $tool->description())->toArray());
+        $toolList = implode("\n", $tools->map(fn (Tool $tool): string => $tool->name() . ': ' . $tool->description())->toArray());
 
         return new BasicPromptTemplate(
             implode("\n\n", [Prompt::PREFIX, $toolList, $formatInstructions, Prompt::SUFFIX]),
@@ -100,7 +100,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     private function createScratchpad(Steps $intermediateSteps): string
     {
         return $intermediateSteps->reduce(
-            fn (string $scratchpad, Step $step) => $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->languageModelPrefix,
+            fn (string $scratchpad, Step $step): string => $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->languageModelPrefix,
             ''
         );
     }

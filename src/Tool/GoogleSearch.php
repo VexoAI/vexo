@@ -31,6 +31,6 @@ final class GoogleSearch extends BaseTool
             return 'No good Google Search result was found';
         }
 
-        return array_reduce($results->getItems(), fn ($carry, $result) => $carry . $result->snippet . "\n");
+        return array_reduce($results->getItems(), fn ($carry, $result): string => $carry . $result->snippet . "\n");
     }
 }
