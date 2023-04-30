@@ -23,6 +23,7 @@
         "openai-php/client": "^0.4.2",
         "php-http/discovery": "^1.17",
         "psr/event-dispatcher": "^1.0",
+        "psr/event-dispatcher-implementation": "^1.0",
         "psr/http-client": "^1.0",
         "psr/http-client-implementation": "^1.0",
         "psr/http-factory": "^1.0",
