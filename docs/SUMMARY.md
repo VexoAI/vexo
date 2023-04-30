@@ -12,8 +12,8 @@
 * [Getting Started](models/getting-started.md)
 * [Providers](models/providers/README.md)
   * [OpenAI Chat](models/providers/openai-chat.md)
-* [Testing with Models](models/testing-with-models.md)
 * [Events](models/events.md)
+* [Testing with Models](models/testing-with-models.md)
 
 ## Prompts
 
@@ -28,6 +28,7 @@
   * [WebText Chain](chains/standard-chains/webtext-chain.md)
   * [Sequential Chain](chains/standard-chains/sequential-chain.md)
   * [Caching Chain](chains/standard-chains/caching-chain.md)
+* [Events](chains/events.md)
 * [Testing with Chains](chains/testing-with-chains.md)
 
 
