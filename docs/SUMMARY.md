@@ -7,6 +7,18 @@
 * [Installation](vexo/installation.md)
 * [Changelog](vexo/changelog.md)
 
+## Chains
+
+* [Introduction](chains/introduction.md)
+* [Standard Chains](chains/standard-chains/README.md)
+  * [Language Model Chain](chains/standard-chains/language-model-chain.md)
+  * [WebText Chain](chains/standard-chains/webtext-chain.md)
+  * [Sequential Chain](chains/standard-chains/sequential-chain.md)
+  * [Caching Chain](chains/standard-chains/caching-chain.md)
+* [Custom Chains](chains/custom-chains.md)
+* [Events](chains/events.md)
+* [Testing with Chains](chains/testing-with-chains.md)
+
 ## Language Models
 
 * [Getting Started](language-models/getting-started.md)
@@ -20,18 +32,6 @@
 
 * [Simple Prompts](prompts/simple-prompts.md)
 * [Templates](prompts/templates.md)
-
-## Chains
-
-* [Introduction](chains/introduction.md)
-* [Standard Chains](chains/standard-chains/README.md)
-  * [Language Model Chain](chains/standard-chains/language-model-chain.md)
-  * [WebText Chain](chains/standard-chains/webtext-chain.md)
-  * [Sequential Chain](chains/standard-chains/sequential-chain.md)
-  * [Caching Chain](chains/standard-chains/caching-chain.md)
-* [Custom Chains](chains/custom-chains.md)
-* [Events](chains/events.md)
-* [Testing with Chains](chains/testing-with-chains.md)
 
 ## Agents
 
