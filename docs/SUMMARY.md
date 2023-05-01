@@ -7,13 +7,13 @@
 * [Installation](vexo/installation.md)
 * [Changelog](vexo/changelog.md)
 
-## Models
+## Language Models
 
-* [Getting Started](models/getting-started.md)
-* [Available Models](models/available-models/README.md)
-  * [OpenAI Chat](models/available-models/openai-chat.md)
-* [Events](models/events.md)
-* [Testing with Models](models/testing-with-models.md)
+* [Getting Started](language-models/getting-started.md)
+* [Available Models](language-models/available-language-models/README.md)
+  * [OpenAI Chat](language-models/available-language-models/openai-chat.md)
+* [Events](language-models/events.md)
+* [Testing with Models](language-models/testing-with-models.md)
 
 ## Prompts
 

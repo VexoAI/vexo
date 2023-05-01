@@ -17,8 +17,8 @@ Emitted just before the model will call upon the provide to generate a completio
 
 Emitted after the model has generated its completion for the given prompt, but before returning it to the caller.
 
-| Property                              | Description                                                                  |
-| ------------------------------------- | ---------------------------------------------------------------------------- |
-| `Vexo\Prompt\Prompt $prompt`          | The prompt which was passed to the `generate` method.                        |
-| `string[] $stops`                     | An array of stop words provided to the `generate` method, or an empty array. |
-| `Vexo\LanguageModel\Completions $completions` | The completions collection containing the generated completions.             |
+| Property                                | Description                                                                     |
+| --------------------------------------- | ------------------------------------------------------------------------------- |
+| `Vexo\Prompt\Prompt $prompt`            | The prompt which was passed to the `generate` method.                           |
+| `string[] $stops`                       | An array of stop words provided to the `generate` method, or an empty array.    |
+| `Vexo\LanguageModel\Response $response` | The response object containing the generated completions and response metadata. |
