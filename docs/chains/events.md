@@ -6,7 +6,7 @@ Models will emit the events outlined below. For more info on how to listen for e
 
 ### `Vexo\Chain\ChainStarted`
 
-Emitted just before the chain will start processing, but after input validation.
+Emitted just before the chain will start processing, and before input validation.
 
 | Property                  | Description                                           |
 | ------------------------- | ----------------------------------------------------- |
