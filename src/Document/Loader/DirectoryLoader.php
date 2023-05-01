@@ -28,7 +28,7 @@ final class DirectoryLoader implements Loader
         ?callable $fileLoader = null
     ) {
         $this->filter = $filter ?? fn (StorageAttributes $attributes): bool => true;
-        $this->fileLoader = $fileLoader ?? fn (FilesystemReader $filesystem, string $path): \Vexo\Document\Documents => (new TextFileLoader($filesystem, $path))->load();
+        $this->fileLoader = $fileLoader ?? fn (FilesystemReader $filesystem, string $path): Documents => (new TextFileLoader($filesystem, $path))->load();
     }
 
     public function load(): Documents

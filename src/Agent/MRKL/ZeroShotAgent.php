@@ -50,7 +50,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
             outputKey: 'text'
         );
 
-        if ($eventDispatcher instanceof \League\Event\EventDispatcher) {
+        if ($eventDispatcher instanceof EventDispatcher) {
             $languageModelChain->useEventDispatcher($eventDispatcher);
             $agent->useEventDispatcher($eventDispatcher);
         }
