@@ -33,6 +33,10 @@
 * [Events](chains/events.md)
 * [Testing with Chains](chains/testing-with-chains.md)
 
+## Agents
+
+* [Introduction](agents/introduction.md)
+
 
 ## Advanced Topics
 
