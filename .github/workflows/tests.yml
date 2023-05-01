@@ -53,10 +53,14 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --coverage-text
 
+      - name: Run PHPStan
+        if: ${{ matrix.experimental == false }}
+        run: vendor/bin/phpstan analyze
+
       - name: Run PHP CS Fixer
         if: ${{ matrix.experimental == false }}
         run: vendor/bin/php-cs-fixer fix --cache-file=tmp/.php-cs-fixer.cache -v --dry-run --using-cache=no --allow-risky=yes || true
 
-      - name: Run PHPStan
+      - name: Run Rector
         if: ${{ matrix.experimental == false }}
-        run: vendor/bin/phpstan analyze
+        run: vendor/bin/rector process --no-progress-bar --no-ansi --dry-run || true
