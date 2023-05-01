@@ -10,7 +10,7 @@ final class CharacterTextSplitter extends BaseTextSplitter
         int $chunkSize = 4000,
         int $minChunkOverlap = 200,
         ?callable $sizeFunction = null,
-        private string $separator = "\n\n"
+        private readonly string $separator = "\n\n"
     ) {
         parent::__construct($chunkSize, $minChunkOverlap, $sizeFunction);
     }

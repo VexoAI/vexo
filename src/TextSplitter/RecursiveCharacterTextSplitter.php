@@ -10,7 +10,7 @@ final class RecursiveCharacterTextSplitter extends BaseTextSplitter
         int $chunkSize = 4000,
         int $minChunkOverlap = 200,
         ?callable $sizeFunction = null,
-        private array $separators = ["\n\n", "\n", ' ', '']
+        private readonly array $separators = ["\n\n", "\n", ' ', '']
     ) {
         parent::__construct($chunkSize, $minChunkOverlap, $sizeFunction);
     }
@@ -51,7 +51,7 @@ final class RecursiveCharacterTextSplitter extends BaseTextSplitter
     private function findFirstExistingSeparator(string $text): string
     {
         foreach ($this->separators as $separator) {
-            if (str_contains($text, $separator)) {
+            if (str_contains($text, (string) $separator)) {
                 return $separator;
             }
         }
@@ -61,7 +61,7 @@ final class RecursiveCharacterTextSplitter extends BaseTextSplitter
 
     private function mergeIntoFinalChunks(array $finalChunks, array $goodSplits, string $separator): array
     {
-        if (empty($goodSplits)) {
+        if ($goodSplits === []) {
             return $finalChunks;
         }
 

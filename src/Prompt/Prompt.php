@@ -6,8 +6,9 @@ namespace Vexo\Prompt;
 
 final class Prompt implements \Stringable
 {
-    public function __construct(private string $text)
-    {
+    public function __construct(
+        private readonly string $text
+    ) {
     }
 
     public function text(): string
@@ -17,6 +18,6 @@ final class Prompt implements \Stringable
 
     public function __toString(): string
     {
-        return $this->text();
+        return $this->text;
     }
 }

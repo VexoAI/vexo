@@ -7,8 +7,8 @@ namespace Vexo\Event;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(SomethingHappened::class)]
-final class SomethingHappenedTest extends TestCase
+#[CoversClass(BaseEvent::class)]
+final class BaseEventTest extends TestCase
 {
     public function testPayload(): void
     {
@@ -21,7 +21,7 @@ final class SomethingHappenedTest extends TestCase
     }
 }
 
-class StubSomethingHappened extends SomethingHappened
+final class StubSomethingHappened extends BaseEvent
 {
     public function __construct(
         public string $foo,

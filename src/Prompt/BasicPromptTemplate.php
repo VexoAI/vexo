@@ -7,8 +7,8 @@ namespace Vexo\Prompt;
 final class BasicPromptTemplate implements PromptTemplate
 {
     public function __construct(
-        private string $template,
-        private array $variables
+        private readonly string $template,
+        private readonly array $variables
     ) {
     }
 
@@ -28,7 +28,7 @@ final class BasicPromptTemplate implements PromptTemplate
     private function validateValues(array $values): void
     {
         $missingValues = array_diff($this->variables, array_keys($values));
-        if (\count($missingValues) > 0) {
+        if ($missingValues !== []) {
             throw SorryNotAllRequiredValuesWereGiven::with($missingValues);
         }
     }

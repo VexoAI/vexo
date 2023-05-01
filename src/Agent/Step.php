@@ -7,17 +7,17 @@ namespace Vexo\Agent;
 final class Step
 {
     public function __construct(
-        private Action|Finish $action,
-        private string $log,
-        private ?string $observation = null
+        private readonly Action|Finish $action,
+        private readonly string $log,
+        private readonly ?string $observation = null
     ) {
     }
 
     public function withObservation(string $observation): self
     {
         return new self(
-            $this->action(),
-            $this->log(),
+            $this->action,
+            $this->log,
             $observation
         );
     }

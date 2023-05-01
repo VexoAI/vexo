@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vexo\Agent;
 
-use Vexo\Event\SomethingHappened;
+use Vexo\Event\BaseEvent;
 
-final class AgentExecutorFinishedProcessing extends SomethingHappened
+final class AgentExecutorFinishedProcessing extends BaseEvent
 {
     public function __construct(
         public array $results,

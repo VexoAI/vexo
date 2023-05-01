@@ -20,6 +20,28 @@ final class WebTextChainTest extends TestCase
         $httpClient = new Client();
         $webTextChain = new WebTextChain(
             httpClient: $httpClient,
+            requestFactory: new RequestFactory()
+        );
+
+        $httpClient->addResponse(
+            'GET',
+            'http://example.com',
+            new Response(stream: new Stream('<html><body><p>This is an amazing website! It is great!</p></body></html>'))
+        );
+
+        $output = $webTextChain->process(new Input(['url' => 'http://example.com']));
+
+        $this->assertEquals(
+            ['text' => 'This is an amazing website! It is great!'],
+            $output->toArray()
+        );
+    }
+
+    public function testProcessLimitsMaxTextLength(): void
+    {
+        $httpClient = new Client();
+        $webTextChain = new WebTextChain(
+            httpClient: $httpClient,
             requestFactory: new RequestFactory(),
             maxTextLength: 27
         );
@@ -30,8 +52,7 @@ final class WebTextChainTest extends TestCase
             new Response(stream: new Stream('<html><body><p>This is an amazing website! It is great!</p></body></html>'))
         );
 
-        $input = ['url' => 'http://example.com'];
-        $output = $webTextChain->process(new Input($input));
+        $output = $webTextChain->process(new Input(['url' => 'http://example.com']));
 
         $this->assertEquals(
             ['text' => 'This is an amazing website!'],

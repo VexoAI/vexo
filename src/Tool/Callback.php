@@ -9,7 +9,7 @@ final class Callback extends BaseTool
     public function __construct(
         protected string $name,
         protected string $description,
-        private mixed $callable
+        private readonly mixed $callable
     ) {
     }
 

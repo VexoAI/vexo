@@ -7,7 +7,7 @@ namespace Vexo\Agent;
 final class Finish
 {
     public function __construct(
-        private array $results = []
+        private readonly array $results = []
     ) {
     }
 

@@ -22,7 +22,7 @@ final class OpenAIChatLanguageModelTest extends TestCase
             CreateResponse::from([
                 'id' => 'chatcmpl-555NOEm562iYTOet9ql555znLFWES',
                 'object' => 'chat.completion',
-                'created' => 1681919474,
+                'created' => 0,
                 'model' => 'gpt-3.5-turbo-0301',
                 'usage' => [
                     'prompt_tokens' => 15,

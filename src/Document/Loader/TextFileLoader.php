@@ -13,8 +13,8 @@ use Vexo\Document\Metadata;
 final class TextFileLoader implements Loader
 {
     public function __construct(
-        private FilesystemReader $filesystem,
-        private string $path
+        private readonly FilesystemReader $filesystem,
+        private readonly string $path
     ) {
     }
 

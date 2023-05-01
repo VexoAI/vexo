@@ -7,8 +7,8 @@ namespace Vexo\Agent;
 final class Action
 {
     public function __construct(
-        private string $tool,
-        private string $input
+        private readonly string $tool,
+        private readonly string $input
     ) {
     }
 

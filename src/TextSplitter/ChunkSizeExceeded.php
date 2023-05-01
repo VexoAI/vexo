@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vexo\TextSplitter;
 
-use Vexo\Event\SomethingHappened;
+use Vexo\Event\BaseEvent;
 
-final class ChunkSizeExceeded extends SomethingHappened
+final class ChunkSizeExceeded extends BaseEvent
 {
     public function __construct(
         public int $chunkSize,

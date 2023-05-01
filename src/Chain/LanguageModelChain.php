@@ -10,11 +10,11 @@ use Vexo\Prompt\PromptTemplate;
 final class LanguageModelChain extends BaseChain
 {
     public function __construct(
-        private LanguageModel $languageModel,
-        private PromptTemplate $promptTemplate,
-        private array $inputKeys = ['text'],
-        private string $outputKey = 'text',
-        private array $stops = []
+        private readonly LanguageModel $languageModel,
+        private readonly PromptTemplate $promptTemplate,
+        private readonly array $inputKeys = ['text'],
+        private readonly string $outputKey = 'text',
+        private readonly array $stops = []
     ) {
     }
 

@@ -56,7 +56,7 @@ final class EventDispatcherAwareBehaviorTest extends TestCase
         };
         $eventDispatcherAware->useEventDispatcher($eventDispatcher);
 
-        $event = new class() extends SomethingHappened {};
+        $event = new class() extends BaseEvent {};
         $eventDispatcherAware->emitEvent($event);
 
         $this->assertCount(1, $emittedEvents);

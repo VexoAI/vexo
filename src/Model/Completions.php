@@ -6,7 +6,7 @@ namespace Vexo\Model;
 
 use Ramsey\Collection\AbstractCollection;
 
-final class Completions extends AbstractCollection
+final class Completions extends AbstractCollection implements \Stringable
 {
     public static function fromString(string $text): self
     {

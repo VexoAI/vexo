@@ -13,7 +13,7 @@ final class NameResolver extends BaseResolver
         $nameToLookup = $this->normalizeName($query);
 
         foreach ($this->tools as $tool) {
-            if ($this->normalizeName($tool->name()) == $nameToLookup) {
+            if ($this->normalizeName($tool->name()) === $nameToLookup) {
                 return $tool;
             }
         }

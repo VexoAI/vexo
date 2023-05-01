@@ -24,10 +24,10 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
     use EventDispatcherAwareBehavior;
 
     public function __construct(
-        private Agent $agent,
-        private Resolver $toolResolver,
-        private ?int $maxIterations = 15,
-        private ?int $maxTime = null
+        private readonly Agent $agent,
+        private readonly Resolver $toolResolver,
+        private readonly ?int $maxIterations = 15,
+        private readonly ?int $maxTime = null
     ) {
     }
 
@@ -79,15 +79,18 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 
     private function shouldContinue(int $timeElapsed, int $iterations): bool
     {
-        if ($this->maxTime !== null && $timeElapsed >= $this->maxTime) {
-            return false;
-        }
+        return $this->isWithinMaxTime($timeElapsed)
+            && $this->isWithinMaxIterations($iterations);
+    }
 
-        if ($this->maxIterations !== null && $iterations >= $this->maxIterations) {
-            return false;
-        }
+    private function isWithinMaxTime(int $timeElapsed): bool
+    {
+        return $this->maxTime === null || $timeElapsed < $this->maxTime;
+    }
 
-        return true;
+    private function isWithinMaxIterations(int $iterations): bool
+    {
+        return $this->maxIterations === null || $iterations < $this->maxIterations;
     }
 
     private function takeNextStep(Input $input, Steps $intermediateSteps): Step

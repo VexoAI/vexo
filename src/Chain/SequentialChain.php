@@ -7,10 +7,10 @@ namespace Vexo\Chain;
 final class SequentialChain extends BaseChain
 {
     public function __construct(
-        private Chains $chains,
-        private array $inputKeys = [],
+        private readonly Chains $chains,
+        private readonly array $inputKeys = [],
         private array $outputKeys = [],
-        private bool $outputAll = false
+        private readonly bool $outputAll = false
     ) {
         $this->validateExpectedInputsAndOutputs();
     }
@@ -58,7 +58,7 @@ final class SequentialChain extends BaseChain
     private function validateMissingInputVariables(Chain $chain, array $availableVariables): void
     {
         $missingVariables = array_diff_key(array_flip($chain->inputKeys()), array_flip($availableVariables));
-        if ( ! empty($missingVariables)) {
+        if ($missingVariables !== []) {
             throw new SorryValidationFailed(sprintf('Chain %s has input variables that are not known: %s, only had %s', $chain::class, implode(', ', array_keys($missingVariables)), implode(', ', $availableVariables)));
         }
     }
@@ -66,7 +66,7 @@ final class SequentialChain extends BaseChain
     private function validateOverlappingOutputVariables(Chain $chain, array $availableVariables): void
     {
         $overlappingVariables = array_intersect_key(array_flip($chain->outputKeys()), array_flip($availableVariables));
-        if ( ! empty($overlappingVariables)) {
+        if ($overlappingVariables !== []) {
             throw new SorryValidationFailed(sprintf('Chain %s has output variables that would override known variables: %s', $chain::class, implode(', ', array_keys($overlappingVariables))));
         }
     }
@@ -81,7 +81,7 @@ final class SequentialChain extends BaseChain
         }
 
         // If no final output variables are specified, use the output variables of the last chain
-        if (empty($this->outputKeys)) {
+        if ($this->outputKeys === []) {
             $this->outputKeys = $this->chains->last()->outputKeys();
 
             return;
@@ -89,7 +89,7 @@ final class SequentialChain extends BaseChain
 
         // Check if our final output variables are known at the end of the sequence
         $missingVariables = array_diff_key(array_flip($this->outputKeys), array_flip($availableVariables));
-        if ( ! empty($missingVariables)) {
+        if ($missingVariables !== []) {
             throw new SorryValidationFailed(sprintf('Output variables are not produced by this sequence: %s', implode(', ', array_keys($missingVariables))));
         }
     }

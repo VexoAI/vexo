@@ -42,7 +42,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
         $currentChunkSize = 0;
 
         foreach ($splits as $split) {
-            $split = trim($split);
+            $split = trim((string) $split);
             $splitSize = $this->size($split);
 
             // Check if this split is empty, and skip if it is
@@ -52,7 +52,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
 
             // Check if the length of the current chunk combined with this split is under the chunk size. If so, we can
             // add the split to the current chunk and move on to the next split.
-            $currentChunkWithSplitSize = $currentChunkSize + $splitSize + (\count($currentChunkSplits) > 0 ? $separatorSize : 0);
+            $currentChunkWithSplitSize = $currentChunkSize + $splitSize + ($currentChunkSplits !== [] ? $separatorSize : 0);
             if ($currentChunkWithSplitSize <= $this->chunkSize) {
                 $currentChunkSize = $currentChunkWithSplitSize;
                 $currentChunkSplits[] = $split;
@@ -61,7 +61,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
 
             // If we end up here but the current chunk is empty, it means that the current split is larger than the chunk
             // size. We will add it to the current chunk anyway. We will raise an event in the next iteration.
-            if (empty($currentChunkSplits)) {
+            if ($currentChunkSplits === []) {
                 $currentChunkSize += $splitSize;
                 $currentChunkSplits[] = $split;
                 continue;
@@ -92,18 +92,18 @@ abstract class BaseTextSplitter implements EventDispatcherAware
             // our new chunk.
             $newChunkSplits = [];
             $newChunkSize = 0;
-            while ($newChunkSize < $this->minChunkOverlap && \count($currentChunkSplits) > 0) {
+            while ($newChunkSize < $this->minChunkOverlap && $currentChunkSplits !== []) {
                 $overlapSplit = array_pop($currentChunkSplits);
                 $overlapSplitSize = $this->size($overlapSplit);
 
-                $newChunkSize += $overlapSplitSize + (\count($newChunkSplits) > 0 ? $separatorSize : 0);
+                $newChunkSize += $overlapSplitSize + ($newChunkSplits !== [] ? $separatorSize : 0);
                 array_unshift($newChunkSplits, $overlapSplit);
             }
 
             // Now that we have created the basis for our new chunk, we will set it as the current chunk and add the
             // current split to it. This may exceed the chunk size, which we will handle in the next iteration.
             $currentChunkSize = $newChunkSize + $splitSize + $separatorSize;
-            $currentChunkSplits = array_merge($newChunkSplits, [$split]);
+            $currentChunkSplits = [...$newChunkSplits, $split];
         }
 
         // Finally add the last chunk to our list of chunks

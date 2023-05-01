@@ -21,9 +21,9 @@ final class DirectoryLoader implements Loader
     private $fileLoader;
 
     public function __construct(
-        private FilesystemReader $filesystem,
-        private string $path,
-        private bool $loadRecursive = false,
+        private readonly FilesystemReader $filesystem,
+        private readonly string $path,
+        private readonly bool $loadRecursive = false,
         ?callable $filter = null,
         ?callable $fileLoader = null
     ) {

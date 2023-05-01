@@ -6,6 +6,11 @@ namespace Vexo\Chain\WebTextChain;
 
 final class HtmlTextExtractor implements TextExtractor
 {
+    /**
+     * @var string[]
+     */
+    private const TAGS_TO_REMOVE = ['head', 'script', 'style', 'noscript', 'iframe', 'meta', 'link'];
+
     public function extract(string $contents): string
     {
         if (trim($contents) === '') {
@@ -27,12 +32,9 @@ final class HtmlTextExtractor implements TextExtractor
         $dom = new \DOMDocument();
         @$dom->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'), \LIBXML_HTML_NOIMPLIED | \LIBXML_HTML_NODEFDTD);
 
-        // Define an array of tags that generally don't contain useful content
-        $tagsToRemove = ['head', 'script', 'style', 'noscript', 'iframe', 'meta', 'link'];
-
         // Remove the specified tags and their content
         $xpath = new \DOMXPath($dom);
-        foreach ($tagsToRemove as $tag) {
+        foreach (self::TAGS_TO_REMOVE as $tag) {
             $nodes = $xpath->query('//' . $tag);
             foreach ($nodes as $node) {
                 $node->parentNode->removeChild($node);

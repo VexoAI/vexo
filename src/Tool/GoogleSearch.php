@@ -15,8 +15,8 @@ final class GoogleSearch extends BaseTool
         . 'Input should be a search query.';
 
     public function __construct(
-        private CustomSearchAPI $search,
-        private string $searchEngineId,
+        private readonly CustomSearchAPI $search,
+        private readonly string $searchEngineId,
     ) {
     }
 

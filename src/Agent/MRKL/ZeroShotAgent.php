@@ -26,11 +26,11 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     use EventDispatcherAwareBehavior;
 
     public function __construct(
-        private Chain $languageModelChain,
-        private AgentOutputParser $outputParser,
-        private string $outputKey,
-        private string $languageModelPrefix = 'Thought: ',
-        private string $observationPrefix = 'Observation: '
+        private readonly Chain $languageModelChain,
+        private readonly AgentOutputParser $outputParser,
+        private readonly string $outputKey,
+        private readonly string $languageModelPrefix = 'Thought: ',
+        private readonly string $observationPrefix = 'Observation: '
     ) {
     }
 
@@ -50,7 +50,7 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
             outputKey: 'text'
         );
 
-        if ($eventDispatcher !== null) {
+        if ($eventDispatcher instanceof \League\Event\EventDispatcher) {
             $languageModelChain->useEventDispatcher($eventDispatcher);
             $agent->useEventDispatcher($eventDispatcher);
         }

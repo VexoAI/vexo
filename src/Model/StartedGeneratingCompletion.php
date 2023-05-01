@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\Model;
 
-use Vexo\Event\SomethingHappened;
+use Vexo\Event\BaseEvent;
 use Vexo\Prompt\Prompt;
 
-final class StartedGeneratingCompletion extends SomethingHappened
+final class StartedGeneratingCompletion extends BaseEvent
 {
     public function __construct(
         public Prompt $prompt,

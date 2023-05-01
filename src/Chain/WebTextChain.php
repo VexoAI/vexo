@@ -19,9 +19,9 @@ final class WebTextChain extends BaseChain
         private ?ClientInterface $httpClient = null,
         private ?RequestFactoryInterface $requestFactory = null,
         private ?TextExtractor $textExtractor = null,
-        private string $inputKey = 'url',
-        private string $outputKey = 'text',
-        private int $maxTextLength = 8000
+        private readonly string $inputKey = 'url',
+        private readonly string $outputKey = 'text',
+        private readonly int $maxTextLength = 8000
     ) {
         $this->httpClient ??= Psr18ClientDiscovery::find();
         $this->requestFactory ??= Psr17FactoryDiscovery::findRequestFactory();
@@ -66,7 +66,7 @@ final class WebTextChain extends BaseChain
         $text = $this->textExtractor->extract($html);
 
         if (\strlen($text) > $this->maxTextLength) {
-            $text = substr($text, 0, $this->maxTextLength);
+            return substr($text, 0, $this->maxTextLength);
         }
 
         return $text;

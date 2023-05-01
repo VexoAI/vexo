@@ -7,8 +7,8 @@ namespace Vexo\Document;
 final class Document
 {
     public function __construct(
-        private string $contents,
-        private Metadata $metadata = new Metadata()
+        private readonly string $contents,
+        private readonly Metadata $metadata = new Metadata()
     ) {
     }
 

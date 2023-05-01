@@ -14,13 +14,13 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
 {
     use EventDispatcherAwareBehavior;
 
-    private static string $defaultModel = 'gpt-3.5-turbo';
+    private const DEFAULT_MODEL = 'gpt-3.5-turbo';
 
     public function __construct(
-        private ChatContract $chat,
-        private Parameters $defaultParameters = new Parameters()
+        private readonly ChatContract $chat,
+        private readonly Parameters $defaultParameters = new Parameters()
     ) {
-        $this->defaultParameters->putIfAbsent('model', self::$defaultModel);
+        $this->defaultParameters->putIfAbsent('model', self::DEFAULT_MODEL);
     }
 
     public function generate(Prompt $prompt, string ...$stops): Response
@@ -45,7 +45,7 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
         $parameters = $this->defaultParameters->toArray();
         $parameters['messages'][] = ['role' => 'user', 'content' => $prompt->text()];
 
-        if ( ! empty($stops)) {
+        if ($stops !== []) {
             $parameters['stop'] = $stops;
         }
 

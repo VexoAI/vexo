@@ -7,8 +7,8 @@ namespace Vexo\Chain;
 final class PassthroughChain extends BaseChain
 {
     public function __construct(
-        private array $inputKeys = [],
-        private array $outputKeys = []
+        private readonly array $inputKeys = [],
+        private readonly array $outputKeys = []
     ) {
     }
 

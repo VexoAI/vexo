@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Vexo\Agent;
 
 use Vexo\Chain\Input;
-use Vexo\Event\SomethingHappened;
+use Vexo\Event\BaseEvent;
 
-final class AgentFinishedPlanningNextStep extends SomethingHappened
+final class AgentFinishedPlanningNextStep extends BaseEvent
 {
     public function __construct(
         public Input $input,

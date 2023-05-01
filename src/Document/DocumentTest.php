@@ -12,12 +12,11 @@ final class DocumentTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
-        $contents = 'My document contents';
         $metadata = new Metadata(['foo' => 'bar']);
 
-        $document = new Document($contents, $metadata);
+        $document = new Document('My document contents', $metadata);
 
-        $this->assertSame($contents, $document->contents());
+        $this->assertSame('My document contents', $document->contents());
         $this->assertSame($metadata, $document->metadata());
     }
 }

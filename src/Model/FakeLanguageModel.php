@@ -31,7 +31,7 @@ final class FakeLanguageModel implements LanguageModel, EventDispatcherAware
 
     public function generate(Prompt $prompt, string ...$stops): Response
     {
-        if (empty($this->responses)) {
+        if ($this->responses === []) {
             throw new \LogicException('No more responses to return.');
         }
 

@@ -16,8 +16,8 @@ final class GoogleSearchResults extends BaseTool
         . 'Input should be a search query. Output is a JSON array of the query results.';
 
     public function __construct(
-        private CustomSearchAPI $search,
-        private string $searchEngineId,
+        private readonly CustomSearchAPI $search,
+        private readonly string $searchEngineId,
     ) {
     }
 
@@ -34,9 +34,10 @@ final class GoogleSearchResults extends BaseTool
 
         return json_encode(
             array_map(
-                fn (Result $result): array => ['title' => $result->title, 'link' => $result->link, 'snippet' => $result->snippet],
+                fn (Result $result): array => ['title' => $result->getTitle(), 'link' => $result->getLink(), 'snippet' => $result->getSnippet()],
                 $results->getItems()
-            )
+            ),
+            \JSON_THROW_ON_ERROR
         );
     }
 }

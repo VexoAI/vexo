@@ -10,7 +10,7 @@ use JsonSchema\Validator;
 
 class JsonOutputParser implements OutputParser
 {
-    public const INSTRUCTIONS = <<<INSTRUCTIONS
+    private const INSTRUCTIONS = <<<INSTRUCTIONS
         The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "```json" and "```":
 
         ```json
@@ -18,9 +18,12 @@ class JsonOutputParser implements OutputParser
         ```
         INSTRUCTIONS;
 
+    private const START_DELIMITER = '```json';
+    private const END_DELIMITER = '```';
+
     public function __construct(
-        private Validator $validator,
-        private string $schema
+        private readonly Validator $validator,
+        private readonly string $schema
     ) {
     }
 
@@ -36,7 +39,7 @@ class JsonOutputParser implements OutputParser
         try {
             $this->validator->validate(
                 $decoded,
-                json_decode($this->schema),
+                json_decode($this->schema, null, 512, \JSON_THROW_ON_ERROR),
                 Constraint::CHECK_MODE_COERCE_TYPES | Constraint::CHECK_MODE_APPLY_DEFAULTS | Constraint::CHECK_MODE_VALIDATE_SCHEMA | Constraint::CHECK_MODE_EXCEPTIONS
             );
         } catch (ValidationException $e) {
@@ -48,17 +51,14 @@ class JsonOutputParser implements OutputParser
 
     private function extractJsonString(string $text): string
     {
-        $startDelimiter = '```json';
-        $endDelimiter = '```';
-
-        $startPosition = strpos($text, $startDelimiter);
-        $endPosition = strpos($text, $endDelimiter, $startPosition + \strlen($startDelimiter));
+        $startPosition = strpos($text, self::START_DELIMITER);
+        $endPosition = strpos($text, self::END_DELIMITER, $startPosition + \strlen(self::START_DELIMITER));
 
         if ($startPosition === false || $endPosition === false) {
             throw new SorryFailedToParseOutput('Failed to extract JSON from output');
         }
 
-        $startPosition += \strlen($startDelimiter);
+        $startPosition += \strlen(self::START_DELIMITER);
 
         // Extract the JSON string using the positions
         return trim(substr($text, $startPosition, $endPosition - $startPosition));

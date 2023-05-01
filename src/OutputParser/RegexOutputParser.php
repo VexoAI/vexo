@@ -6,7 +6,7 @@ namespace Vexo\OutputParser;
 
 class RegexOutputParser implements OutputParser
 {
-    public const INSTRUCTIONS = <<<INSTRUCTIONS
+    private const INSTRUCTIONS = <<<INSTRUCTIONS
         The output should be text which matches the following PCRE regex, including the leading and trailing "```output" and "```":
 
         ```output
@@ -15,7 +15,7 @@ class RegexOutputParser implements OutputParser
         INSTRUCTIONS;
 
     public function __construct(
-        private string $regex
+        private readonly string $regex
     ) {
     }
 

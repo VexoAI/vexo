@@ -9,9 +9,9 @@ use Psr\SimpleCache\CacheInterface;
 final class CachingChain extends BaseChain
 {
     public function __construct(
-        private Chain $chain,
-        private CacheInterface $cache,
-        private ?int $lifetime = null,
+        private readonly Chain $chain,
+        private readonly CacheInterface $cache,
+        private readonly ?int $lifetime = null,
         private ?string $cacheKeyPrefix = null
     ) {
         $this->cacheKeyPrefix ??= strtolower(str_replace('\\', '.', $this->chain::class));
@@ -47,7 +47,7 @@ final class CachingChain extends BaseChain
         return sprintf(
             '%s.%s',
             $this->cacheKeyPrefix,
-            hash('sha256', json_encode($input->toArray()))
+            hash('sha256', json_encode($input->toArray(), \JSON_THROW_ON_ERROR))
         );
     }
 }

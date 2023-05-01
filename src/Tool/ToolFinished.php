@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vexo\Tool;
 
-use Vexo\Event\SomethingHappened;
+use Vexo\Event\BaseEvent;
 
-final class ToolFinished extends SomethingHappened
+final class ToolFinished extends BaseEvent
 {
     public function __construct(
         public string $input,

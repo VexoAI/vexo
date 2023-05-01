@@ -12,8 +12,8 @@ final class Response
     }
 
     public function __construct(
-        private Completions $completions,
-        private ResponseMetadata $metadata = new ResponseMetadata(),
+        private readonly Completions $completions,
+        private readonly ResponseMetadata $metadata = new ResponseMetadata(),
     ) {
     }
 
