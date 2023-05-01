@@ -58,7 +58,7 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
     {
         return new Completions(
             array_map(
-                fn ($choice): \Vexo\LanguageModel\Completion => new Completion($choice->message->content),
+                fn ($choice): Completion => new Completion($choice->message->content),
                 $response->choices
             )
         );
