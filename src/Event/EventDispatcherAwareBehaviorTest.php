@@ -36,6 +36,9 @@ final class EventDispatcherAwareBehaviorTest extends TestCase
 
     public function testEventIsEmitted(): void
     {
+        /**
+         * @var BaseEvent[] $emittedEvents
+         */
         $emittedEvents = [];
 
         $eventDispatcher = new EventDispatcher();

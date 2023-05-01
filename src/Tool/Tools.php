@@ -6,6 +6,9 @@ namespace Vexo\Tool;
 
 use Ramsey\Collection\AbstractCollection;
 
+/**
+ * @extends AbstractCollection<Tool>
+ */
 final class Tools extends AbstractCollection
 {
     public function getType(): string

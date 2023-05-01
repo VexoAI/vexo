@@ -6,6 +6,9 @@ namespace Vexo\Model;
 
 use Ramsey\Collection\Map\AbstractMap;
 
+/**
+ * @extends AbstractMap<string, mixed>
+ */
 final class Parameters extends AbstractMap
 {
 }
