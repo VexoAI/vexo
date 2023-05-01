@@ -1,6 +1,6 @@
 # Introduction
 
-Chains are generic way to combine individual components to enable more complex workflows or use cases that go beyond a single interaction with a model. Sequential chains are the most common which are generally used to have the output from one model or tool feed into the next one while maintaining overall context.
+Chains are a generic way to combine individual components to enable more complex workflows or use cases that go beyond a single interaction with a model. Sequential chains are the most common which are generally used to have the output from one model or tool feed into the next one while maintaining overall context.
 
 In Vexo, each chain implements the `Vexo\Chain\Chain` interface, which defines three methods.
 
