@@ -66,7 +66,7 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
     {
         return new Response(
             $completions,
-            new ResponseMetadata(array_merge($this->defaultParameters->toArray(), ['usage' => $tokenUsage]))
+            new ResponseMetadata([...$this->defaultParameters->toArray(), 'usage' => $tokenUsage])
         );
     }
 }
