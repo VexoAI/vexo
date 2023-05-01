@@ -6,14 +6,10 @@ namespace Vexo\LanguageModel;
 
 use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
-use Vexo\Event\EventDispatcherAware;
-use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Prompt\Prompt;
 
-final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAware
+final class OpenAIChatLanguageModel extends BaseLanguageModel
 {
-    use EventDispatcherAwareBehavior;
-
     private const DEFAULT_MODEL = 'gpt-3.5-turbo';
 
     public function __construct(
@@ -23,23 +19,16 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
         $this->defaultParameters->putIfAbsent('model', self::DEFAULT_MODEL);
     }
 
-    public function generate(Prompt $prompt, string ...$stops): Response
+    protected function call(Prompt $prompt, string ...$stops): Response
     {
-        $this->emit(new StartedGeneratingCompletion($prompt, $stops));
-
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
         );
-        $completions = $this->extractCompletionsFromChatResponse($chatResponse);
 
-        $response = $this->createResponse(
-            $completions,
-            $chatResponse->usage->toArray()
+        return new Response(
+            $this->extractCompletionsFromChatResponse($chatResponse),
+            new ResponseMetadata([...$this->defaultParameters->toArray(), 'usage' => $chatResponse->usage->toArray()])
         );
-
-        $this->emit(new FinishedGeneratingCompletion($prompt, $stops, $response));
-
-        return $response;
     }
 
     private function prepareParameters(Prompt $prompt, array $stops): array
@@ -61,14 +50,6 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
                 fn ($choice): Completion => new Completion($choice->message->content),
                 $response->choices
             )
-        );
-    }
-
-    private function createResponse(Completions $completions, array $tokenUsage): Response
-    {
-        return new Response(
-            $completions,
-            new ResponseMetadata([...$this->defaultParameters->toArray(), 'usage' => $tokenUsage])
         );
     }
 }

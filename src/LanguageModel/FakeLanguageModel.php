@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\LanguageModel;
 
-use Vexo\Event\EventDispatcherAware;
-use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\Prompt\Prompt;
 
-final class FakeLanguageModel implements LanguageModel, EventDispatcherAware
+final class FakeLanguageModel extends BaseLanguageModel
 {
-    use EventDispatcherAwareBehavior;
-
     /**
      * @var Response[]
      */
@@ -29,7 +25,7 @@ final class FakeLanguageModel implements LanguageModel, EventDispatcherAware
         $this->responses[] = $response;
     }
 
-    public function generate(Prompt $prompt, string ...$stops): Response
+    protected function call(Prompt $prompt, string ...$stops): Response
     {
         if ($this->responses === []) {
             throw new \LogicException('No more responses to return.');
