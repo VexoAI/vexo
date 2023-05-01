@@ -7,13 +7,10 @@ namespace Vexo\LanguageModel;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Prompt\Prompt;
 
 #[CoversClass(OpenAIChatLanguageModel::class)]
-#[IgnoreClassForCodeCoverage(StartedGeneratingCompletion::class)]
-#[IgnoreClassForCodeCoverage(FinishedGeneratingCompletion::class)]
 final class OpenAIChatLanguageModelTest extends TestCase
 {
     public function testGenerate(): void
