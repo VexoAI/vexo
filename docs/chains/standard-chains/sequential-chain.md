@@ -39,8 +39,8 @@ use Vexo\Chain\Input;
 use Vexo\Chain\LanguageModelChain;
 use Vexo\Chain\SequentialChain;
 use Vexo\Chain\WebTextChain;
-use Vexo\Model\OpenAIChatLanguageModel;
-use Vexo\Model\Response;
+use Vexo\LanguageModel\OpenAIChatLanguageModel;
+use Vexo\LanguageModel\Response;
 use Vexo\Prompt\BasicPromptTemplate;
 
 // Create our WebTextChain which will retrieve the text from a webpage

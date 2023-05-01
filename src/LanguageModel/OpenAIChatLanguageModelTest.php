@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Model;
+namespace Vexo\LanguageModel;
 
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;

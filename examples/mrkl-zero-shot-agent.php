@@ -9,7 +9,7 @@ use Vexo\Agent\MRKL\ZeroShotAgent;
 use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
 use Vexo\Chain\Input;
 use Vexo\Event\SomethingHappened;
-use Vexo\Model\OpenAIChatLanguageModel;
+use Vexo\LanguageModel\OpenAIChatLanguageModel;
 use Vexo\Tool\Callback;
 use Vexo\Tool\GoogleSearch;
 use Vexo\Tool\Resolver\NameResolver;

@@ -1,10 +1,10 @@
 # Testing Models
 
-Vexo provides a `Vexo\Model\FakeLanguageModel` which is a stub implementation of `Vexo\Model\LanguageModel`. You can use this for testing classes that depend on it.
+Vexo provides a `Vexo\LanguageModel\FakeLanguageModel` which is a stub implementation of `Vexo\LanguageModel\LanguageModel`. You can use this for testing classes that depend on it.
 
 ```php
-use Vexo\Model\FakeLanguageModel;
-use Vexo\Model\Response;
+use Vexo\LanguageModel\FakeLanguageModel;
+use Vexo\LanguageModel\Response;
 
 $model = new FakeLanguageModel([
   new Response::fromString('The first response'),

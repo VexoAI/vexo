@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Model;
+namespace Vexo\LanguageModel;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

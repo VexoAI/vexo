@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-use Vexo\Model\LanguageModel;
+use Vexo\LanguageModel\LanguageModel;
 use Vexo\Prompt\PromptTemplate;
 
 final class LanguageModelChain extends BaseChain

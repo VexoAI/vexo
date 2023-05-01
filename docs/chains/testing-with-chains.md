@@ -1,6 +1,6 @@
 # Testing Chains
 
-Vexo provides an implementation of `Vexo\Model\Chain` which you can use for testing classes that depend on it.
+Vexo provides an implementation of `Vexo\LanguageModel\Chain` which you can use for testing classes that depend on it.
 
 This `PassthroughChain` simply outputs whatever its been given as input.
 

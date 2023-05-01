@@ -16,7 +16,7 @@ use Vexo\Chain\Input;
 use Vexo\Chain\LanguageModelChain;
 use Vexo\Event\EventDispatcherAware;
 use Vexo\Event\EventDispatcherAwareBehavior;
-use Vexo\Model\LanguageModel;
+use Vexo\LanguageModel\LanguageModel;
 use Vexo\Prompt\BasicPromptTemplate;
 use Vexo\Tool\Tool;
 use Vexo\Tool\Tools;

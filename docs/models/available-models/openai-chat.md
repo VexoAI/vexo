@@ -18,7 +18,7 @@ $apiKey = getenv('OPENAI_API_KEY');
 $chatApi = OpenAI::client($apiKey)->chat();
 
 // Create the model
-$model = new Vexo\Model\OpenAIChatLanguageModel($chatApi);
+$model = new Vexo\LanguageModel\OpenAIChatLanguageModel($chatApi);
 ```
 
 ## Additional Parameters
@@ -26,9 +26,9 @@ $model = new Vexo\Model\OpenAIChatLanguageModel($chatApi);
 If you want to override the model being used or provide other parameters, you can pass them along when instantiating your model.
 
 ```php
-$model = new Vexo\Model\OpenAIChatLanguageModel(
+$model = new Vexo\LanguageModel\OpenAIChatLanguageModel(
   $chatApi,
-  new Vexo\Model\Parameters([
+  new Vexo\LanguageModel\Parameters([
     'model' => 'gpt-4',
     'temperature' => 0.8,
     'presence_penalty' => 0.5
@@ -43,9 +43,9 @@ For a full list of available parameters, please refer to the [OpenAI API referen
 You can add default prompts as model parameters which will be prepended to all requests. This is useful when you want to add system prompts needed to guide the model, but you don't want to include them with every call to the model.&#x20;
 
 ```php
-$model = new Vexo\Model\OpenAIChatLanguageModel(
+$model = new Vexo\LanguageModel\OpenAIChatLanguageModel(
   $chatApi,
-  new Vexo\Model\Parameters([
+  new Vexo\LanguageModel\Parameters([
     'messages' => [
       ['role' => 'system', 'content' => 'You are concise in all your responses']
     ]

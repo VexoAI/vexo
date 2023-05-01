@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Model;
+namespace Vexo\LanguageModel;
 
 use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
@@ -56,7 +56,7 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
     {
         return new Completions(
             array_map(
-                fn ($choice): \Vexo\Model\Completion => new Completion($choice->message->content),
+                fn ($choice): \Vexo\LanguageModel\Completion => new Completion($choice->message->content),
                 $response->choices
             )
         );

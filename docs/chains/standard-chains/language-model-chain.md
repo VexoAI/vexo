@@ -7,8 +7,8 @@ You can use it as follows.
 ```php
 use Vexo\Chain\Input;
 use Vexo\Chain\LanguageModelChain;
-use Vexo\Model\FakeLanguageModel;
-use Vexo\Model\Response;
+use Vexo\LanguageModel\FakeLanguageModel;
+use Vexo\LanguageModel\Response;
 use Vexo\Prompt\BasicPromptTemplate;
 
 // Replace with instance of a real language model

@@ -4,7 +4,7 @@ Models will emit the events outlined below. For more info on how to listen for e
 
 ## Emitted events
 
-### `Vexo\Model\StartedGeneratingCompletion`
+### `Vexo\LanguageModel\StartedGeneratingCompletion`
 
 Emitted just before the model will call upon the provide to generate a completion for a given prompt. Contains the following properties.
 
@@ -13,7 +13,7 @@ Emitted just before the model will call upon the provide to generate a completio
 | `Vexo\Prompt\Prompt $prompt` | The prompt which was passed to the `generate` method.                        |
 | `string[] $stops`            | An array of stop words provided to the `generate` method, or an empty array. |
 
-### `Vexo\Model\FinishedGeneratingCompletion`
+### `Vexo\LanguageModel\FinishedGeneratingCompletion`
 
 Emitted after the model has generated its completion for the given prompt, but before returning it to the caller.
 
@@ -21,4 +21,4 @@ Emitted after the model has generated its completion for the given prompt, but b
 | ------------------------------------- | ---------------------------------------------------------------------------- |
 | `Vexo\Prompt\Prompt $prompt`          | The prompt which was passed to the `generate` method.                        |
 | `string[] $stops`                     | An array of stop words provided to the `generate` method, or an empty array. |
-| `Vexo\Model\Completions $completions` | The completions collection containing the generated completions.             |
+| `Vexo\LanguageModel\Completions $completions` | The completions collection containing the generated completions.             |

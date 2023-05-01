@@ -14,8 +14,8 @@ use Vexo\Agent\AgentStartedPlanningNextStep;
 use Vexo\Agent\Finish;
 use Vexo\Agent\Steps;
 use Vexo\Chain\Input;
-use Vexo\Model\FakeLanguageModel;
-use Vexo\Model\Response;
+use Vexo\LanguageModel\FakeLanguageModel;
+use Vexo\LanguageModel\Response;
 use Vexo\Tool\Callback;
 use Vexo\Tool\Tools;
 

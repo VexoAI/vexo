@@ -1,6 +1,6 @@
 # Getting Started
 
-Models in Vexo all implement the `Vexo\Model\LanguageModel` interface which provides a generic way to interact with language models.
+Models in Vexo all implement the `Vexo\LanguageModel\LanguageModel` interface which provides a generic way to interact with language models.
 
 ```php
 LanguageModel::generate(Prompt $prompt, string ...$stops): Response
@@ -11,7 +11,7 @@ The `generate` method takes a prompt, and optionally one or more stop terms. It 
 Have a look at [Providers](providers/) to understand how to instantiate a new model of a particular provider. Once you have instantiated your model, you can simply use it as follows:
 
 ```php
-// Assumes $model is an instance of \Vexo\Model\LanguageModel
+// Assumes $model is an instance of \Vexo\LanguageModel\LanguageModel
 $response = $model->generate(
     new \Vexo\Prompt('What is the capital of France?')
 );
@@ -48,7 +48,7 @@ Currently Vexo only comes with the `BasicPromptTemplate`, but more may be added 
 Once you have the prompt you can call the model to generate a response.
 
 ```php
-// $model is an instance of \Vexo\Model\LanguageModel
+// $model is an instance of \Vexo\LanguageModel\LanguageModel
 $response = $model->generate($prompt);
 ```
 
@@ -70,7 +70,7 @@ The response will now simply contain the completion "The capital of France is Pa
 
 ## 3. Interpreting the Response
 
-If you just want the text you can call the `completions` method on the response to return an instance of the `Vexo\Model\Completions` collection containing the generated text, which you can cast to a string.
+If you just want the text you can call the `completions` method on the response to return an instance of the `Vexo\LanguageModel\Completions` collection containing the generated text, which you can cast to a string.
 
 ```php
 $text = (string) $response->completions();

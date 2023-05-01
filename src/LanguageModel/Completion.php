@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Model;
+namespace Vexo\LanguageModel;
 
 final class Completion implements \Stringable
 {
