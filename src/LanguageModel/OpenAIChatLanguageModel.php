@@ -32,12 +32,14 @@ final class OpenAIChatLanguageModel implements LanguageModel, EventDispatcherAwa
         );
         $completions = $this->extractCompletionsFromChatResponse($chatResponse);
 
-        $this->emit(new FinishedGeneratingCompletion($prompt, $stops, $completions));
-
-        return $this->createResponse(
+        $response = $this->createResponse(
             $completions,
             $chatResponse->usage->toArray()
         );
+
+        $this->emit(new FinishedGeneratingCompletion($prompt, $stops, $response));
+
+        return $response;
     }
 
     private function prepareParameters(Prompt $prompt, array $stops): array

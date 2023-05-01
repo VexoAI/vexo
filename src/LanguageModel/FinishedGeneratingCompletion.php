@@ -12,7 +12,7 @@ final class FinishedGeneratingCompletion extends BaseEvent
     public function __construct(
         public Prompt $prompt,
         public array $stops,
-        public Completions $completions
+        public Response $response
     ) {
     }
 }
