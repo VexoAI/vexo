@@ -36,6 +36,8 @@ protected function call(Prompt $prompt, string ...$stops): Response
 }
 ```
 
+## Emitting Events
+
 The `BaseLanguageModel` class will emit the `StartedGeneratingCompletion` and `FinishedGeneratingCompletion` events on its own. If you would like to additionally emit your own events, you can use the `emit` method. Make sure your event implements `Vexo\Event\SomethingHappened`.
 
 ```php

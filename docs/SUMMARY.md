@@ -29,6 +29,7 @@
   * [WebText Chain](chains/standard-chains/webtext-chain.md)
   * [Sequential Chain](chains/standard-chains/sequential-chain.md)
   * [Caching Chain](chains/standard-chains/caching-chain.md)
+* [Custom Chains](chains/custom-chains.md)
 * [Events](chains/events.md)
 * [Testing with Chains](chains/testing-with-chains.md)
 
