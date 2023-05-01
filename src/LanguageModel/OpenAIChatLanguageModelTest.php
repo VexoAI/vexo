@@ -8,6 +8,7 @@ use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Collection\Map\AssociativeArrayMap;
 use Vexo\Prompt\Prompt;
 
 #[CoversClass(OpenAIChatLanguageModel::class)]
@@ -33,7 +34,7 @@ final class OpenAIChatLanguageModelTest extends TestCase
             ])
         ]);
 
-        $openAIChatLLM = new OpenAIChatLanguageModel($client->chat(), new Parameters(['n' => 2]));
+        $openAIChatLLM = new OpenAIChatLanguageModel($client->chat(), new AssociativeArrayMap(['n' => 2]));
 
         $response = $openAIChatLLM->generate(new Prompt('What is the capital of France?'), "\n");
         $completions = $response->completions();

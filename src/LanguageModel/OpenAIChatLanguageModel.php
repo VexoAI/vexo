@@ -6,17 +6,21 @@ namespace Vexo\LanguageModel;
 
 use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
+use Ramsey\Collection\Map\AssociativeArrayMap;
+use Ramsey\Collection\Map\MapInterface;
 use Vexo\Prompt\Prompt;
 
 final class OpenAIChatLanguageModel extends BaseLanguageModel
 {
-    private const DEFAULT_MODEL = 'gpt-3.5-turbo';
+    private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
 
     public function __construct(
         private readonly ChatContract $chat,
-        private readonly Parameters $defaultParameters = new Parameters()
+        private readonly MapInterface $defaultParameters = new AssociativeArrayMap()
     ) {
-        $this->defaultParameters->putIfAbsent('model', self::DEFAULT_MODEL);
+        foreach (self::DEFAULT_PARAMETERS as $key => $value) {
+            $this->defaultParameters->putIfAbsent($key, $value);
+        }
     }
 
     protected function call(Prompt $prompt, string ...$stops): Response
