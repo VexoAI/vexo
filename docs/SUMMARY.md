@@ -12,6 +12,7 @@
 * [Getting Started](language-models/getting-started.md)
 * [Available Models](language-models/available-language-models/README.md)
   * [OpenAI Chat](language-models/available-language-models/openai-chat.md)
+* [Custom Models](language-models/custom-models.md)
 * [Events](language-models/events.md)
 * [Testing with Models](language-models/testing-with-models.md)
 
