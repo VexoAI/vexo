@@ -12,6 +12,14 @@ use Vexo\Tokenizer\FakeTokenizer;
 #[CoversClass(TokenTextSplitter::class)]
 final class TokenTextSplitterTest extends TestCase
 {
+    public function testConstructorThrowsExceptionWhenMinChunkOverlapIsGreaterThanChunkSize(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Minimum chunk overlap cannot be greater than chunk size');
+
+        new TokenTextSplitter(new FakeTokenizer(), 100, 200);
+    }
+
     #[DataProvider('provideTestSplitData')]
     public function testSplit(
         string $text,

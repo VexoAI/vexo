@@ -5,7 +5,6 @@ Multiple components in Vexo emit events through an event dispatcher. Classes whi
 * Agents
 * Chains
 * Models
-* TextSplitters
 
 By default a Vexo relies on [league/event](https://event.thephpleague.com/) for the default event dispatcher. You can retrieve the event dispatcher by calling the `eventDispatcher()` method on any supported component.
 

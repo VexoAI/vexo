@@ -6,21 +6,16 @@ namespace Vexo\TextSplitter;
 
 use Vexo\Tokenizer\Tokenizer;
 
-/**
- * @todo BaseTextSplitter now has a bunch of logic that we don't need here. We should refactor it to be more generic
- * @todo We need a TextSplitter interface
- */
-final class TokenTextSplitter extends BaseTextSplitter
+final class TokenTextSplitter implements TextSplitter
 {
     public function __construct(
         private readonly Tokenizer $tokenizer,
-        int $chunkSize = 4000,
-        int $minChunkOverlap = 200
+        private readonly int $chunkSize = 4000,
+        private readonly int $minChunkOverlap = 200
     ) {
-        parent::__construct(
-            chunkSize: $chunkSize,
-            minChunkOverlap: $minChunkOverlap
-        );
+        if ($minChunkOverlap > $chunkSize) {
+            throw new \InvalidArgumentException('Minimum chunk overlap cannot be greater than chunk size');
+        }
     }
 
     public function split(string $text): array
