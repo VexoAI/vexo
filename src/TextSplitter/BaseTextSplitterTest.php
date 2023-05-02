@@ -30,6 +30,7 @@ final class BaseTextSplitterTest extends TestCase
         string $separator,
         string $text,
         array $expectedChunks,
+        bool $trimWhitespace = false,
         bool $shouldDispatchChunkSizeExceeded = false
     ): void {
         $dispatchedEvents = [];
@@ -45,7 +46,8 @@ final class BaseTextSplitterTest extends TestCase
         $textSplitter = new CharacterTextSplitter(
             chunkSize: $chunkSize,
             minChunkOverlap: $minChunkOverlap,
-            separator: $separator
+            separator: $separator,
+            trimWhitespace: $trimWhitespace
         );
         $textSplitter->useEventDispatcher($eventDispatcher);
 
@@ -93,6 +95,7 @@ final class BaseTextSplitterTest extends TestCase
                 [
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                 ],
+                false,
                 true
             ],
             'with superfluous spacing' => [
@@ -112,10 +115,24 @@ final class BaseTextSplitterTest extends TestCase
                 '_',
                 'Lorem_ipsum_dolor_sit_amet,_consectetur_ _ ___adipiscing_elit,_sed_do_eiusmod__ _ __ _tempor_incididunt_ut_labore_et_dolore_magna_aliqua.',
                 [
+                    'Lorem_ipsum_dolor_sit_amet,_consectetur_ _ ',
+                    'consectetur_ _ _adipiscing_elit,_sed_do_eiusmod_ ',
+                    'do_eiusmod_ _ _ _tempor_incididunt_ut_labore_et',
+                    'ut_labore_et_dolore_magna_aliqua.'
+                ],
+                false
+            ],
+            'with empty splits and trim whitespace' => [
+                50,
+                10,
+                '_',
+                'Lorem_ipsum_dolor_sit_amet,_consectetur_ _ ___adipiscing_elit,_sed_do_eiusmod__ _ __ _tempor_incididunt_ut_labore_et_dolore_magna_aliqua.',
+                [
                     'Lorem_ipsum_dolor_sit_amet,_consectetur_adipiscing',
                     'adipiscing_elit,_sed_do_eiusmod_tempor_incididunt',
                     'incididunt_ut_labore_et_dolore_magna_aliqua.'
-                ]
+                ],
+                true
             ],
             'with splits and overlap causing exceeding chunk size' => [
                 40,
@@ -129,6 +146,7 @@ final class BaseTextSplitterTest extends TestCase
                     'eiusmod tempor incididunt ut labore et',
                     'ut labore et dolore magna aliqua.'
                 ],
+                false,
                 true
             ],
             'with splits and overlap causing last chunk to exceed chunk size' => [
@@ -141,6 +159,7 @@ final class BaseTextSplitterTest extends TestCase
                     'adipiscing elit, sed do eiusmod',
                     'do eiusmod tempor_incididunt_ut_labore_et_dolore_magna_aliqua.'
                 ],
+                false,
                 true
             ],
             'tiny overlap' => [

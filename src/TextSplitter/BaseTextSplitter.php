@@ -19,7 +19,8 @@ abstract class BaseTextSplitter implements EventDispatcherAware
     public function __construct(
         protected int $chunkSize = 4000,
         protected int $minChunkOverlap = 200,
-        ?callable $sizeFunction = null
+        protected bool $trimWhitespace = false,
+        ?callable $sizeFunction = null,
     ) {
         if ($minChunkOverlap > $chunkSize) {
             throw new \InvalidArgumentException('Minimum chunk overlap cannot be greater than chunk size');
@@ -33,7 +34,7 @@ abstract class BaseTextSplitter implements EventDispatcherAware
      */
     abstract public function split(string $text): array;
 
-    protected function mergeSplitsIntoChunks(array $splits, string $separator): array
+    protected function mergeSplitsIntoChunks(array $splits, string $separator = ''): array
     {
         $separatorSize = $this->size($separator);
 
@@ -42,7 +43,9 @@ abstract class BaseTextSplitter implements EventDispatcherAware
         $currentChunkSize = 0;
 
         foreach ($splits as $split) {
-            $split = trim((string) $split);
+            $split = (string) $split;
+            $split = $this->trimWhitespace ? trim($split) : $split;
+
             $splitSize = $this->size($split);
 
             // Check if this split is empty, and skip if it is

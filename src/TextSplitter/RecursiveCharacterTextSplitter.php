@@ -9,10 +9,16 @@ final class RecursiveCharacterTextSplitter extends BaseTextSplitter
     public function __construct(
         int $chunkSize = 4000,
         int $minChunkOverlap = 200,
+        bool $trimWhitespace = false,
         ?callable $sizeFunction = null,
         private readonly array $separators = ["\n\n", "\n", ' ', '']
     ) {
-        parent::__construct($chunkSize, $minChunkOverlap, $sizeFunction);
+        parent::__construct(
+            chunkSize: $chunkSize,
+            minChunkOverlap: $minChunkOverlap,
+            trimWhitespace: $trimWhitespace,
+            sizeFunction: $sizeFunction
+        );
     }
 
     public function split(string $text): array
