@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Vexo\TextSplitter;
 
-use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
+use Vexo\Tokenizer\Tokenizer;
 
 /**
  * @todo BaseTextSplitter now has a bunch of logic that we don't need here. We should refactor it to be more generic
  * @todo We need a TextSplitter interface
- * @todo We need to intoduce a Tokenizer interface
  */
 final class TokenTextSplitter extends BaseTextSplitter
 {
     public function __construct(
-        private readonly Gpt3Tokenizer $tokenizer,
+        private readonly Tokenizer $tokenizer,
         int $chunkSize = 4000,
         int $minChunkOverlap = 200
     ) {

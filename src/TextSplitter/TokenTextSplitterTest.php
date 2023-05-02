@@ -4,63 +4,64 @@ declare(strict_types=1);
 
 namespace Vexo\TextSplitter;
 
-use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer;
-use Gioni06\Gpt3Tokenizer\Gpt3TokenizerConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Vexo\Tokenizer\FakeTokenizer;
 
 #[CoversClass(TokenTextSplitter::class)]
 final class TokenTextSplitterTest extends TestCase
 {
-    #[DataProvider('provideTextsAndExpectedChunks')]
-    public function testSplit(string $text, int $chunkSize, int $minChunkOverlap, array $expectedChunks): void
-    {
+    #[DataProvider('provideTestSplitData')]
+    public function testSplit(
+        string $text,
+        int $chunkSize,
+        int $minChunkOverlap,
+        array $expectedChunks,
+        array $fakeTextToTokensMap
+    ): void {
         $textSplitter = new TokenTextSplitter(
-            tokenizer: new Gpt3Tokenizer(new Gpt3TokenizerConfig()),
+            tokenizer: new FakeTokenizer($fakeTextToTokensMap),
             chunkSize: $chunkSize,
             minChunkOverlap: $minChunkOverlap
         );
 
-        $chunks = $textSplitter->split($text);
-
-        $this->assertEquals($expectedChunks, $chunks);
+        $this->assertEquals($expectedChunks, $textSplitter->split($text));
     }
 
-    public static function provideTextsAndExpectedChunks(): array
+    public static function provideTestSplitData(): array
     {
         return [
             'basic text' => [
-                'text' => <<<TEXT
-                    Many words map to one token, but some don't: indivisible.
-
-                    Unicode characters like emojis may be split into many tokens containing the underlying bytes: 👋
-
-                    Sequences of characters commonly found next to each other may be grouped together: 1234567890
-                    TEXT,
-                'chunkSize' => 20,
+                'text' => 'Roses are red, violets are blue.',
+                'chunkSize' => 4,
                 'minChunkOverlap' => 0,
                 'expectedChunks' => [
-                    "Many words map to one token, but some don't: indivisible.\n\nUnic",
-                    "ode characters like emojis may be split into many tokens containing the underlying bytes: 👋\n",
-                    "\nSequences of characters commonly found next to each other may be grouped together: 1234567890",
+                    'Roses are red',
+                    ', violets',
+                    ' are blue.'
+                ],
+                [
+                    'Roses are red, violets are blue.' => [49, 4629, 389, 2266, 11, 410, 952, 5289, 389, 4171, 13],
+                    'Roses are red' => [49, 4629, 389, 2266],
+                    ', violets' => [11, 410, 952, 5289],
+                    ' are blue.' => [389, 4171, 13]
                 ]
             ],
             'basic text with overlap' => [
-                'text' => <<<TEXT
-                    Many words map to one token, but some don't: indivisible.
-
-                    Unicode characters like emojis may be split into many tokens containing the underlying bytes: 👋
-
-                    Sequences of characters commonly found next to each other may be grouped together: 1234567890
-                    TEXT,
-                'chunkSize' => 20,
-                'minChunkOverlap' => 5,
+                'text' => 'Roses are red, violets are blue.',
+                'chunkSize' => 5,
+                'minChunkOverlap' => 2,
                 'expectedChunks' => [
-                    "Many words map to one token, but some don't: indivisible.\n\nUnic",
-                    ".\n\nUnicode characters like emojis may be split into many tokens containing the underlying",
-                    " many tokens containing the underlying bytes: 👋\n\nSequences of characters commonly found next to each",
-                    ' commonly found next to each other may be grouped together: 1234567890'
+                    'Roses are red,',
+                    ' red, violets',
+                    'iolets are blue.'
+                ],
+                [
+                    'Roses are red, violets are blue.' => [49, 4629, 389, 2266, 11, 410, 952, 5289, 389, 4171, 13],
+                    'Roses are red,' => [49, 4629, 389, 2266, 11],
+                    ' red, violets' => [2266, 11, 410, 952, 5289],
+                    'iolets are blue.' => [952, 5289, 389, 4171, 13]
                 ]
             ]
         ];
