@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0
+
+* Lots of coding style fixes
+* Renamed Vexo\Model to Vexo\LanguageModel
+* Made FinishedGeneratingCompletion event have the whole response instead of just completions
+* Added Vexo\LanguageModel\BaseLanguageModel to implement custom models
+* Removed unneeded Vexo\LanguageModel\Parameters class
+* Added first version of embeddings
+* Added Tokenizer abstraction
+* Simplified TextSplitters
+* Added TokenTextSplitter that can split text by tokens
+
 ## 0.2.0
 
 * FakeLanguageModel now also implements EventDispatcherAware for interoperability
