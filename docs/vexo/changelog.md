@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+* Cleaned up library dependencies
+
 ## 0.3.0
 
 * Lots of coding style fixes
