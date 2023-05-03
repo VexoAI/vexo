@@ -16,7 +16,7 @@ A PHP library to help you develop applications powered by language models.
 
 ## Documentation
 
-See the documentation at [docs.vexo.ai](https://docs.vexo.ai/).
+See the documentation at [vexo.ai](https://vexo.ai/).
 
 ## Contributing
 
