@@ -1,4 +1,8 @@
-# Vexo
+<p align="center">
+    <a href="https://vexo.ai">
+        <img src="https://vexo.ai/assets/images/banner.png">
+    </a>
+</p>
 
 <p align="center">
     <a href="https://github.com/VexoAI/vexo/actions">
@@ -11,6 +15,8 @@
         <img src="https://img.shields.io/packagist/dt/vexo/vexo.svg" alt="Total Downloads">
     </a>
 </p>
+
+# Vexo
 
 A PHP library to help you develop applications powered by language models.
 
