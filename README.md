@@ -23,8 +23,3 @@ A PHP library to help you develop applications powered by language models.
 ## Documentation
 
 See the documentation at [vexo.ai](https://vexo.ai/).
-
-## Contributing
-
-Vexo is an open source project, and contributions are very welcome! To contribute, please
-familiarize yourself with the [contributing guidelines](CONTRIBUTING.md).
