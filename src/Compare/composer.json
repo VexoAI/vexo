@@ -1,0 +1,21 @@
+{
+    "name": "vexo/compare",
+    "description": "A collection of functions to compare vectors",
+    "keywords": ["vexo", "vector", "compare"],
+    "license": "MIT",
+    "homepage": "https://vexo.ai/",
+    "authors": [
+        {
+            "name": "Frank van den Brink",
+            "email": "frank@pragmatist.nl"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vexo\\Compare\\": ""
+        }
+    }
+}
