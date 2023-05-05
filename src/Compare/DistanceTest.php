@@ -242,6 +242,16 @@ final class DistanceTest extends TestCase
         $this->assertEqualsWithDelta(0.6000000000000001, Distance::motyka([0.2, 0.4, 0.3, 0.1], [0.3, 0.2, 0.3, 0.2]), 0.00005);
     }
 
+    public function testNeymanReturnsZeroWithEqualVectors(): void
+    {
+        $this->assertEquals(0, Distance::neyman([3, 1, 4, 6, 2], [3, 1, 4, 6, 2]));
+    }
+
+    public function testNeymanIsCorrect(): void
+    {
+        $this->assertEqualsWithDelta(32.41666666666667, Distance::neyman([3, 1, 4, 6, 2], [3, 6, 9, 4, 3]), 0.00005);
+    }
+
     public function testPearsonReturnsZeroWithEqualVectors(): void
     {
         $this->assertEquals(0, Distance::pearson([3, 1, 4, 6, 2], [3, 1, 4, 6, 2]));

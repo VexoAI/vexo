@@ -86,4 +86,9 @@ final class SimilarityTest extends TestCase
         $this->assertEqualsWithDelta(0.666, Similarity::tanimoto([0.2, 0.4, 0.3, 0.1], [0.3, 0.2, 0.3, 0.2]), 0.01);
         $this->assertEqualsWithDelta(0.666, Similarity::tanimoto([1, 0, 1], [1, 1, 1], true), 0.01);
     }
+
+    public function testTanimotoSimilarityHandlesEmptyVectors(): void
+    {
+        $this->assertEquals(1, Similarity::tanimoto([0, 0, 0], [0, 0, 0], true));
+    }
 }
