@@ -1,0 +1,9 @@
+{
+    "sub-splits": [
+        {
+            "name": "compare",
+            "directory": "src/Compare",
+            "target": "git@github.com:VexoAI/compare.git"
+        }
+    ]
+}
