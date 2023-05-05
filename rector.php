@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\Plus\RemoveDeadZeroAndOneOperationRector;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryAndToEarlyReturnRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Set\ValueObject\LevelSetList;
@@ -32,6 +33,9 @@ return static function (RectorConfig $rectorConfig): void {
         FinalizeClassesWithoutChildrenRector::class => [
             __DIR__ . '/src/OutputParser/RegexOutputParser.php',
             __DIR__ . '/src/OutputParser/JsonOutputParser.php',
-        ]
+        ],
+        RemoveDeadZeroAndOneOperationRector::class => [
+            __DIR__ . '/src/Compare/Similarity.php',
+        ],
     ]);
 };

@@ -9,7 +9,7 @@ final class Distance
     /**
      * Returns the Additive Symmetric distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Additive Symmetric algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Additive Symmetric algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -18,7 +18,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (($a[$i] - $b[$i]) * ($a[$i] - $b[$i]) * ($a[$i] + $b[$i])) / ($a[$i] * $b[$i]);
         }
@@ -38,7 +38,7 @@ final class Distance
         $ans = 0;
         $aux = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $aux = abs($a[$i] - $b[$i]);
             $ans += $aux;
@@ -53,7 +53,7 @@ final class Distance
     /**
      * Returns the Bhattacharyy distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Bhattacharyy algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Bhattacharyy algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -62,7 +62,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += sqrt($a[$i] * $b[$i]);
         }
@@ -73,7 +73,7 @@ final class Distance
     /**
      * Returns the Canberra distance between vectors a and b.
      *
-     * @link https://en.wikipedia.org/wiki/Canberra_distance Canberra algorithm
+     * @see https://en.wikipedia.org/wiki/Canberra_distance Canberra algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -82,7 +82,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += abs($a[$i] - $b[$i]) / ($a[$i] + $b[$i]);
         }
@@ -93,7 +93,7 @@ final class Distance
     /**
      * Returns the Chebyshev distance between vectors a and b.
      *
-     * @link https://en.wikipedia.org/wiki/Chebyshev_distance Chebyshev algorithm
+     * @see https://en.wikipedia.org/wiki/Chebyshev_distance Chebyshev algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -103,7 +103,7 @@ final class Distance
         $max = 0;
         $aux = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $aux = abs($a[$i] - $b[$i]);
             if ($max < $aux) {
@@ -117,7 +117,7 @@ final class Distance
     /**
      * Returns the Clark distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Clark algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Clark algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -126,7 +126,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (abs($a[$i] - $b[$i]) / ($a[$i] + $b[$i])) ** 2;
         }
@@ -137,7 +137,7 @@ final class Distance
     /**
      * Returns the Czekanowski distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Czekanowski algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Czekanowski algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -150,7 +150,7 @@ final class Distance
     /**
      * Returns the Dice distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Dice algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Dice algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -161,7 +161,7 @@ final class Distance
         $b2 = 0;
         $prod2 = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $a2 += $a[$i] * $a[$i];
             $b2 += $b[$i] * $b[$i];
@@ -174,7 +174,7 @@ final class Distance
     /**
      * Returns the Divergence distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Divergence algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Divergence algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -183,7 +183,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (($a[$i] - $b[$i]) * ($a[$i] - $b[$i])) / (($a[$i] + $b[$i]) * ($a[$i] + $b[$i]));
         }
@@ -201,7 +201,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += ($a[$i] - $b[$i]) * ($a[$i] - $b[$i]);
         }
@@ -212,7 +212,7 @@ final class Distance
     /**
      * Returns the Fidelity similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Fidelity Similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Fidelity Similarity algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -221,7 +221,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += sqrt($a[$i] * $b[$i]);
         }
@@ -232,7 +232,7 @@ final class Distance
     /**
      * Returns the Gower distance between vectors a and b.
      *
-     * @link https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v4.2.pdf Gower algorithm
+     * @see https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v4.2.pdf Gower algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -241,7 +241,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += abs($a[$i] - $b[$i]);
         }
@@ -252,7 +252,7 @@ final class Distance
     /**
      * Returns the Harmonic mean similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Harmonic Mean Similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Harmonic Mean Similarity algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -261,7 +261,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += ($a[$i] * $b[$i]) / ($a[$i] + $b[$i]);
         }
@@ -272,7 +272,7 @@ final class Distance
     /**
      * Returns the Hellinger distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Hellinger algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Hellinger algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -281,7 +281,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += sqrt($a[$i] * $b[$i]);
         }
@@ -292,7 +292,7 @@ final class Distance
     /**
      * Returns the Inner Product similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Inner Product Similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Inner Product Similarity algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -301,7 +301,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += $a[$i] * $b[$i];
         }
@@ -312,7 +312,7 @@ final class Distance
     /**
      * Returns the Intersection distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Intersection algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Intersection algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -321,7 +321,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += min($a[$i], $b[$i]);
         }
@@ -332,7 +332,7 @@ final class Distance
     /**
      * Returns Jaccard distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jaccard algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jaccard algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -345,7 +345,7 @@ final class Distance
     /**
      * Returns the Jeffreys distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jeffreys algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jeffreys algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -354,7 +354,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += ($a[$i] - $b[$i]) * log($a[$i] / $b[$i]);
         }
@@ -365,7 +365,7 @@ final class Distance
     /**
      * Returns the Jensen difference distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jensen difference algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jensen difference algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -374,7 +374,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans +=
                 ($a[$i] * log($a[$i]) + $b[$i] * log($b[$i])) / 2 -
@@ -387,7 +387,7 @@ final class Distance
     /**
      * Returns the Jensen-Shannon distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jensen-Shannon algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Jensen-Shannon algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -397,7 +397,7 @@ final class Distance
         $p = 0;
         $q = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $p += $a[$i] * log((2 * $a[$i]) / ($a[$i] + $b[$i]));
             $q += $b[$i] * log((2 * $b[$i]) / ($a[$i] + $b[$i]));
@@ -409,7 +409,7 @@ final class Distance
     /**
      * Returns the K divergence distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf K divergence algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf K divergence algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -418,7 +418,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += $a[$i] * log((2 * $a[$i]) / ($a[$i] + $b[$i]));
         }
@@ -429,7 +429,7 @@ final class Distance
     /**
      * Returns the Kulczynski distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kulczynski algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kulczynski algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -439,7 +439,7 @@ final class Distance
         $up = 0;
         $down = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $up += abs($a[$i] - $b[$i]);
             $down += min($a[$i], $b[$i]);
@@ -451,7 +451,7 @@ final class Distance
     /**
      * Returns the Kullback-Leibler distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kullback-Leibler algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kullback-Leibler algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -460,7 +460,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += $a[$i] * log($a[$i] / $b[$i]);
         }
@@ -471,7 +471,7 @@ final class Distance
     /**
      * Returns the Kumar-Johnson distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kumar-Johnson algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kumar-Johnson algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -480,9 +480,9 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
-            $ans += pow(($a[$i] * $a[$i] - $b[$i] * $b[$i]), 2) / (2 * pow(($a[$i] * $b[$i]), 1.5));
+            $ans += ($a[$i] * $a[$i] - $b[$i] * $b[$i]) ** 2 / (2 * ($a[$i] * $b[$i]) ** 1.5);
         }
 
         return $ans;
@@ -491,7 +491,7 @@ final class Distance
     /**
      * Returns the Lorentzian distance between vectors a and b.
      *
-     * @link https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v4.2.pdf Lorentzian algorithm
+     * @see https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v4.2.pdf Lorentzian algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -500,7 +500,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += log(abs($a[$i] - $b[$i]) + 1);
         }
@@ -511,7 +511,7 @@ final class Distance
     /**
      * Returns the Manhattan distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Manhattan algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Manhattan algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -520,7 +520,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += abs($a[$i] - $b[$i]);
         }
@@ -531,7 +531,7 @@ final class Distance
     /**
      * Returns the Matusita distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Matusita algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Matusita algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -540,7 +540,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += sqrt($a[$i] * $b[$i]);
         }
@@ -551,28 +551,28 @@ final class Distance
     /**
      * Returns the Minkowski distance between vectors a and b for order p.
      *
-     * @link https://en.wikipedia.org/wiki/Minkowski_distance Minkowski algorithm
+     * @see https://en.wikipedia.org/wiki/Minkowski_distance Minkowski algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
-     * @param float $p Number of order
+     * @param float   $p Number of order
      */
     public static function minkowski(array $a, array $b, float $p): float
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
-            $d += pow(abs($a[$i] - $b[$i]), $p);
+            $d += abs($a[$i] - $b[$i]) ** $p;
         }
 
-        return pow($d, 1 / $p);
+        return $d ** (1 / $p);
     }
 
     /**
      * Returns the Motyka distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Motyka algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Motyka algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -582,7 +582,7 @@ final class Distance
         $up = 0;
         $down = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $up += min($a[$i], $b[$i]);
             $down += $a[$i] + $b[$i];
@@ -594,7 +594,7 @@ final class Distance
     /**
      * Returns the Neyman distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Neyman algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Neyman algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -603,7 +603,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (($a[$i] - $b[$i]) * ($a[$i] - $b[$i])) / $a[$i];
         }
@@ -614,7 +614,7 @@ final class Distance
     /**
      * Returns the Pearson distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Pearson algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Pearson algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -623,7 +623,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (($a[$i] - $b[$i]) * ($a[$i] - $b[$i])) / $b[$i];
         }
@@ -634,7 +634,7 @@ final class Distance
     /**
      * Returns the Probabilistic Symmetric distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Probabilistic Symmetric algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Probabilistic Symmetric algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -643,7 +643,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (($a[$i] - $b[$i]) * ($a[$i] - $b[$i])) / ($a[$i] + $b[$i]);
         }
@@ -654,7 +654,7 @@ final class Distance
     /**
      * Returns the Ruzicka distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Ruzicka algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Ruzicka algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -664,7 +664,7 @@ final class Distance
         $up = 0;
         $down = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $up += min($a[$i], $b[$i]);
             $down += max($a[$i], $b[$i]);
@@ -676,7 +676,7 @@ final class Distance
     /**
      * Returns the Soergel distance between vectors a and b.
      *
-     * @link https://www.orgchm.bas.bg/ Soergel algorithm
+     * @see https://www.orgchm.bas.bg/ Soergel algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -686,7 +686,7 @@ final class Distance
         $up = 0;
         $down = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $up += abs($a[$i] - $b[$i]);
             $down += max($a[$i], $b[$i]);
@@ -698,7 +698,7 @@ final class Distance
     /**
      * Returns the Sorensen distance between vectors a and b.
      *
-     * @link https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient Sorensen algorithm
+     * @see https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient Sorensen algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -708,7 +708,7 @@ final class Distance
         $up = 0;
         $down = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $up += abs($a[$i] - $b[$i]);
             $down += $a[$i] + $b[$i];
@@ -720,7 +720,7 @@ final class Distance
     /**
      * Returns the squared distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Squared algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Squared algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -729,7 +729,7 @@ final class Distance
     {
         $d = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $d += (($a[$i] - $b[$i]) * ($a[$i] - $b[$i])) / ($a[$i] + $b[$i]);
         }
@@ -740,7 +740,7 @@ final class Distance
     /**
      * Returns the Squared Chord distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Squared Chord algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Squared Chord algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -749,9 +749,9 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
-            $ans += pow(sqrt($a[$i]) - sqrt($b[$i]), 2);
+            $ans += (sqrt($a[$i]) - sqrt($b[$i])) ** 2;
         }
 
         return $ans;
@@ -760,7 +760,7 @@ final class Distance
     /**
      * Returns the Taneja distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Taneja algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Taneja algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -769,7 +769,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans +=
                 (($a[$i] + $b[$i]) / 2) *
@@ -782,11 +782,11 @@ final class Distance
     /**
      * Returns the Tanimoto distance between vectors a and b, and accepts the bitVector use.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Tanimoto algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Tanimoto algorithm
      *
-     * @param float[] $a First vector
-     * @param float[] $b Second vector
-     * @param bool $bitvector BitVector
+     * @param float[] $a         First vector
+     * @param float[] $b         Second vector
+     * @param bool    $bitvector BitVector
      */
     public static function tanimoto(array $a, array $b, bool $bitvector = false): float
     {
@@ -798,7 +798,7 @@ final class Distance
         $q = 0;
         $m = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $p += $a[$i];
             $q += $b[$i];
@@ -811,7 +811,7 @@ final class Distance
     /**
      * Returns the Topsoe distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Topsoe algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Topsoe algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -820,7 +820,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += $a[$i] * log((2 * $a[$i]) / ($a[$i] + $b[$i])) + $b[$i] * log((2 * $b[$i]) / ($a[$i] + $b[$i]));
         }
@@ -831,7 +831,7 @@ final class Distance
     /**
      * Returns the Wave Hedges distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Wave Hedges algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Wave Hedges algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -840,7 +840,7 @@ final class Distance
     {
         $ans = 0;
 
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $ans += 1 - min($a[$i], $b[$i]) / max($a[$i], $b[$i]);
         }

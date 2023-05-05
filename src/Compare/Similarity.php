@@ -17,19 +17,20 @@ final class Similarity
         $p = 0;
         $p2 = 0;
         $q2 = 0;
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $p += $a[$i] * $b[$i];
             $p2 += $a[$i] * $a[$i];
             $q2 += $b[$i] * $b[$i];
         }
+
         return $p / (sqrt($p2) * sqrt($q2));
     }
 
     /**
      * Returns the Czekanowski similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Czekanowski similarity
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Czekanowski similarity
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -38,18 +39,19 @@ final class Similarity
     {
         $up = 0;
         $down = 0;
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $up += min($a[$i], $b[$i]);
             $down += $a[$i] + $b[$i];
         }
+
         return (2 * $up) / $down;
     }
 
     /**
      * Returns the Dice similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Dice similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Dice similarity algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -62,7 +64,7 @@ final class Similarity
     /**
      * Returns the Intersection similarity distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Intersection similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Intersection similarity algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -75,7 +77,7 @@ final class Similarity
     /**
      * Returns the Kulczynski similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kulczinski algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kulczinski algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -88,7 +90,7 @@ final class Similarity
     /**
      * Returns Kumar-Hassebrook similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kumar-Hassebrook Similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Kumar-Hassebrook Similarity algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -98,7 +100,7 @@ final class Similarity
         $p = 0;
         $p2 = 0;
         $q2 = 0;
-        $total = count($a);
+        $total = \count($a);
         for ($i = 0; $i < $total; $i++) {
             $p += $a[$i] * $b[$i];
             $p2 += $a[$i] * $a[$i];
@@ -111,7 +113,7 @@ final class Similarity
     /**
      * Returns the Motyka similarity between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Motyka algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Motyka algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -129,10 +131,10 @@ final class Similarity
      */
     public static function pearson(array $a, array $b): float
     {
-        $total = count($a);
+        $total = \count($a);
 
         $avgA = array_sum($a) / $total;
-        $avgB = array_sum($b) / count($b);
+        $avgB = array_sum($b) / \count($b);
 
         $newA = [];
         $newB = [];
@@ -147,7 +149,7 @@ final class Similarity
     /**
      * Returns the Squared-chord distance between vectors a and b.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Squared-chord algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Squared-chord algorithm
      *
      * @param float[] $a First vector
      * @param float[] $b Second vector
@@ -160,15 +162,15 @@ final class Similarity
     /**
      * Returns the Tanimoto similarity between vectors p and q, and accepts the bitVector use.
      *
-     * @link https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Tanimoto similarity algorithm
+     * @see https://www.naun.org/main/NAUN/ijmmas/mmmas-49.pdf Tanimoto similarity algorithm
      *
-     * @param float[] $a First vector
-     * @param float[] $b Second vector
-     * @param bool $bitvector BitVector
+     * @param float[] $a         First vector
+     * @param float[] $b         Second vector
+     * @param bool    $bitvector BitVector
      */
     public static function tanimoto(array $a, array $b, bool $bitvector = false): float
     {
-        $total = count($a);
+        $total = \count($a);
 
         if ($bitvector) {
             $inter = 0;

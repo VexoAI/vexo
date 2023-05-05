@@ -29,7 +29,7 @@ final class SimilarityTest extends TestCase
 
     public function testDiceSimilarityIsCorrect(): void
     {
-        $this->assertEquals(50/56, Similarity::dice([0.2, 0.4, 0.3, 0.1], [0.3, 0.2, 0.3, 0.2]));
+        $this->assertEquals(50 / 56, Similarity::dice([0.2, 0.4, 0.3, 0.1], [0.3, 0.2, 0.3, 0.2]));
     }
 
     public function testIntersectionSimilarityReturnsZeroWithEqualVectors(): void
