@@ -15,7 +15,5 @@
 /rector.php export-ignore
 /run-tests.sh export-ignore
 
-/src/Compare export-ignore
-
 /examples export-ignore
 /**/*Test.php export-ignore

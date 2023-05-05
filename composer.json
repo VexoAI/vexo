@@ -15,16 +15,8 @@
         "psr/event-dispatcher": "^1.0",
         "ramsey/collection": "^2.0"
     },
-    "suggest": {
-        "gioni06/gpt3-tokenizer": "If you want to use the GPT3 tokeb-based TextSplitter",
-        "google/apiclient": "If you want to use the Google* agent tools",
-        "justinrainbow/json-schema": "If you want to use JSON output parser",
-        "league/flysystem": "If you want to use the Document file and directory loaders",
-        "openai-php/client": "If you want to use the OpenAI language model or embeddings",
-        "php-http/discovery": "If you want to use the WebTextChain to fetch web pages",
-        "psr/http-client-implementation": "If you want to use the WebTextChain to fetch web pages",
-        "psr/http-factory-implementation": "If you want to use the WebTextChain to fetch web pages",
-        "psr/simple-cache": "If you want to use the CachingChain to cache chain results"
+    "replace": {
+        "vexo/compare": "self.version"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.16",
@@ -45,6 +37,17 @@
         "psr-mock/http-factory-implementation": "^1.0",
         "rector/rector": "^0.15.25",
         "symfony/var-dumper": "^6.2"
+    },
+    "suggest": {
+        "gioni06/gpt3-tokenizer": "If you want to use the GPT3 tokeb-based TextSplitter",
+        "google/apiclient": "If you want to use the Google* agent tools",
+        "justinrainbow/json-schema": "If you want to use JSON output parser",
+        "league/flysystem": "If you want to use the Document file and directory loaders",
+        "openai-php/client": "If you want to use the OpenAI language model or embeddings",
+        "php-http/discovery": "If you want to use the WebTextChain to fetch web pages",
+        "psr/http-client-implementation": "If you want to use the WebTextChain to fetch web pages",
+        "psr/http-factory-implementation": "If you want to use the WebTextChain to fetch web pages",
+        "psr/simple-cache": "If you want to use the CachingChain to cache chain results"
     },
     "autoload": {
         "psr-4": {
