@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Embedding;
+namespace Vexo\EmbeddingModel;
 
 use OpenAI\Responses\Embeddings\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(OpenAIEmbeddingsModel::class)]
-final class OpenAIEmbeddingsModelTest extends TestCase
+#[CoversClass(OpenAI::class)]
+final class OpenAITest extends TestCase
 {
     public function testEmbedQuery(): void
     {
@@ -29,13 +29,13 @@ final class OpenAIEmbeddingsModelTest extends TestCase
         ]);
         $embeddings = $client->embeddings();
 
-        $model = new OpenAIEmbeddingsModel($embeddings);
+        $model = new OpenAI($embeddings);
         $embedding = $model->embedQuery('What was the food like?');
 
         $this->assertEquals([0.01, -0.03, 0.04, -0.01], $embedding->toArray());
     }
 
-    public function testEmbedDocuments(): void
+    public function testEmbedTexts(): void
     {
         $client = new ClientFake([
             CreateResponse::from([
@@ -53,8 +53,8 @@ final class OpenAIEmbeddingsModelTest extends TestCase
         ]);
         $embeddings = $client->embeddings();
 
-        $model = new OpenAIEmbeddingsModel($embeddings);
-        $embeddings = $model->embedDocuments([
+        $model = new OpenAI($embeddings);
+        $embeddings = $model->embedTexts([
             'The food was amazing and delicious.',
             'The service was slow but the food was great.'
         ]);
