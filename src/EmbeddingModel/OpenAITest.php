@@ -30,9 +30,9 @@ final class OpenAITest extends TestCase
         $embeddings = $client->embeddings();
 
         $model = new OpenAI($embeddings);
-        $embedding = $model->embedQuery('What was the food like?');
+        $vector = $model->embedQuery('What was the food like?');
 
-        $this->assertEquals([0.01, -0.03, 0.04, -0.01], $embedding->toArray());
+        $this->assertEquals([0.01, -0.03, 0.04, -0.01], $vector->toArray());
     }
 
     public function testEmbedTexts(): void
@@ -54,12 +54,12 @@ final class OpenAITest extends TestCase
         $embeddings = $client->embeddings();
 
         $model = new OpenAI($embeddings);
-        $embeddings = $model->embedTexts([
+        $vectors = $model->embedTexts([
             'The food was amazing and delicious.',
             'The service was slow but the food was great.'
         ]);
 
-        $this->assertEquals([0.01, -0.03, 0.04, -0.01], $embeddings->first()->toArray());
-        $this->assertEquals([0.02, -0.04, 0.05, -0.02], $embeddings->last()->toArray());
+        $this->assertEquals([0.01, -0.03, 0.04, -0.01], $vectors->first()->toArray());
+        $this->assertEquals([0.02, -0.04, 0.05, -0.02], $vectors->last()->toArray());
     }
 }
