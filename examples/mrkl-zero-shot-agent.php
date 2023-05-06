@@ -17,6 +17,12 @@ use Vexo\Tool\Tools;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+if ( ! getenv('OPENAI_API_KEY') || ! getenv('GOOGLE_API_KEY') || ! getenv('GOOGLE_API_KEY')) {
+    echo "Not all required environment variables set!\n";
+    echo "Please set OPENAI_API_KEY, GOOGLE_API_KEY and GOOGLE_CUSTOM_SEARCH_ENGINE_ID\n\n";
+    exit(1);
+}
+
 $eventDispatcher = new EventDispatcher();
 $eventDispatcher->subscribeTo(SomethingHappened::class, 'dump');
 
