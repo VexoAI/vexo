@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Document\Loader;
+namespace Vexo\DocumentLoader;
 
 use League\Flysystem\FilesystemReader;
 use League\Flysystem\StorageAttributes;
-use Vexo\Document\Documents;
+use Vexo\Contract\Document\Documents as DocumentsContract;
+use Vexo\Contract\Document\Implementation\Documents;
 
 final class DirectoryLoader implements Loader
 {
@@ -28,10 +29,10 @@ final class DirectoryLoader implements Loader
         ?callable $fileLoader = null
     ) {
         $this->filter = $filter ?? fn (StorageAttributes $attributes): bool => true;
-        $this->fileLoader = $fileLoader ?? fn (FilesystemReader $filesystem, string $path): Documents => (new TextFileLoader($filesystem, $path))->load();
+        $this->fileLoader = $fileLoader ?? fn (FilesystemReader $filesystem, string $path): DocumentsContract => (new TextFileLoader($filesystem, $path))->load();
     }
 
-    public function load(): Documents
+    public function load(): DocumentsContract
     {
         $documents = new Documents();
 
@@ -41,7 +42,7 @@ final class DirectoryLoader implements Loader
 
         try {
             foreach ($directoryListing as $file) {
-                /** @var Documents $documents */
+                /** @var DocumentsContract $documents */
                 $documents = $documents->merge(
                     ($this->fileLoader)($this->filesystem, $file->path())
                 );

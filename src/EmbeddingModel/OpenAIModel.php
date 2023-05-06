@@ -7,11 +7,12 @@ namespace Vexo\EmbeddingModel;
 use OpenAI\Contracts\Resources\EmbeddingsContract;
 use Ramsey\Collection\Map\AssociativeArrayMap;
 use Ramsey\Collection\Map\MapInterface;
-use Vexo\Contract\Vector\Implementation;
-use Vexo\Contract\Vector\Vector;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Vector\Implementation\Vector;
+use Vexo\Contract\Vector\Implementation\Vectors;
+use Vexo\Contract\Vector\Vector as VectorContract;
+use Vexo\Contract\Vector\Vectors as VectorsContract;
 
-final class OpenAI implements EmbeddingModel
+final class OpenAIModel implements EmbeddingModel
 {
     private const DEFAULT_PARAMETERS = ['model' => 'text-embedding-ada-002'];
 
@@ -24,27 +25,27 @@ final class OpenAI implements EmbeddingModel
         }
     }
 
-    public function embedQuery(string $query): Vector
+    public function embedQuery(string $query): VectorContract
     {
         $response = $this->embeddings->create(
             $this->prepareParameters($query)
         );
 
-        return new Implementation\Vector($response->embeddings[0]->embedding);
+        return new Vector($response->embeddings[0]->embedding);
     }
 
     /**
      * @param array<string> $texts
      */
-    public function embedTexts(array $texts): Vectors
+    public function embedTexts(array $texts): VectorsContract
     {
         $response = $this->embeddings->create(
             $this->prepareParameters($texts)
         );
 
-        $embeddings = new Implementation\Vectors();
+        $embeddings = new Vectors();
         foreach ($response->embeddings as $embedding) {
-            $embeddings->offsetSet($embedding->index, new Implementation\Vector($embedding->embedding));
+            $embeddings->offsetSet($embedding->index, new Vector($embedding->embedding));
         }
 
         return $embeddings;

@@ -18,14 +18,6 @@ final class Vector implements VectorContract
     }
 
     /**
-     * @param array<int, float> $vector
-     */
-    public static function fromArray(array $vector): static
-    {
-        return new static($vector);
-    }
-
-    /**
      * @return array<int, float>
      */
     public function toArray(): array

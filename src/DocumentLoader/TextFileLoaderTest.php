@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Document\Loader;
+namespace Vexo\DocumentLoader;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;

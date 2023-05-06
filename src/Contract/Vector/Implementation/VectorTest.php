@@ -24,11 +24,6 @@ final class VectorTest extends TestCase
         $this->assertEquals([1, 2, 3], $this->vector->toArray());
     }
 
-    public function testFromArray(): void
-    {
-        $this->assertEquals([4, 5, 6], Vector::fromArray([4, 5, 6])->toArray());
-    }
-
     public function testDistance(): void
     {
         $anotherVector = new Vector([4, 5, 6]);

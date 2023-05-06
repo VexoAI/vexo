@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Document\Loader;
+namespace Vexo\DocumentLoader;
 
-use Vexo\Document\Documents;
+use Vexo\Contract\Document\Documents;
 
 interface Loader
 {

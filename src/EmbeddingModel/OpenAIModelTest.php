@@ -9,8 +9,8 @@ use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(OpenAI::class)]
-final class OpenAITest extends TestCase
+#[CoversClass(OpenAIModel::class)]
+final class OpenAIModelTest extends TestCase
 {
     public function testEmbedQuery(): void
     {
@@ -29,7 +29,7 @@ final class OpenAITest extends TestCase
         ]);
         $embeddings = $client->embeddings();
 
-        $model = new OpenAI($embeddings);
+        $model = new OpenAIModel($embeddings);
         $vector = $model->embedQuery('What was the food like?');
 
         $this->assertEquals([0.01, -0.03, 0.04, -0.01], $vector->toArray());
@@ -53,7 +53,7 @@ final class OpenAITest extends TestCase
         ]);
         $embeddings = $client->embeddings();
 
-        $model = new OpenAI($embeddings);
+        $model = new OpenAIModel($embeddings);
         $vectors = $model->embedTexts([
             'The food was amazing and delicious.',
             'The service was slow but the food was great.'

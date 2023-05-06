@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Document\Loader;
+namespace Vexo\DocumentLoader;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemReader;
@@ -10,8 +10,9 @@ use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use League\Flysystem\StorageAttributes;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Document\Document;
-use Vexo\Document\Documents;
+use Vexo\Contract\Document\Documents as DocumentsContract;
+use Vexo\Contract\Document\Implementation\Document;
+use Vexo\Contract\Document\Implementation\Documents;
 
 #[CoversClass(DirectoryLoader::class)]
 final class DirectoryLoaderTest extends TestCase
@@ -63,7 +64,7 @@ final class DirectoryLoaderTest extends TestCase
         $loader = new DirectoryLoader(
             filesystem: $this->filesystem,
             path: '/',
-            fileLoader: fn (FilesystemReader $filesystem, string $path): Documents => new Documents([new Document('Custom loader')])
+            fileLoader: fn (FilesystemReader $filesystem, string $path): DocumentsContract => new Documents([new Document('Custom loader')])
         );
         $documents = $loader->load();
 

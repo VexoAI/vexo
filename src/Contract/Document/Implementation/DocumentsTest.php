@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Document;
+namespace Vexo\Contract\Document\Implementation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vexo\Contract\Document\Document as DocumentContract;
 
 #[CoversClass(Documents::class)]
 final class DocumentsTest extends TestCase
@@ -14,6 +15,6 @@ final class DocumentsTest extends TestCase
     {
         $documents = new Documents();
 
-        $this->assertSame(Document::class, $documents->getType());
+        $this->assertSame(DocumentContract::class, $documents->getType());
     }
 }

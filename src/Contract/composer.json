@@ -12,6 +12,7 @@
     ],
     "require": {
         "php": ">=8.1",
+        "ramsey/collection": "^2.0",
         "vexo/compare": ">=0.4.0"
     },
     "autoload": {
