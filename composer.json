@@ -16,6 +16,7 @@
         "ramsey/collection": "^2.0"
     },
     "replace": {
+        "vexo/contract": "self.version",
         "vexo/compare": "self.version"
     },
     "require-dev": {

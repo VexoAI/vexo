@@ -1,0 +1,21 @@
+{
+    "name": "vexo/contract",
+    "description": "A collection of interfaces Vexo relies on for interoperability",
+    "keywords": ["vexo", "contract"],
+    "license": "MIT",
+    "homepage": "https://vexo.ai/",
+    "authors": [
+        {
+            "name": "Frank van den Brink",
+            "email": "frank@pragmatist.nl"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vexo\\Contract\\": ""
+        }
+    }
+}
