@@ -14,16 +14,27 @@ final class InMemoryVectorStoreTest extends TestCase
 {
     public function testSearch(): void
     {
-        $vectorStore = new InMemoryVectorStore();
+        $vectorStore = new InMemoryVectorStore(
+            numHyperplanes: 1,
+            numDimensions: 3
+        );
 
-        $vectorStore->add('id-1', new Vector([0.3, -0.7, -0.1]), new Metadata(['title' => 'vector 1']));
-        $vectorStore->add('id-2', new Vector([0.4, 0.8, 0.2]), new Metadata(['title' => 'vector 2']));
-        $vectorStore->add('id-3', new Vector([-0.5, 0.3, 0.2]), new Metadata(['title' => 'vector 3']));
+        for ($i = 0; $i < 100; $i++) {
+            $vectorStore->add(
+                id: 'id-' . $i,
+                vector: new Vector([
+                    (100 - $i) / 100,
+                    (-100 + $i) / 100,
+                    (-50 + $i) / 100
+                ]),
+                metadata: new Metadata(['title' => 'vector ' . $i])
+            );
+        }
 
-        $searchResults = $vectorStore->search(new Vector([0.5, 0.6, 0.1]), 3);
+        $searchResults = $vectorStore->search(new Vector([0.86, -0.5, 0.1]), 3);
 
-        $this->assertEquals('id-2', $searchResults[0]->id());
-        $this->assertEquals('id-3', $searchResults[1]->id());
-        $this->assertEquals('id-1', $searchResults[2]->id());
+        $this->assertEquals('id-56', $searchResults[0]->id());
+        $this->assertEquals('id-57', $searchResults[1]->id());
+        $this->assertEquals('id-55', $searchResults[2]->id());
     }
 }
