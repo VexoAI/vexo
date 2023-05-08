@@ -33,6 +33,7 @@ final class InMemoryVectorStoreTest extends TestCase
 
         $searchResults = $vectorStore->search(new Vector([0.86, -0.5, 0.1]), 3);
 
+        $this->assertCount(3, $searchResults);
         $this->assertEquals('id-56', $searchResults[0]->id());
         $this->assertEquals('id-57', $searchResults[1]->id());
         $this->assertEquals('id-55', $searchResults[2]->id());
