@@ -6,6 +6,8 @@ namespace Vexo\TextSplitter;
 
 final class CharacterTextSplitter implements TextSplitter
 {
+    use SplitDocumentsBehavior;
+
     /**
      * @var callable
      */

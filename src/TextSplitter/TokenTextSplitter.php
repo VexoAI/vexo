@@ -8,6 +8,8 @@ use Vexo\Tokenizer\Tokenizer;
 
 final class TokenTextSplitter implements TextSplitter
 {
+    use SplitDocumentsBehavior;
+
     public function __construct(
         private readonly Tokenizer $tokenizer,
         private readonly int $chunkSize = 4000,
