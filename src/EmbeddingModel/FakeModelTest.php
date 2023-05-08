@@ -46,7 +46,6 @@ final class FakeModelTest extends TestCase
         $fakeModel->embedQuery('one');
     }
 
-
     public function testEmbedTextsThrowsExceptionWhenNoMoreVectors(): void
     {
         $fakeModel = new FakeModel();

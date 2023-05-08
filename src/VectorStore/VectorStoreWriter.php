@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
-use Vexo\Contract\Metadata\Metadata;
-use Vexo\Contract\Vector\Vector;
+use Vexo\Contract\Document\Document;
 
 interface VectorStoreWriter
 {
-    public function add(string $id, Vector $vector, Metadata $metadata): void;
+    public function add(Document $document): void;
 }
