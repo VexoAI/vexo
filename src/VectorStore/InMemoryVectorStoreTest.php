@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 use Vexo\Contract\Vector\Implementation\Vector;
+use Vexo\VectorStore\InMemoryVectorStore\BasicLocalitySensitiveHashing;
 
 #[CoversClass(InMemoryVectorStore::class)]
 final class InMemoryVectorStoreTest extends TestCase
@@ -15,8 +16,11 @@ final class InMemoryVectorStoreTest extends TestCase
     public function testSearch(): void
     {
         $vectorStore = new InMemoryVectorStore(
-            numHyperplanes: 1,
-            numDimensions: 3
+            localitySensitiveHashing: new BasicLocalitySensitiveHashing(
+                randomDimensionGenerator: fn (): float => 0.5,
+                numHyperplanes: 1,
+                numDimensions: 3
+            )
         );
 
         for ($i = 0; $i < 100; $i++) {
