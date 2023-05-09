@@ -27,7 +27,7 @@
         "league/csv": "^9.9",
         "league/flysystem": "^3.14",
         "league/flysystem-memory": "^3.13",
-        "mikey179/vfsstream": "^1.6",
+        "mikey179/vfsstream": "^1.6.10",
         "openai-php/client": "^0.4.2",
         "php-http/discovery": "^1.17",
         "phpstan/phpstan": "^1.10",
