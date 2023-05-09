@@ -17,7 +17,7 @@ use Vexo\Contract\Vector\Vector as VectorContract;
 use Vexo\Contract\Vector\Vectors as VectorsContract;
 use Vexo\EmbeddingModel\EmbeddingModel;
 
-final class InMemoryVectorStore implements VectorStoreWriter, VectorStoreSearcher
+final class InMemoryVectorStore implements WritableVectorStore, SearchableVectorStore
 {
     private readonly VectorsContract $hyperplanes;
 

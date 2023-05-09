@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Vexo\Retriever;
 
 use Vexo\Contract\Document\Documents;
-use Vexo\VectorStore\VectorStoreSearcher;
+use Vexo\VectorStore\SearchableVectorStore;
 
 final class VectorStoreRetriever implements Retriever
 {
     public function __construct(
-        private readonly VectorStoreSearcher $vectorStore,
+        private readonly SearchableVectorStore $vectorStore,
         private readonly int $numResults = 4
     ) {
     }

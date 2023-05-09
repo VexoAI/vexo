@@ -8,7 +8,7 @@ use Vexo\Contract\Document\Document as DocumentContract;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Documents;
 
-final class FakeVectorStore implements VectorStoreWriter, VectorStoreSearcher
+final class FakeVectorStore implements WritableVectorStore, SearchableVectorStore
 {
     public function __construct(
         private readonly DocumentsContract $documents = new Documents()

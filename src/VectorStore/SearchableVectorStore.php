@@ -6,7 +6,7 @@ namespace Vexo\VectorStore;
 
 use Vexo\Contract\Document\Documents;
 
-interface VectorStoreSearcher
+interface SearchableVectorStore
 {
     public function search(string $query, int $numResults = 1): Documents;
 }

@@ -6,7 +6,7 @@ namespace Vexo\VectorStore;
 
 use Vexo\Contract\Document\Document;
 
-interface VectorStoreWriter
+interface WritableVectorStore
 {
     public function add(Document $document): void;
 }
