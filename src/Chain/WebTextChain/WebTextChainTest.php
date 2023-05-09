@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\WebTextChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -10,7 +10,7 @@ use PsrMock\Psr17\RequestFactory;
 use PsrMock\Psr18\Client;
 use PsrMock\Psr7\Response;
 use PsrMock\Psr7\Stream;
-use Vexo\Chain\WebTextChain\FailedToFetchHtml;
+use Vexo\Chain\Input;
 
 #[CoversClass(WebTextChain::class)]
 final class WebTextChainTest extends TestCase

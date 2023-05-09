@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\WebTextChain;
 
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Vexo\Chain\WebTextChain\FailedToFetchHtml;
-use Vexo\Chain\WebTextChain\HtmlTextExtractor;
-use Vexo\Chain\WebTextChain\TextExtractor;
+use Vexo\Chain\BaseChain;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
 
 final class WebTextChain extends BaseChain
 {

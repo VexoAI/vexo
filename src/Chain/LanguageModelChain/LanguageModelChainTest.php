@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\LanguageModelChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vexo\Chain\Input;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
 use Vexo\Prompt\BasicPromptTemplate;

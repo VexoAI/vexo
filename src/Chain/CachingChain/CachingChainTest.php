@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\CachingChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
 
 #[CoversClass(CachingChain::class)]
 final class CachingChainTest extends TestCase

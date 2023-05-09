@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\LanguageModelChain;
 
+use Vexo\Chain\BaseChain;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
 use Vexo\LanguageModel\LanguageModel;
 use Vexo\Prompt\PromptTemplate;
 

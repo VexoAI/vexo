@@ -2,7 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\SequentialChain;
+
+use Vexo\Chain\BaseChain;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Chains;
+use Vexo\Chain\FailedToValidateInput;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
 
 final class SequentialChain extends BaseChain
 {

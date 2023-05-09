@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\SequentialChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vexo\Chain\Chains;
+use Vexo\Chain\FailedToValidateInput;
+use Vexo\Chain\Input;
+use Vexo\Chain\PassthroughChain\PassthroughChain;
 
 #[CoversClass(SequentialChain::class)]
 final class SequentialChainTest extends TestCase

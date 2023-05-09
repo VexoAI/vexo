@@ -15,7 +15,7 @@ use Vexo\Agent\Tool\Tool;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
-use Vexo\Chain\LanguageModelChain;
+use Vexo\Chain\LanguageModelChain\LanguageModelChain;
 use Vexo\Contract\Event\EventDispatcherAware;
 use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 use Vexo\LanguageModel\LanguageModel;

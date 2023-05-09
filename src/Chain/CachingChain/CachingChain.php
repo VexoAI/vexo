@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\CachingChain;
 
 use Psr\SimpleCache\CacheInterface;
+use Vexo\Chain\BaseChain;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Input;
+use Vexo\Chain\Output;
 
 final class CachingChain extends BaseChain
 {

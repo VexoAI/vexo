@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\PassthroughChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vexo\Chain\Input;
 
 #[CoversClass(PassthroughChain::class)]
 final class PassthroughChainTest extends TestCase
