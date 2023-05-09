@@ -36,4 +36,16 @@ final class FakeLanguageModelTest extends TestCase
 
         $this->assertSame($response, $fakeLanguageModel->generate(new Prompt('one')));
     }
+
+    public function testCalls(): void
+    {
+        $response = Response::fromString('one');
+
+        $fakeLanguageModel = new FakeLanguageModel();
+        $fakeLanguageModel->addResponse($response);
+
+        $fakeLanguageModel->generate(new Prompt('one'), 'stop1', 'stop2');
+
+        $this->assertEquals(['prompt' => new Prompt('one'), 'stops' => ['stop1', 'stop2']], $fakeLanguageModel->calls()[0]);
+    }
 }

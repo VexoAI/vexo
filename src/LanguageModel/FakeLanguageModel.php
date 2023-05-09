@@ -13,6 +13,11 @@ final class FakeLanguageModel extends BaseLanguageModel
      */
     private array $responses = [];
 
+    /**
+     * @var array<int, array{prompt: Prompt, stops: array<string>}>>
+     */
+    private array $calls = [];
+
     public function __construct(array $responses = [])
     {
         foreach ($responses as $response) {
@@ -25,8 +30,15 @@ final class FakeLanguageModel extends BaseLanguageModel
         $this->responses[] = $response;
     }
 
+    public function calls(): array
+    {
+        return $this->calls;
+    }
+
     protected function call(Prompt $prompt, string ...$stops): Response
     {
+        $this->calls[] = ['prompt' => $prompt, 'stops' => $stops];
+
         if ($this->responses === []) {
             throw new \LogicException('No more responses to return.');
         }
