@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tool;
+namespace Vexo\Agent\Tool;
 
 use Google\Service\CustomSearchAPI;
 use Google\Service\CustomSearchAPI\Search;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(GoogleSearch::class)]
-final class GoogleSearchTest extends TestCase
+#[CoversClass(GoogleSearchResults::class)]
+final class GoogleSearchResultsTest extends TestCase
 {
     private CustomSearchAPI $service;
 
-    private GoogleSearch $googleSearch;
+    private GoogleSearchResults $googleSearch;
 
     protected function setUp(): void
     {
@@ -34,7 +34,7 @@ final class GoogleSearchTest extends TestCase
             }
         };
 
-        $this->googleSearch = new GoogleSearch($this->service, 'abcdef1234567890');
+        $this->googleSearch = new GoogleSearchResults($this->service, 'abcdef1234567890');
     }
 
     public function testRun(): void
@@ -43,19 +43,21 @@ final class GoogleSearchTest extends TestCase
             [
                 'title' => 'Search result 1',
                 'link' => 'https://www.example.com/1',
-                'snippet' => 'Search snippet 1'
+                'snippet' => 'Search snippet 1',
+                'something' => 'else'
             ],
             [
                 'title' => 'Search result 2',
                 'link' => 'https://www.example.com/2',
-                'snippet' => 'Search snippet 2'
+                'snippet' => 'Search snippet 2',
+                'more' => 'stuff'
             ],
         ];
 
         $output = $this->googleSearch->run('My search query');
 
         $this->assertEquals(
-            "Search snippet 1\nSearch snippet 2\n",
+            '[{"title":"Search result 1","link":"https:\/\/www.example.com\/1","snippet":"Search snippet 1"},{"title":"Search result 2","link":"https:\/\/www.example.com\/2","snippet":"Search snippet 2"}]',
             $output
         );
     }
@@ -66,6 +68,6 @@ final class GoogleSearchTest extends TestCase
 
         $output = $this->googleSearch->run('My search query');
 
-        $this->assertEquals('No good Google Search result was found', $output);
+        $this->assertEquals('[]', $output);
     }
 }

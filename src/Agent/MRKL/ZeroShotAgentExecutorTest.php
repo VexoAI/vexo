@@ -11,13 +11,13 @@ use Vexo\Agent\AgentExecutorFinishedProcessing;
 use Vexo\Agent\AgentExecutorForcedStop;
 use Vexo\Agent\AgentExecutorStartedProcessing;
 use Vexo\Agent\AgentExecutorStartedRunIteration;
+use Vexo\Agent\Tool\Callback;
+use Vexo\Agent\Tool\Resolver\NameResolver;
+use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
-use Vexo\Tool\Callback;
-use Vexo\Tool\Resolver\NameResolver;
-use Vexo\Tool\Tools;
 
 #[CoversClass(ZeroShotAgentExecutor::class)]
 #[IgnoreClassForCodeCoverage(AgentExecutorStartedProcessing::class)]

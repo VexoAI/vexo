@@ -12,12 +12,12 @@ use Vexo\Agent\AgentExecutorStartedRunIteration;
 use Vexo\Agent\Finish;
 use Vexo\Agent\Step;
 use Vexo\Agent\Steps;
+use Vexo\Agent\Tool\Resolver\Resolver;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
 use Vexo\Event\EventDispatcherAware;
 use Vexo\Event\EventDispatcherAwareBehavior;
-use Vexo\Tool\Resolver\Resolver;
 
 final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 {

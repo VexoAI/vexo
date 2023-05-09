@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tool;
+namespace Vexo\Agent\Tool;
 
 use Google\Service\CustomSearchAPI;
-use Google\Service\CustomSearchAPI\Result;
 
-final class GoogleSearchResults extends BaseTool
+final class GoogleSearch extends BaseTool
 {
-    protected string $name = 'Google Search Results JSON';
+    protected string $name = 'Google Search';
 
     protected string $description = 'A wrapper around Google Search. '
         . 'Useful for when you need to answer questions about current events. '
-        . 'Input should be a search query. Output is a JSON array of the query results.';
+        . 'Input should be a search query.';
 
     public function __construct(
         private readonly CustomSearchAPI $search,
@@ -29,15 +28,9 @@ final class GoogleSearchResults extends BaseTool
         ]);
 
         if (empty($results->getItems())) {
-            return '[]';
+            return 'No good Google Search result was found';
         }
 
-        return json_encode(
-            array_map(
-                fn (Result $result): array => ['title' => $result->getTitle(), 'link' => $result->getLink(), 'snippet' => $result->getSnippet()],
-                $results->getItems()
-            ),
-            \JSON_THROW_ON_ERROR
-        );
+        return array_reduce($results->getItems(), fn ($carry, $result): string => $carry . $result->snippet . "\n");
     }
 }

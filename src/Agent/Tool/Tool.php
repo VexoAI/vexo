@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tool;
+namespace Vexo\Agent\Tool;
 
 interface Tool
 {

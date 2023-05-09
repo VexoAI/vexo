@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tool\Resolver;
+namespace Vexo\Agent\Tool\Resolver;
 
+use Vexo\Agent\Tool\Tool;
 use Vexo\Event\BaseEvent;
 
-final class ResolverLookupFailed extends BaseEvent
+final class ResolverLookupFinished extends BaseEvent
 {
     public function __construct(
         public string $query,
         public string $input,
-        public \Throwable $exception
+        public Tool $tool
     ) {
     }
 }

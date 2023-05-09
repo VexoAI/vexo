@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tool\Resolver;
+namespace Vexo\Agent\Tool\Resolver;
 
+use Vexo\Agent\Tool\Tool;
+use Vexo\Agent\Tool\Tools;
 use Vexo\Event\EventDispatcherAware;
 use Vexo\Event\EventDispatcherAwareBehavior;
-use Vexo\Tool\Tool;
-use Vexo\Tool\Tools;
 
 abstract class BaseResolver implements Resolver, EventDispatcherAware
 {

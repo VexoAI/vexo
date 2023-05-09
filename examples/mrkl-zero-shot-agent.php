@@ -7,13 +7,13 @@ namespace Vexo\Examples;
 use League\Event\EventDispatcher;
 use Vexo\Agent\MRKL\ZeroShotAgent;
 use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
+use Vexo\Agent\Tool\Callback;
+use Vexo\Agent\Tool\GoogleSearch;
+use Vexo\Agent\Tool\Resolver\NameResolver;
+use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Input;
 use Vexo\Event\SomethingHappened;
 use Vexo\LanguageModel\OpenAIChatLanguageModel;
-use Vexo\Tool\Callback;
-use Vexo\Tool\GoogleSearch;
-use Vexo\Tool\Resolver\NameResolver;
-use Vexo\Tool\Tools;
 
 require __DIR__ . '/../vendor/autoload.php';
 

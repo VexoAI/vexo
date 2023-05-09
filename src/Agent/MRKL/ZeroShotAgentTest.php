@@ -13,11 +13,11 @@ use Vexo\Agent\AgentFinishedPlanningNextStep;
 use Vexo\Agent\AgentStartedPlanningNextStep;
 use Vexo\Agent\Finish;
 use Vexo\Agent\Steps;
+use Vexo\Agent\Tool\Callback;
+use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Input;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
-use Vexo\Tool\Callback;
-use Vexo\Tool\Tools;
 
 #[CoversClass(ZeroShotAgent::class)]
 #[IgnoreClassForCodeCoverage(AgentStartedPlanningNextStep::class)]

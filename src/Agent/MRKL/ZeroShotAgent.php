@@ -11,6 +11,8 @@ use Vexo\Agent\AgentOutputParser;
 use Vexo\Agent\AgentStartedPlanningNextStep;
 use Vexo\Agent\Step;
 use Vexo\Agent\Steps;
+use Vexo\Agent\Tool\Tool;
+use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\LanguageModelChain;
@@ -18,8 +20,6 @@ use Vexo\Event\EventDispatcherAware;
 use Vexo\Event\EventDispatcherAwareBehavior;
 use Vexo\LanguageModel\LanguageModel;
 use Vexo\Prompt\BasicPromptTemplate;
-use Vexo\Tool\Tool;
-use Vexo\Tool\Tools;
 
 final class ZeroShotAgent implements Agent, EventDispatcherAware
 {

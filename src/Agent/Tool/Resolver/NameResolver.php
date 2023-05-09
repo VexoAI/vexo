@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tool\Resolver;
+namespace Vexo\Agent\Tool\Resolver;
 
-use Vexo\Tool\Tool;
+use Vexo\Agent\Tool\Tool;
 
 final class NameResolver extends BaseResolver
 {
