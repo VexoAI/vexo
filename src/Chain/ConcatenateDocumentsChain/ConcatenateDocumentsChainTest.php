@@ -6,6 +6,7 @@ namespace Vexo\Chain\ConcatenateDocumentsChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vexo\Chain\FailedToValidateInput;
 use Vexo\Chain\Input;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Document\Implementation\Documents;
@@ -30,6 +31,18 @@ final class ConcatenateDocumentsChainTest extends TestCase
             ['text' => "My first document\n\nMy second document"],
             $output->toArray()
         );
+    }
+
+    public function testProcessThrowsExceptionWhenDocumentsIsInvalid(): void
+    {
+        $chain = new ConcatenateDocumentsChain();
+
+        $input = new Input(['documents' => 'very invalid']);
+
+        $this->expectException(FailedToValidateInput::class);
+        $this->expectExceptionMessage('Input must be an instance of Documents');
+
+        $chain->process($input);
     }
 
     public function testInputKeys(): void
