@@ -12,7 +12,7 @@ use Vexo\Agent\Tool\GoogleSearch;
 use Vexo\Agent\Tool\Resolver\NameResolver;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Input;
-use Vexo\Event\SomethingHappened;
+use Vexo\Contract\Event\SomethingHappened;
 use Vexo\LanguageModel\OpenAIChatLanguageModel;
 
 require __DIR__ . '/../vendor/autoload.php';

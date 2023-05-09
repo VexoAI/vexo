@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Event;
+namespace Vexo\Contract\Event;
 
 use League\Event\EventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;

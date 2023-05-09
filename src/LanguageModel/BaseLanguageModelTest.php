@@ -8,7 +8,7 @@ use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
-use Vexo\Event\SomethingHappened;
+use Vexo\Contract\Event\SomethingHappened;
 use Vexo\Prompt\Prompt;
 
 #[CoversClass(BaseLanguageModel::class)]

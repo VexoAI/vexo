@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Event;
+namespace Vexo\Contract\Event;
 
 interface SomethingHappened
 {

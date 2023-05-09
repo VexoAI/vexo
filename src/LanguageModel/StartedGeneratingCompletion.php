@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\LanguageModel;
 
-use Vexo\Event\BaseEvent;
+use Vexo\Contract\Event\BaseEvent;
 use Vexo\Prompt\Prompt;
 
 final class StartedGeneratingCompletion extends BaseEvent

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-use Vexo\Event\EventDispatcherAware;
-use Vexo\Event\EventDispatcherAwareBehavior;
+use Vexo\Contract\Event\EventDispatcherAware;
+use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 
 abstract class BaseChain implements Chain, EventDispatcherAware
 {

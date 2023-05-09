@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Event;
+namespace Vexo\Contract\Event;
 
 abstract class BaseEvent implements SomethingHappened
 {

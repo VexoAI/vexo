@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Agent\Tool\Resolver;
 
 use Vexo\Agent\Tool\Tool;
-use Vexo\Event\BaseEvent;
+use Vexo\Contract\Event\BaseEvent;
 
 final class ResolverLookupFinished extends BaseEvent
 {

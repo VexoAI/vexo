@@ -16,8 +16,8 @@ use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\LanguageModelChain;
-use Vexo\Event\EventDispatcherAware;
-use Vexo\Event\EventDispatcherAwareBehavior;
+use Vexo\Contract\Event\EventDispatcherAware;
+use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 use Vexo\LanguageModel\LanguageModel;
 use Vexo\Prompt\BasicPromptTemplate;
 

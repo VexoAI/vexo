@@ -16,8 +16,8 @@ use Vexo\Agent\Tool\Resolver\Resolver;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
-use Vexo\Event\EventDispatcherAware;
-use Vexo\Event\EventDispatcherAwareBehavior;
+use Vexo\Contract\Event\EventDispatcherAware;
+use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 
 final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 {

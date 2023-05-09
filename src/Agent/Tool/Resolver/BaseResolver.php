@@ -6,8 +6,8 @@ namespace Vexo\Agent\Tool\Resolver;
 
 use Vexo\Agent\Tool\Tool;
 use Vexo\Agent\Tool\Tools;
-use Vexo\Event\EventDispatcherAware;
-use Vexo\Event\EventDispatcherAwareBehavior;
+use Vexo\Contract\Event\EventDispatcherAware;
+use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 
 abstract class BaseResolver implements Resolver, EventDispatcherAware
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Agent;
 
 use Vexo\Chain\Input;
-use Vexo\Event\BaseEvent;
+use Vexo\Contract\Event\BaseEvent;
 
 final class AgentStartedPlanningNextStep extends BaseEvent
 {
