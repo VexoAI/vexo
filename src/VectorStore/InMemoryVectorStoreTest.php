@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vexo\VectorStore;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Metadata\Implementation\Metadata;
@@ -12,6 +13,7 @@ use Vexo\Contract\Vector\Implementation\Vector;
 use Vexo\EmbeddingModel\FakeModel;
 
 #[CoversClass(InMemoryVectorStore::class)]
+#[IgnoreClassForCodeCoverage(DocumentAdded::class)]
 final class InMemoryVectorStoreTest extends TestCase
 {
     public function testSearch(): void

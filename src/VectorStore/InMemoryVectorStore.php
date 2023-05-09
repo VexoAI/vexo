@@ -8,6 +8,8 @@ use Vexo\Contract\Document\Document as DocumentContract;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Document\Implementation\Documents;
+use Vexo\Contract\Event\EventDispatcherAware;
+use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 use Vexo\Contract\Metadata\Metadata as MetadataContract;
 use Vexo\Contract\Vector\Implementation\Vector;
@@ -17,8 +19,10 @@ use Vexo\Contract\Vector\Vector as VectorContract;
 use Vexo\Contract\Vector\Vectors as VectorsContract;
 use Vexo\EmbeddingModel\EmbeddingModel;
 
-final class InMemoryVectorStore implements WritableVectorStore, SearchableVectorStore
+final class InMemoryVectorStore implements WritableVectorStore, SearchableVectorStore, EventDispatcherAware
 {
+    use EventDispatcherAwareBehavior;
+
     private readonly VectorsContract $hyperplanes;
 
     /**
@@ -53,6 +57,8 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
             'metadata' => $document->metadata(),
             'vector' => $embedding
         ];
+
+        $this->emit(new DocumentAdded($document, $embedding));
     }
 
     public function search(string $query, int $numResults = 4): DocumentsContract
