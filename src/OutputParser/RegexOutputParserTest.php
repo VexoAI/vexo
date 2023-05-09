@@ -33,7 +33,7 @@ final class RegexOutputParserTest extends TestCase
     {
         $outputParser = new RegexOutputParser('/^Hello, (?P<very_invalid.*)!$/');
 
-        $this->expectException(SorryFailedToParseOutput::class);
+        $this->expectException(FailedToParseOutput::class);
         $this->expectExceptionMessage('Invalid regular expression');
         $outputParser->parse('Hello, John Doe!');
     }
@@ -42,7 +42,7 @@ final class RegexOutputParserTest extends TestCase
     {
         $outputParser = new RegexOutputParser('/^Hello, (?P<name>.*)!$/');
 
-        $this->expectException(SorryFailedToParseOutput::class);
+        $this->expectException(FailedToParseOutput::class);
         $this->expectExceptionMessage('No matches found');
         $outputParser->parse('This will not match');
     }

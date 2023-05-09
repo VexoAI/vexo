@@ -30,7 +30,7 @@ final class BasicPromptTemplateTest extends TestCase
             ['country']
         );
 
-        $this->expectException(SorryNotAllRequiredValuesWereGiven::class);
+        $this->expectException(FailedToRenderPrompt::class);
         $promptTemplate->render(['foo' => 'bar']);
     }
 }

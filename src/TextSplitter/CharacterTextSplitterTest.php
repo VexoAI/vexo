@@ -27,7 +27,7 @@ final class CharacterTextSplitterTest extends TestCase
             separators: [' '],
         );
 
-        $this->expectException(SorryChunkSizeExceeded::class);
+        $this->expectException(ChunkSizeExceeded::class);
         $textSplitter->split('Lorem ipsum_dolor_sit_amet,_consectetur adipiscing_elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
     }
 

@@ -27,7 +27,7 @@ final class BaseChainTest extends TestCase
     {
         $baseChain = new StubBaseChain();
 
-        $this->expectException(SorryValidationFailed::class);
+        $this->expectException(FailedToValidateInput::class);
         $baseChain->process(new Input(['invalid' => 'input']));
     }
 }

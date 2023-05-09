@@ -33,7 +33,7 @@ abstract class BaseChain implements Chain, EventDispatcherAware
     {
         foreach ($this->inputKeys() as $inputKey) {
             if ( ! $input->containsKey($inputKey)) {
-                throw new SorryValidationFailed(sprintf('Input data is missing required key "%s". Recieved: %s', $inputKey, implode(', ', array_keys($input->toArray()))));
+                throw new FailedToValidateInput(sprintf('Input data is missing required key "%s". Recieved: %s', $inputKey, implode(', ', array_keys($input->toArray()))));
             }
         }
     }

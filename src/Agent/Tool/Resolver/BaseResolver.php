@@ -25,7 +25,7 @@ abstract class BaseResolver implements Resolver, EventDispatcherAware
             $tool = $this->lookup($query, $input);
         } catch (\Throwable $e) {
             $this->emit(new ResolverLookupFailed($query, $input, $e));
-            throw new SorryFailedToResolveTool(sprintf('Failed to resolve tool %s: %s', $query, $e->getMessage()), $e->getCode(), $e);
+            throw new FailedToResolveTool(sprintf('Failed to resolve tool %s: %s', $query, $e->getMessage()), $e->getCode(), $e);
         }
 
         $this->emit(new ResolverLookupFinished($query, $input, $tool));

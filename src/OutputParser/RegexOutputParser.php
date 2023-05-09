@@ -30,11 +30,11 @@ class RegexOutputParser implements OutputParser
 
         $result = @preg_match($this->regex, $text, $matches);
         if ($result === false) {
-            throw new SorryFailedToParseOutput(sprintf('Failed to parse output. Invalid regular expression: %s', $this->regex));
+            throw new FailedToParseOutput(sprintf('Failed to parse output. Invalid regular expression: %s', $this->regex));
         }
 
         if ($result === 0) {
-            throw new SorryFailedToParseOutput('Failed to parse output. No matches found.');
+            throw new FailedToParseOutput('Failed to parse output. No matches found.');
         }
 
         return $matches;

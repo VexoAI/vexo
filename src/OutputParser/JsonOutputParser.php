@@ -43,7 +43,7 @@ class JsonOutputParser implements OutputParser
                 Constraint::CHECK_MODE_COERCE_TYPES | Constraint::CHECK_MODE_APPLY_DEFAULTS | Constraint::CHECK_MODE_VALIDATE_SCHEMA | Constraint::CHECK_MODE_EXCEPTIONS
             );
         } catch (ValidationException $e) {
-            throw new SorryFailedToParseOutput('Failed to validate JSON: ' . $e->getMessage());
+            throw new FailedToParseOutput('Failed to validate JSON: ' . $e->getMessage());
         }
 
         return $decoded;
@@ -55,7 +55,7 @@ class JsonOutputParser implements OutputParser
         $endPosition = strpos($text, self::END_DELIMITER, $startPosition + \strlen(self::START_DELIMITER));
 
         if ($startPosition === false || $endPosition === false) {
-            throw new SorryFailedToParseOutput('Failed to extract JSON from output');
+            throw new FailedToParseOutput('Failed to extract JSON from output');
         }
 
         $startPosition += \strlen(self::START_DELIMITER);
@@ -69,7 +69,7 @@ class JsonOutputParser implements OutputParser
         $decoded = json_decode($json);
 
         if (json_last_error() !== \JSON_ERROR_NONE) {
-            throw new SorryFailedToParseOutput('Failed to decode JSON: ' . json_last_error_msg());
+            throw new FailedToParseOutput('Failed to decode JSON: ' . json_last_error_msg());
         }
 
         return $decoded;

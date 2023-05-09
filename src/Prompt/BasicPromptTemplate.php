@@ -29,7 +29,7 @@ final class BasicPromptTemplate implements PromptTemplate
     {
         $missingValues = array_diff($this->variables, array_keys($values));
         if ($missingValues !== []) {
-            throw SorryNotAllRequiredValuesWereGiven::with($missingValues);
+            throw FailedToRenderPrompt::with($missingValues);
         }
     }
 }

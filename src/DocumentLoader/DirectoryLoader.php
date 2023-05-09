@@ -48,11 +48,11 @@ final class DirectoryLoader implements Loader
                 );
             }
         } catch (\Throwable $e) {
-            throw new SorryFailedToLoadDocument($e->getMessage(), $e->getCode(), $e);
+            throw new FailedToLoadDocument($e->getMessage(), $e->getCode(), $e);
         }
 
         if ($documents->isEmpty()) {
-            throw new SorryFailedToLoadDocument('No documents found in directory');
+            throw new FailedToLoadDocument('No documents found in directory');
         }
 
         return $documents;

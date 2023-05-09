@@ -33,7 +33,7 @@ final class BaseResolverTest extends TestCase
 
     public function testLookupFails(): void
     {
-        $this->expectException(SorryFailedToResolveTool::class);
+        $this->expectException(FailedToResolveTool::class);
         $this->expectExceptionMessage('Failed to resolve tool unknown_tool: Invalid query');
         $this->resolver->resolve('unknown_tool', 'some input');
     }

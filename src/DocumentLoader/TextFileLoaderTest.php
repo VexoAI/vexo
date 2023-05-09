@@ -32,7 +32,7 @@ final class TextFileLoaderTest extends TestCase
 
     public function testLoadThrowsExceptionWhenFileDoesNotExist(): void
     {
-        $this->expectException(SorryFailedToLoadDocument::class);
+        $this->expectException(FailedToLoadDocument::class);
         $this->expectExceptionMessage('Unable to read file');
 
         $loader = new TextFileLoader($this->filesystem, 'SomeNonExistantFile.txt');

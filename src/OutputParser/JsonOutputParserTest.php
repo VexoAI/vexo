@@ -39,7 +39,7 @@ final class JsonOutputParserTest extends TestCase
     public function testParseInvalidJsonFormat(): void
     {
         $input = "```json\n{\"name\": John Doe}\n```";
-        $this->expectException(SorryFailedToParseOutput::class);
+        $this->expectException(FailedToParseOutput::class);
         $this->expectExceptionMessage('Failed to decode JSON: Syntax error');
         $this->outputParser->parse($input);
     }
@@ -47,7 +47,7 @@ final class JsonOutputParserTest extends TestCase
     public function testParseInvalidJsonSchema(): void
     {
         $input = "```json\n{\"name\": 123}\n```";
-        $this->expectException(SorryFailedToParseOutput::class);
+        $this->expectException(FailedToParseOutput::class);
         $this->expectExceptionMessageMatches('/Failed to validate JSON/');
         $this->outputParser->parse($input);
     }
@@ -55,7 +55,7 @@ final class JsonOutputParserTest extends TestCase
     public function testParseMissingDelimiters(): void
     {
         $input = '{"name": "John Doe"}';
-        $this->expectException(SorryFailedToParseOutput::class);
+        $this->expectException(FailedToParseOutput::class);
         $this->expectExceptionMessage('Failed to extract JSON from output');
         $this->outputParser->parse($input);
     }

@@ -74,7 +74,7 @@ final class DirectoryLoaderTest extends TestCase
 
     public function testLoadThrowsExceptionWhenDirectoryDoesNotExist(): void
     {
-        $this->expectException(SorryFailedToLoadDocument::class);
+        $this->expectException(FailedToLoadDocument::class);
         $this->expectExceptionMessage('No documents found in directory');
 
         $loader = new DirectoryLoader($this->filesystem, 'two');
@@ -83,7 +83,7 @@ final class DirectoryLoaderTest extends TestCase
 
     public function testLoadThrowsExceptionWhenFileLoadFails(): void
     {
-        $this->expectException(SorryFailedToLoadDocument::class);
+        $this->expectException(FailedToLoadDocument::class);
         $this->expectExceptionMessage('Some error');
 
         $loader = new DirectoryLoader(

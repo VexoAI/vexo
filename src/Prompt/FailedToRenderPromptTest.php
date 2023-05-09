@@ -7,15 +7,15 @@ namespace Vexo\Prompt;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(SorryNotAllRequiredValuesWereGiven::class)]
-final class SorryNotAllRequiredValuesWereGivenTest extends TestCase
+#[CoversClass(FailedToRenderPrompt::class)]
+final class FailedToRenderPromptTest extends TestCase
 {
     public function testWithRequiredValues(): void
     {
-        $exception = SorryNotAllRequiredValuesWereGiven::with(['foo', 'bar']);
+        $exception = FailedToRenderPrompt::with(['foo', 'bar']);
 
         $this->assertEquals(
-            'Sorry, not all required values were given. Missing: foo, bar',
+            'Failed to render prompt. Missing values: foo, bar',
             $exception->getMessage()
         );
     }

@@ -24,7 +24,7 @@ final class TextFileLoader implements Loader
         try {
             $contents = $this->filesystem->read($this->path);
         } catch (FilesystemException $e) {
-            throw new SorryFailedToLoadDocument($e->getMessage(), $e->getCode(), $e);
+            throw new FailedToLoadDocument($e->getMessage(), $e->getCode(), $e);
         }
 
         return new Documents(

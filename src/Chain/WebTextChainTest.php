@@ -10,7 +10,7 @@ use PsrMock\Psr17\RequestFactory;
 use PsrMock\Psr18\Client;
 use PsrMock\Psr7\Response;
 use PsrMock\Psr7\Stream;
-use Vexo\Chain\WebTextChain\SorryHttpRequestFailed;
+use Vexo\Chain\WebTextChain\FailedToFetchHtml;
 
 #[CoversClass(WebTextChain::class)]
 final class WebTextChainTest extends TestCase
@@ -67,7 +67,7 @@ final class WebTextChainTest extends TestCase
             requestFactory: new RequestFactory()
         );
 
-        $this->expectException(SorryHttpRequestFailed::class);
+        $this->expectException(FailedToFetchHtml::class);
         $webTextChain->process(new Input(['url' => 'http://example.com']));
     }
 

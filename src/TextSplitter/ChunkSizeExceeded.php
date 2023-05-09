@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Vexo\TextSplitter;
 
-final class SorryChunkSizeExceeded extends \LogicException
+final class ChunkSizeExceeded extends \LogicException
 {
 }

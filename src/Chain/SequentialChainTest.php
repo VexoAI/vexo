@@ -71,7 +71,7 @@ final class SequentialChainTest extends TestCase
 
     public function testValidatesMissingInputVariables(): void
     {
-        $this->expectException(SorryValidationFailed::class);
+        $this->expectException(FailedToValidateInput::class);
         $this->expectExceptionMessageMatches(
             '/Chain .* has input variables that are not known: foo, only had fudge/'
         );
@@ -84,7 +84,7 @@ final class SequentialChainTest extends TestCase
 
     public function testValidatesOverlappingOutputVariables(): void
     {
-        $this->expectException(SorryValidationFailed::class);
+        $this->expectException(FailedToValidateInput::class);
         $this->expectExceptionMessageMatches(
             '/Chain .* has output variables that would override known variables: fudge/'
         );
@@ -97,7 +97,7 @@ final class SequentialChainTest extends TestCase
 
     public function testValidatesOutputVariablesAreProducedBySequence(): void
     {
-        $this->expectException(SorryValidationFailed::class);
+        $this->expectException(FailedToValidateInput::class);
         $this->expectExceptionMessage('Output variables are not produced by this sequence: bar');
 
         new SequentialChain(

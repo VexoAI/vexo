@@ -9,8 +9,8 @@ use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Vexo\Chain\WebTextChain\FailedToFetchHtml;
 use Vexo\Chain\WebTextChain\HtmlTextExtractor;
-use Vexo\Chain\WebTextChain\SorryHttpRequestFailed;
 use Vexo\Chain\WebTextChain\TextExtractor;
 
 final class WebTextChain extends BaseChain
@@ -55,7 +55,7 @@ final class WebTextChain extends BaseChain
                 $this->requestFactory->createRequest('GET', $url)
             );
         } catch (ClientExceptionInterface $e) {
-            throw new SorryHttpRequestFailed($e->getMessage(), $e->getCode(), $e);
+            throw new FailedToFetchHtml($e->getMessage(), $e->getCode(), $e);
         }
 
         return (string) $response->getBody();

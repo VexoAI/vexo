@@ -122,7 +122,7 @@ final class CharacterTextSplitter implements TextSplitter
             // This is usually indicative of too high a minimum overlap or too low a chunk size.
             //
             if ($currentChunkSize > $this->chunkSize) {
-                throw new SorryChunkSizeExceeded('Chunk size exceeded due to too high an overlap');
+                throw new ChunkSizeExceeded('Chunk size exceeded due to too high an overlap');
             }
 
             // Adding the current split to our current chunk would exceed the chunk size, so this chunk is complete. We
