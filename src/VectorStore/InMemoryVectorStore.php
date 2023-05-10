@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
+use League\Flysystem\Filesystem;
 use Vexo\Contract\Document\Document as DocumentContract;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Document;
@@ -23,7 +24,7 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
 {
     use EventDispatcherAwareBehavior;
 
-    private readonly VectorsContract $hyperplanes;
+    private VectorsContract $hyperplanes;
 
     /**
      * @var array<string, array<int, array{contents: string, metadata: MetadataContract, vector: VectorContract}>>
@@ -46,10 +47,26 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
         $this->hyperplanes = $this->generateHyperplanes();
     }
 
-    public function add(DocumentContract $document): void
+    public function persistToFile(Filesystem $filesystem, string $path): void
     {
+        $filesystem->write($path, serialize([$this->hashBuckets, $this->hyperplanes]));
+    }
+
+    public function restoreFromFile(Filesystem $filesystem, string $path): void
+    {
+        [$this->hashBuckets, $this->hyperplanes] = unserialize($filesystem->read($path));
+    }
+
+    /**
+     * @param array<string> $metadataItemsToEmbed
+     */
+    public function add(DocumentContract $document, array $metadataItemsToEmbed = []): void
+    {
+        $metadataToEmbed = array_intersect_key($document->metadata()->toArray(), array_flip($metadataItemsToEmbed));
+        $textToEmbed = implode(', ', $metadataToEmbed) . ' ' . $document->contents();
+
         $embedding = $this->embeddingModel
-            ->embedTexts([$document->contents()])
+            ->embedTexts([$textToEmbed])
             ->first();
 
         $this->hashBuckets[$this->generateHash($embedding)][] = [
