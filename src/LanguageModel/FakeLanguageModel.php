@@ -6,7 +6,7 @@ namespace Vexo\LanguageModel;
 
 use Vexo\Prompt\Prompt;
 
-final class FakeLanguageModel extends BaseLanguageModel
+final class FakeLanguageModel implements LanguageModel
 {
     /**
      * @var Response[]
@@ -35,7 +35,7 @@ final class FakeLanguageModel extends BaseLanguageModel
         return $this->calls;
     }
 
-    protected function call(Prompt $prompt, string ...$stops): Response
+    public function generate(Prompt $prompt, string ...$stops): Response
     {
         $this->calls[] = ['prompt' => $prompt, 'stops' => $stops];
 

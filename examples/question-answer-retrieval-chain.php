@@ -52,7 +52,6 @@ $vectorStore->restoreFromFile(
 
 // Load our language model
 $languageModel = new OpenAIChatLanguageModel($openAI->chat());
-$languageModel->useEventDispatcher($eventDispatcher);
 
 // Now we will set up our chains which will be used to answer the question
 

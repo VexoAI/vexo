@@ -51,7 +51,6 @@ $toolResolver = new NameResolver($tools);
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
 
 $llm = new OpenAIChatLanguageModel($chat);
-$llm->useEventDispatcher($eventDispatcher);
 
 $agent = ZeroShotAgent::fromLLMAndTools($llm, $tools, $eventDispatcher);
 

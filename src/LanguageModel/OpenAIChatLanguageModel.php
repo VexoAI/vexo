@@ -10,7 +10,7 @@ use Ramsey\Collection\Map\AssociativeArrayMap;
 use Ramsey\Collection\Map\MapInterface;
 use Vexo\Prompt\Prompt;
 
-final class OpenAIChatLanguageModel extends BaseLanguageModel
+final class OpenAIChatLanguageModel implements LanguageModel
 {
     private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
 
@@ -23,7 +23,7 @@ final class OpenAIChatLanguageModel extends BaseLanguageModel
         }
     }
 
-    protected function call(Prompt $prompt, string ...$stops): Response
+    public function generate(Prompt $prompt, string ...$stops): Response
     {
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
