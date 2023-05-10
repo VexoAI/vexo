@@ -19,6 +19,11 @@ if ( ! getenv('VECTORSTORE_FILENAME')) {
     exit(1);
 }
 
+if ($argc <= 1) {
+    echo "Please provide a search term as argument!\n\n";
+    exit(1);
+}
+
 // Load our event dispatcher which will be used to dump events during execution
 $eventDispatcher = new EventDispatcher();
 $eventDispatcher->subscribeTo(DocumentAdded::class, 'dump');
@@ -36,5 +41,5 @@ $vectorStore->restoreFromFile(
 );
 
 // Search the vector store for similar documents
-$documents = $vectorStore->search('google');
+$documents = $vectorStore->search($argv[1]);
 dump($documents);
