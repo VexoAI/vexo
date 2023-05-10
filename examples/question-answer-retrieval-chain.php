@@ -54,9 +54,6 @@ $vectorStore->restoreFromFile(
 $languageModel = new OpenAIChatLanguageModel($openAI->chat());
 $languageModel->useEventDispatcher($eventDispatcher);
 
-// LanguageModelChain factory
-$languageModelChainFactory = new LanguageModelChainFactory($languageModel);
-
 // Now we will set up our chains which will be used to answer the question
 
 // The DocumentsRetrieverChain will retrieve the most similar documents from the vector store based on a similarity
