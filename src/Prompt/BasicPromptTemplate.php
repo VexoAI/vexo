@@ -19,7 +19,7 @@ final class BasicPromptTemplate implements PromptTemplate
         return new Prompt(
             str_replace(
                 array_map(fn ($variable) => "{{{$variable}}}", $this->variables),
-                array_intersect_key($values, array_flip($this->variables)),
+                array_replace(array_flip($this->variables), $values),
                 $this->template
             )
         );

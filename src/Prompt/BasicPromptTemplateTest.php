@@ -23,6 +23,19 @@ final class BasicPromptTemplateTest extends TestCase
         );
     }
 
+    public function testRenderReplacesInCorrectOrder(): void
+    {
+        $promptTemplate = new BasicPromptTemplate(
+            'Roses are {{first_color}}, violets are {{second_color}}.',
+            ['first_color', 'second_color']
+        );
+
+        $this->assertEquals(
+            'Roses are Red, violets are Blue.',
+            $promptTemplate->render(['second_color' => 'Blue', 'first_color' => 'Red'])
+        );
+    }
+
     public function testRenderValidatesValues(): void
     {
         $promptTemplate = new BasicPromptTemplate(
