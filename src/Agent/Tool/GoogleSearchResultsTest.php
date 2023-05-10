@@ -37,6 +37,16 @@ final class GoogleSearchResultsTest extends TestCase
         $this->googleSearch = new GoogleSearchResults($this->service, 'abcdef1234567890');
     }
 
+    public function testName(): void
+    {
+        $this->assertStringContainsString('google', strtolower($this->googleSearch->name()));
+    }
+
+    public function testDescription(): void
+    {
+        $this->assertStringContainsString('wrapper around google', strtolower($this->googleSearch->description()));
+    }
+
     public function testRun(): void
     {
         $this->service->cse->returnItems = [

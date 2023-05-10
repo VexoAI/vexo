@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Vexo\Agent\Tool\Resolver;
 
 use Vexo\Agent\Tool\Tool;
+use Vexo\Agent\Tool\Tools;
 
-final class NameResolver extends BaseResolver
+final class NameResolver implements Resolver
 {
-    protected function lookup(string $query, string $input): Tool
+    public function __construct(
+        private readonly Tools $tools
+    ) {
+    }
+
+    public function resolve(string $query, string $input): Tool
     {
         $nameToLookup = $this->normalizeName($query);
 
@@ -18,7 +24,7 @@ final class NameResolver extends BaseResolver
             }
         }
 
-        throw new \RuntimeException('Name not found');
+        throw new FailedToResolveTool(sprintf('Failed to resolve tool %s', $query));
     }
 
     private function normalizeName(string $name): string

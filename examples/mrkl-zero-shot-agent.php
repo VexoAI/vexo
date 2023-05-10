@@ -30,21 +30,17 @@ $google = new \Google\Client();
 $google->setApplicationName('Vexo');
 $google->setDeveloperKey(getenv('GOOGLE_API_KEY'));
 
-$tools = new Tools();
-$googleSearchTool = new GoogleSearch(
-    new \Google\Service\CustomSearchAPI($google),
-    getenv('GOOGLE_CUSTOM_SEARCH_ENGINE_ID')
-);
-$googleSearchTool->useEventDispatcher($eventDispatcher);
-$tools->add($googleSearchTool);
-
-$calculatorTool = new Callback(
-    'calculator',
-    'Useful for doing math',
-    fn (string $input): string => 'The answer is 42'
-);
-$calculatorTool->useEventDispatcher($eventDispatcher);
-$tools->add($calculatorTool);
+$tools = new Tools([
+    new GoogleSearch(
+        new \Google\Service\CustomSearchAPI($google),
+        getenv('GOOGLE_CUSTOM_SEARCH_ENGINE_ID')
+    ),
+    new Callback(
+        'calculator',
+        'Useful for doing math',
+        fn (string $input): string => 'The answer is 42'
+    )
+]);
 
 $toolResolver = new NameResolver($tools);
 

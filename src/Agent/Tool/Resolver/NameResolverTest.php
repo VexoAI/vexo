@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Vexo\Agent\Tool\Resolver;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Agent\Tool\Callback;
 use Vexo\Agent\Tool\Tool;
 use Vexo\Agent\Tool\Tools;
 
 #[CoversClass(NameResolver::class)]
-#[IgnoreClassForCodeCoverage(ResolverLookupStarted::class)]
-#[IgnoreClassForCodeCoverage(ResolverLookupFinished::class)]
-#[IgnoreClassForCodeCoverage(ResolverLookupFailed::class)]
 final class NameResolverTest extends TestCase
 {
     private NameResolver $resolver;
@@ -36,7 +32,7 @@ final class NameResolverTest extends TestCase
     public function testLookupFails(): void
     {
         $this->expectException(FailedToResolveTool::class);
-        $this->expectExceptionMessage('Failed to resolve tool unknown_tool: Name not found');
+        $this->expectExceptionMessage('Failed to resolve tool unknown_tool');
         $this->resolver->resolve('unknown_tool', 'some input');
     }
 }
