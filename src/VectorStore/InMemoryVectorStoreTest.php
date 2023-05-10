@@ -7,7 +7,6 @@ namespace Vexo\VectorStore;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Metadata\Implementation\Metadata;
@@ -16,7 +15,6 @@ use Vexo\Contract\Vector\Implementation\Vectors;
 use Vexo\EmbeddingModel\FakeModel;
 
 #[CoversClass(InMemoryVectorStore::class)]
-#[IgnoreClassForCodeCoverage(DocumentAdded::class)]
 final class InMemoryVectorStoreTest extends TestCase
 {
     private FakeModel $fakeModel;

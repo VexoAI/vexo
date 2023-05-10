@@ -44,7 +44,6 @@ $embeddingModel = new OpenAIModel($openAI->embeddings());
 
 // Initialize our vector store.
 $vectorStore = new InMemoryVectorStore(embeddingModel: $embeddingModel);
-$vectorStore->useEventDispatcher($eventDispatcher);
 $vectorStore->restoreFromFile(
     filesystem: new Filesystem(new LocalFilesystemAdapter(__DIR__ . '/../tmp')),
     path: getenv('VECTORSTORE_FILENAME')
