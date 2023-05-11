@@ -8,7 +8,7 @@ use Vexo\Chain\BaseChain;
 use Vexo\Chain\Input;
 use Vexo\Chain\Output;
 use Vexo\LanguageModel\LanguageModel;
-use Vexo\Prompt\PromptTemplate;
+use Vexo\LanguageModel\Prompt\PromptTemplate;
 
 final class LanguageModelChain extends BaseChain
 {

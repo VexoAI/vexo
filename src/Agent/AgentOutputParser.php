@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Agent;
 
-use Vexo\OutputParser\OutputParser;
+use Vexo\LanguageModel\OutputParser\OutputParser;
 
 interface AgentOutputParser extends OutputParser
 {

@@ -7,7 +7,7 @@ namespace Vexo\Agent\MRKL;
 use Vexo\Agent\Action;
 use Vexo\Agent\AgentOutputParser;
 use Vexo\Agent\Finish;
-use Vexo\OutputParser\RegexOutputParser;
+use Vexo\LanguageModel\OutputParser\RegexOutputParser;
 
 final class OutputParser extends RegexOutputParser implements AgentOutputParser
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\LanguageModel;
 
-use Vexo\Prompt\Prompt;
+use Vexo\LanguageModel\Prompt\Prompt;
 
 final class FakeLanguageModel implements LanguageModel
 {

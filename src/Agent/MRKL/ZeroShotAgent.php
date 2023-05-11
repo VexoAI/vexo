@@ -19,7 +19,7 @@ use Vexo\Chain\LanguageModelChain\LanguageModelChain;
 use Vexo\Contract\Event\EventDispatcherAware;
 use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 use Vexo\LanguageModel\LanguageModel;
-use Vexo\Prompt\BasicPromptTemplate;
+use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 
 final class ZeroShotAgent implements Agent, EventDispatcherAware
 {

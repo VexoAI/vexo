@@ -32,8 +32,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         ReturnBinaryAndToEarlyReturnRector::class,
         FinalizeClassesWithoutChildrenRector::class => [
-            __DIR__ . '/src/OutputParser/RegexOutputParser.php',
-            __DIR__ . '/src/OutputParser/JsonOutputParser.php',
+            __DIR__ . '/src/LanguageModel/OutputParser/RegexOutputParser.php',
+            __DIR__ . '/src/LanguageModel/OutputParser/JsonOutputParser.php',
         ],
         RemoveDeadZeroAndOneOperationRector::class => [
             __DIR__ . '/src/Compare/Similarity.php',

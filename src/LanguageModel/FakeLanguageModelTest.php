@@ -6,7 +6,7 @@ namespace Vexo\LanguageModel;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Prompt\Prompt;
+use Vexo\LanguageModel\Prompt\Prompt;
 
 #[CoversClass(FakeLanguageModel::class)]
 final class FakeLanguageModelTest extends TestCase

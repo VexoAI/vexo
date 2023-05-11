@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Prompt;
+namespace Vexo\LanguageModel\Prompt;
 
 final class Prompt implements \Stringable
 {

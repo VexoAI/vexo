@@ -8,8 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Input;
 use Vexo\LanguageModel\FakeLanguageModel;
+use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 use Vexo\LanguageModel\Response;
-use Vexo\Prompt\BasicPromptTemplate;
 
 #[CoversClass(LanguageModelChain::class)]
 final class LanguageModelChainTest extends TestCase

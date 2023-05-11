@@ -8,7 +8,7 @@ use OpenAI\Contracts\Resources\ChatContract;
 use OpenAI\Responses\Chat\CreateResponse;
 use Ramsey\Collection\Map\AssociativeArrayMap;
 use Ramsey\Collection\Map\MapInterface;
-use Vexo\Prompt\Prompt;
+use Vexo\LanguageModel\Prompt\Prompt;
 
 final class OpenAIChatLanguageModel implements LanguageModel
 {
