@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\TextSplitter;
+namespace Vexo\DocumentLoader\TextSplitter;
 
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Document;

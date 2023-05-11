@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\TextSplitter;
+namespace Vexo\DocumentLoader\TextSplitter;
 
 final class CharacterTextSplitter implements TextSplitter
 {

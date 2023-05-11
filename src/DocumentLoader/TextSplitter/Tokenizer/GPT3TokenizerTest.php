@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tokenizer;
+namespace Vexo\DocumentLoader\TextSplitter\Tokenizer;
 
 use Gioni06\Gpt3Tokenizer\Gpt3Tokenizer as Gioni06Gpt3Tokenizer;
 use PHPUnit\Framework\Attributes\CoversClass;

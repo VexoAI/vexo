@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Vexo\TextSplitter;
+namespace Vexo\DocumentLoader\TextSplitter;
 
-use Vexo\Tokenizer\Tokenizer;
+use Vexo\DocumentLoader\TextSplitter\Tokenizer\Tokenizer;
 
 final class TokenTextSplitter implements TextSplitter
 {

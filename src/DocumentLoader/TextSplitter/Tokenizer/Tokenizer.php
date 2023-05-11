@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Tokenizer;
+namespace Vexo\DocumentLoader\TextSplitter\Tokenizer;
 
 interface Tokenizer
 {

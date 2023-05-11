@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Vexo\TextSplitter;
+namespace Vexo\DocumentLoader\TextSplitter;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Vexo\Tokenizer\FakeTokenizer;
+use Vexo\DocumentLoader\TextSplitter\Tokenizer\FakeTokenizer;
 
 #[CoversClass(TokenTextSplitter::class)]
 final class TokenTextSplitterTest extends TestCase
