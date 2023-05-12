@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vexo\Agent\MRKL;
 
-use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
@@ -41,10 +40,8 @@ final class ZeroShotAgentTest extends TestCase
 
     public function testFromLLMAndTools(): void
     {
-        $eventDispatcher = new EventDispatcher();
-        $zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]), $eventDispatcher);
+        $zeroShotAgent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]));
         $this->assertInstanceOf(ZeroShotAgent::class, $zeroShotAgent);
-        $this->assertSame($eventDispatcher, $zeroShotAgent->eventDispatcher());
     }
 
     public function testCreatePromptTemplate(): void

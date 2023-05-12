@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Agent\MRKL;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Vexo\Agent\Agent;
 use Vexo\Agent\AgentExecutorFinishedProcessing;
 use Vexo\Agent\AgentExecutorForcedStop;
@@ -14,18 +15,16 @@ use Vexo\Agent\Step;
 use Vexo\Agent\Steps;
 use Vexo\Agent\Tool\Resolver\Resolver;
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\EventDispatcherAware;
-use Vexo\Contract\Event\EventDispatcherAwareBehavior;
+use Vexo\Contract\Event\Event;
 
-final class ZeroShotAgentExecutor implements EventDispatcherAware
+final class ZeroShotAgentExecutor
 {
-    use EventDispatcherAwareBehavior;
-
     public function __construct(
         private readonly Agent $agent,
         private readonly Resolver $toolResolver,
         private readonly ?int $maxIterations = 15,
-        private readonly ?int $maxTime = null
+        private readonly ?int $maxTime = null,
+        private readonly ?EventDispatcherInterface $eventDispatcher = null
     ) {
     }
 
@@ -93,5 +92,12 @@ final class ZeroShotAgentExecutor implements EventDispatcherAware
         $observation = $tool->run($action->input());
 
         return $nextStep->withObservation($observation);
+    }
+
+    private function emit(Event $event): void
+    {
+        if ($this->eventDispatcher instanceof EventDispatcherInterface) {
+            $this->eventDispatcher->dispatch($event);
+        }
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vexo\Agent;
 
-use Vexo\Contract\Event\BaseEvent;
+use Vexo\Contract\Event\Event;
 
-final class AgentExecutorForcedStop extends BaseEvent
+final class AgentExecutorForcedStop implements Event
 {
     public function __construct(
         public Steps $intermediateSteps,

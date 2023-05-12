@@ -55,8 +55,7 @@ $llm = new OpenAIChatLanguageModel($chat);
 
 $agent = ZeroShotAgent::fromLLMAndTools($llm, $tools, $eventDispatcher);
 
-$executor = new ZeroShotAgentExecutor($agent, $toolResolver);
-$executor->useEventDispatcher($eventDispatcher);
+$executor = new ZeroShotAgentExecutor(agent: $agent, toolResolver: $toolResolver, eventDispatcher: $eventDispatcher);
 
 $context = new Context(['question' => $argv[1]]);
 $executor->run($context);

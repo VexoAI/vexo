@@ -50,13 +50,6 @@ final class SequentialRunner implements Runner
         }
     }
 
-    private function emit(Event $event): void
-    {
-        if ($this->eventDispatcher instanceof EventDispatcherInterface) {
-            $this->eventDispatcher->dispatch($event);
-        }
-    }
-
     private function ensureCurrentContextIsValidForChain(Context $context, Chain $chain, string $identifier): void
     {
         foreach ($this->requiredContextValues[$identifier] as $requiredContextValue => $requiredContextValueType) {
@@ -107,6 +100,13 @@ final class SequentialRunner implements Runner
                     $this->requiredContextValues[$identifier][$name] = $type;
                 }
             }
+        }
+    }
+
+    private function emit(Event $event): void
+    {
+        if ($this->eventDispatcher instanceof EventDispatcherInterface) {
+            $this->eventDispatcher->dispatch($event);
         }
     }
 }

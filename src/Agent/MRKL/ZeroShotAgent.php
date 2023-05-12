@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Agent\MRKL;
 
-use League\Event\EventDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Vexo\Agent\Agent;
 use Vexo\Agent\AgentFinishedPlanningNextStep;
 use Vexo\Agent\AgentOutputParser;
@@ -16,41 +16,37 @@ use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\LanguageModelChain;
-use Vexo\Contract\Event\EventDispatcherAware;
-use Vexo\Contract\Event\EventDispatcherAwareBehavior;
+use Vexo\Contract\Event\Event;
 use Vexo\LanguageModel\LanguageModel;
 use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 
-final class ZeroShotAgent implements Agent, EventDispatcherAware
+final class ZeroShotAgent implements Agent
 {
-    use EventDispatcherAwareBehavior;
-
     public function __construct(
         private readonly Chain $languageModelChain,
         private readonly AgentOutputParser $outputParser,
         private readonly string $languageModelPrefix = 'Thought: ',
-        private readonly string $observationPrefix = 'Observation: '
+        private readonly string $observationPrefix = 'Observation: ',
+        private readonly ?EventDispatcherInterface $eventDispatcher = null
     ) {
     }
 
-    public static function fromLLMAndTools(LanguageModel $languageModel, Tools $tools, ?EventDispatcher $eventDispatcher = null): self
-    {
+    public static function fromLLMAndTools(
+        LanguageModel $languageModel,
+        Tools $tools,
+        ?EventDispatcherInterface $eventDispatcher = null
+    ): self {
         $languageModelChain = new LanguageModelChain(
             languageModel: $languageModel,
             promptTemplate: self::createPromptTemplate($tools),
             stops: ['Observation:']
         );
 
-        $agent = new self(
+        return new self(
             languageModelChain: $languageModelChain,
-            outputParser: new OutputParser()
+            outputParser: new OutputParser(),
+            eventDispatcher: $eventDispatcher
         );
-
-        if ($eventDispatcher instanceof EventDispatcher) {
-            $agent->useEventDispatcher($eventDispatcher);
-        }
-
-        return $agent;
     }
 
     public static function createPromptTemplate(Tools $tools): BasicPromptTemplate
@@ -91,5 +87,12 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
             fn (string $scratchpad, Step $step): string => $scratchpad . $step->log() . $this->observationPrefix . $step->observation() . "\n" . $this->languageModelPrefix,
             ''
         );
+    }
+
+    private function emit(Event $event): void
+    {
+        if ($this->eventDispatcher instanceof EventDispatcherInterface) {
+            $this->eventDispatcher->dispatch($event);
+        }
     }
 }
