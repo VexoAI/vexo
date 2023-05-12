@@ -4,42 +4,34 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\LanguageModelChain;
 
-use Vexo\Chain\BaseChain;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Attribute\RequiresContextValuesMethod;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Context;
 use Vexo\LanguageModel\LanguageModel;
 use Vexo\LanguageModel\Prompt\PromptTemplate;
 
-final class LanguageModelChain extends BaseChain
+#[RequiresContextValuesMethod('requiredContextValues')]
+final class LanguageModelChain implements Chain
 {
     public function __construct(
         private readonly LanguageModel $languageModel,
         private readonly PromptTemplate $promptTemplate,
-        private readonly array $inputKeys = ['text'],
-        private readonly string $outputKey = 'text',
         private readonly array $stops = []
     ) {
     }
 
-    public function inputKeys(): array
+    public function requiredContextValues(): array
     {
-        return $this->inputKeys;
+        return array_fill_keys($this->promptTemplate->variables(), 'mixed');
     }
 
-    public function outputKeys(): array
-    {
-        return [$this->outputKey];
-    }
-
-    protected function call(Input $input): Output
+    public function run(Context $context): void
     {
         $response = $this->languageModel->generate(
-            $this->promptTemplate->render($input->toArray()),
+            $this->promptTemplate->render($context->toArray()),
             ...$this->stops
         );
 
-        return new Output(
-            [$this->outputKey => (string) $response->completions()]
-        );
+        $context->put('text', (string) $response->completions());
     }
 }

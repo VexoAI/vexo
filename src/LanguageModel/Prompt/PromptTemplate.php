@@ -7,4 +7,6 @@ namespace Vexo\LanguageModel\Prompt;
 interface PromptTemplate
 {
     public function render(array $values): Prompt;
+
+    public function variables(): array;
 }

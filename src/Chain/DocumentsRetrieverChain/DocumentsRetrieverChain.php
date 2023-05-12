@@ -4,36 +4,24 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\DocumentsRetrieverChain;
 
-use Vexo\Chain\BaseChain;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Attribute\RequiresContextValue;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Context;
 use Vexo\Retriever\Retriever;
 
-final class DocumentsRetrieverChain extends BaseChain
+final class DocumentsRetrieverChain implements Chain
 {
     public function __construct(
-        private readonly Retriever $retriever,
-        private readonly string $inputKey = 'query',
-        private readonly string $outputKey = 'documents'
+        private readonly Retriever $retriever
     ) {
     }
 
-    public function inputKeys(): array
+    #[RequiresContextValue('query', 'string')]
+    public function run(Context $context): void
     {
-        return [$this->inputKey];
-    }
-
-    public function outputKeys(): array
-    {
-        return [$this->outputKey];
-    }
-
-    protected function call(Input $input): Output
-    {
-        return new Output([
-            $this->outputKey => $this->retriever->retrieve(
-                $input->get($this->inputKey)
-            )
-        ]);
+        $context->put(
+            'documents',
+            $this->retriever->retrieve($context->get('query'))
+        );
     }
 }

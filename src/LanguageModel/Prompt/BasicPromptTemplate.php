@@ -25,6 +25,11 @@ final class BasicPromptTemplate implements PromptTemplate
         );
     }
 
+    public function variables(): array
+    {
+        return $this->variables;
+    }
+
     private function validateValues(array $values): void
     {
         $missingValues = array_diff($this->variables, array_keys($values));

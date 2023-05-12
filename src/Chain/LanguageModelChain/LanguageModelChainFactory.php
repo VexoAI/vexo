@@ -18,23 +18,20 @@ final class LanguageModelChainFactory
     {
         return $this->create(
             promptTemplate: $blueprint->promptTemplate(),
-            stops: $blueprint->stops(),
-            inputKeys: $blueprint->inputKeys(),
-            outputKey: $blueprint->outputKey()
+            promptVariables: $blueprint->promptVariables(),
+            stops: $blueprint->stops()
         );
     }
 
     /**
+     * @param array<string> $promptVariables
      * @param array<string> $stops
-     * @param array<string> $inputKeys
      */
-    public function create(string $promptTemplate, array $stops, array $inputKeys, string $outputKey): LanguageModelChain
+    public function create(string $promptTemplate, array $promptVariables, array $stops): LanguageModelChain
     {
         return new LanguageModelChain(
             languageModel: $this->languageModel,
-            promptTemplate: new BasicPromptTemplate($promptTemplate, $inputKeys),
-            inputKeys: $inputKeys,
-            outputKey: $outputKey,
+            promptTemplate: new BasicPromptTemplate($promptTemplate, $promptVariables),
             stops: $stops
         );
     }

@@ -4,43 +4,24 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\ConcatenateDocumentsChain;
 
-use Vexo\Chain\BaseChain;
-use Vexo\Chain\FailedToValidateInput;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Attribute\RequiresContextValue;
+use Vexo\Chain\Chain;
+use Vexo\Chain\Context;
 use Vexo\Contract\Document\Documents;
 
-final class ConcatenateDocumentsChain extends BaseChain
+final class ConcatenateDocumentsChain implements Chain
 {
-    public function __construct(
-        private readonly string $inputKey = 'documents',
-        private readonly string $outputKey = 'text'
-    ) {
-    }
-
-    public function inputKeys(): array
+    #[RequiresContextValue('documents', Documents::class)]
+    public function run(Context $context): void
     {
-        return [$this->inputKey];
-    }
+        /** @var Documents $documents */
+        $documents = $context->get('documents');
 
-    public function outputKeys(): array
-    {
-        return [$this->outputKey];
-    }
-
-    protected function call(Input $input): Output
-    {
-        $documents = $input->get($this->inputKey);
-
-        if ( ! $documents instanceof Documents) {
-            throw new FailedToValidateInput('Input must be an instance of Documents');
-        }
-
-        $stuffedContents = implode(
+        $combinedContents = implode(
             "\n\n",
             array_map(fn ($document): string => $document->contents(), $documents->toArray())
         );
 
-        return new Output([$this->outputKey => $stuffedContents]);
+        $context->put('combined_contents', $combinedContents);
     }
 }

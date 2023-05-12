@@ -46,4 +46,14 @@ final class BasicPromptTemplateTest extends TestCase
         $this->expectException(FailedToRenderPrompt::class);
         $promptTemplate->render(['foo' => 'bar']);
     }
+
+    public function testVariables(): void
+    {
+        $promptTemplate = new BasicPromptTemplate(
+            'What is the capital of {{country}}?',
+            ['country']
+        );
+
+        $this->assertEquals(['country'], $promptTemplate->variables());
+    }
 }

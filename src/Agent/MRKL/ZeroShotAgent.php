@@ -14,7 +14,7 @@ use Vexo\Agent\Steps;
 use Vexo\Agent\Tool\Tool;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\LanguageModelChain;
 use Vexo\Contract\Event\EventDispatcherAware;
 use Vexo\Contract\Event\EventDispatcherAwareBehavior;
@@ -28,7 +28,6 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
     public function __construct(
         private readonly Chain $languageModelChain,
         private readonly AgentOutputParser $outputParser,
-        private readonly string $outputKey,
         private readonly string $languageModelPrefix = 'Thought: ',
         private readonly string $observationPrefix = 'Observation: '
     ) {
@@ -39,19 +38,15 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         $languageModelChain = new LanguageModelChain(
             languageModel: $languageModel,
             promptTemplate: self::createPromptTemplate($tools),
-            inputKeys: ['question'],
-            outputKey: 'text',
             stops: ['Observation:']
         );
 
         $agent = new self(
             languageModelChain: $languageModelChain,
-            outputParser: new OutputParser(),
-            outputKey: 'text'
+            outputParser: new OutputParser()
         );
 
         if ($eventDispatcher instanceof EventDispatcher) {
-            $languageModelChain->useEventDispatcher($eventDispatcher);
             $agent->useEventDispatcher($eventDispatcher);
         }
 
@@ -72,29 +67,22 @@ final class ZeroShotAgent implements Agent, EventDispatcherAware
         );
     }
 
-    public function plan(Input $input, Steps $intermediateSteps = new Steps()): Step
+    public function plan(Context $context, Steps $intermediateSteps = new Steps()): Step
     {
-        $this->emit(new AgentStartedPlanningNextStep($input, $intermediateSteps));
+        $this->emit(new AgentStartedPlanningNextStep($context, $intermediateSteps));
 
-        $output = $this->languageModelChain->process(
-            $this->buildFullInput($input, $intermediateSteps)
-        );
+        $context->put('scratchpad', $this->createScratchpad($intermediateSteps));
 
-        $outputText = $output->get($this->outputKey);
+        $this->languageModelChain->run($context);
+
+        $outputText = $context->get('text');
         $nextAction = $this->outputParser->parse($outputText);
 
         $step = new Step($nextAction, $outputText);
 
-        $this->emit(new AgentFinishedPlanningNextStep($input, $intermediateSteps, $step));
+        $this->emit(new AgentFinishedPlanningNextStep($context, $intermediateSteps, $step));
 
         return $step;
-    }
-
-    private function buildFullInput(Input $input, Steps $intermediateSteps): Input
-    {
-        return new Input(
-            [...$input->toArray(), 'scratchpad' => $this->createScratchpad($intermediateSteps)]
-        );
     }
 
     private function createScratchpad(Steps $intermediateSteps): string

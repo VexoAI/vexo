@@ -6,7 +6,7 @@ namespace Vexo\Chain\LanguageModelChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 use Vexo\LanguageModel\Response;
@@ -22,27 +22,24 @@ final class LanguageModelChainTest extends TestCase
             languageModel: new FakeLanguageModel([
                 Response::fromString('Paris'),
             ]),
-            promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country']),
-            inputKeys: ['country'],
-            outputKey: 'capital'
+            promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country'])
         );
     }
 
     public function testProcess(): void
     {
-        $input = new Input(['country' => 'France']);
-        $output = $this->languageModelChain->process($input);
+        $context = new Context(['country' => 'France']);
 
-        $this->assertSame(['capital' => 'Paris'], $output->toArray());
+        $this->languageModelChain->run($context);
+
+        $this->assertEquals('Paris', $context->get('text'));
     }
 
-    public function testInputKeys(): void
+    public function testRequiredContextValues(): void
     {
-        $this->assertSame(['country'], $this->languageModelChain->inputKeys());
-    }
-
-    public function testOutputKeys(): void
-    {
-        $this->assertSame(['capital'], $this->languageModelChain->outputKeys());
+        $this->assertEquals(
+            ['country' => 'mixed'],
+            $this->languageModelChain->requiredContextValues()
+        );
     }
 }

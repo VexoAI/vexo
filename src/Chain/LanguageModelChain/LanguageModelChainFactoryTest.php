@@ -6,7 +6,7 @@ namespace Vexo\Chain\LanguageModelChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Prompt\Prompt;
 use Vexo\LanguageModel\Response;
@@ -21,16 +21,15 @@ final class LanguageModelChainFactoryTest extends TestCase
 
         $languageModelChain = $languageModelChainFactory->create(
             promptTemplate: 'What is the capital of {{country}}?',
+            promptVariables: ['country'],
             stops: [],
-            inputKeys: ['country'],
-            outputKey: 'capital'
         );
 
-        $output = $languageModelChain->process(new Input(['country' => 'France']));
+        $context = new Context(['country' => 'France']);
+        $languageModelChain->run($context);
 
-        $this->assertSame(['country'], $languageModelChain->inputKeys());
-        $this->assertSame(['capital'], $languageModelChain->outputKeys());
-        $this->assertSame(['capital' => 'Paris'], $output->toArray());
+        $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
+        $this->assertSame('Paris', $context->get('text'));
 
         $call = $fakeLanguageModel->calls()[0];
         $this->assertInstanceOf(Prompt::class, $call['prompt']);
@@ -49,29 +48,24 @@ final class LanguageModelChainFactoryTest extends TestCase
                 return 'What is the capital of {{country}}?';
             }
 
-            public function stops(): array
-            {
-                return [];
-            }
-
-            public function inputKeys(): array
+            public function promptVariables(): array
             {
                 return ['country'];
             }
 
-            public function outputKey(): string
+            public function stops(): array
             {
-                return 'capital';
+                return [];
             }
         };
 
         $languageModelChain = $languageModelChainFactory->createFromBlueprint($blueprint);
 
-        $output = $languageModelChain->process(new Input(['country' => 'France']));
+        $context = new Context(['country' => 'France']);
+        $languageModelChain->run($context);
 
-        $this->assertSame(['country'], $languageModelChain->inputKeys());
-        $this->assertSame(['capital'], $languageModelChain->outputKeys());
-        $this->assertSame(['capital' => 'Paris'], $output->toArray());
+        $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
+        $this->assertSame('Paris', $context->get('text'));
 
         $call = $fakeLanguageModel->calls()[0];
         $this->assertInstanceOf(Prompt::class, $call['prompt']);

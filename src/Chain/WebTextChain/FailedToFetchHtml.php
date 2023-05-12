@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\WebTextChain;
 
-use Vexo\Chain\FailedToExecuteChain;
+use Vexo\Chain\FailedToRunChain;
 
-final class FailedToFetchHtml extends FailedToExecuteChain
+final class FailedToFetchHtml extends FailedToRunChain
 {
 }

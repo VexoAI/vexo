@@ -14,8 +14,7 @@ use Vexo\Agent\AgentExecutorStartedRunIteration;
 use Vexo\Agent\Tool\Callback;
 use Vexo\Agent\Tool\Resolver\NameResolver;
 use Vexo\Agent\Tool\Tools;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Context;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
 
@@ -53,12 +52,11 @@ final class ZeroShotAgentExecutorTest extends TestCase
 
     public function testProcess(): void
     {
-        $input = new Input(['question' => 'What is the meaning of life?']);
-        $output = $this->zeroShotAgentExecutor->process($input);
+        $context = new Context(['question' => 'What is the meaning of life?']);
+        $this->zeroShotAgentExecutor->run($context);
 
-        $this->assertInstanceOf(Output::class, $output);
-        $this->assertSame('42', $output->get('result'));
-        $this->assertCount(2, $output->get('intermediateSteps'));
+        $this->assertEquals(['answer' => 42], $context->get('results'));
+        $this->assertCount(2, $context->get('intermediateSteps'));
     }
 
     public function testMaxIterationsReached(): void
@@ -69,10 +67,10 @@ final class ZeroShotAgentExecutorTest extends TestCase
             maxIterations: 1
         );
 
-        $input = new Input(['question' => 'What is the meaning of life?']);
-        $output = $zeroShotAgentExecutor->process($input);
+        $context = new Context(['question' => 'What is the meaning of life?']);
+        $zeroShotAgentExecutor->run($context);
 
-        $this->assertSame('Failed to answer question. Max iterations or time reached', $output->get('result'));
+        $this->assertSame('Failed to answer question. Max iterations or time reached', $context->get('result'));
     }
 
     public function testMaxTimeReached(): void
@@ -83,25 +81,9 @@ final class ZeroShotAgentExecutorTest extends TestCase
             maxTime: 0
         );
 
-        $input = new Input(['question' => 'What is the meaning of life?']);
-        $output = $zeroShotAgentExecutor->process($input);
+        $context = new Context(['question' => 'What is the meaning of life?']);
+        $zeroShotAgentExecutor->run($context);
 
-        $this->assertSame('Failed to answer question. Max iterations or time reached', $output->get('result'));
-    }
-
-    public function testInputKeys(): void
-    {
-        $inputKeys = $this->zeroShotAgentExecutor->inputKeys();
-
-        $this->assertIsArray($inputKeys);
-        $this->assertSame(['question'], $inputKeys);
-    }
-
-    public function testOutputKeys(): void
-    {
-        $outputKeys = $this->zeroShotAgentExecutor->outputKeys();
-
-        $this->assertIsArray($outputKeys);
-        $this->assertSame(['result', 'intermediateSteps'], $outputKeys);
+        $this->assertSame('Failed to answer question. Max iterations or time reached', $context->get('result'));
     }
 }

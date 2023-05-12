@@ -11,8 +11,8 @@ use Vexo\Agent\Tool\Callback;
 use Vexo\Agent\Tool\GoogleSearch;
 use Vexo\Agent\Tool\Resolver\NameResolver;
 use Vexo\Agent\Tool\Tools;
-use Vexo\Chain\Input;
-use Vexo\Contract\Event\SomethingHappened;
+use Vexo\Chain\Context;
+use Vexo\Contract\Event\Event;
 use Vexo\LanguageModel\OpenAIChatLanguageModel;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -23,8 +23,13 @@ if ( ! getenv('OPENAI_API_KEY') || ! getenv('GOOGLE_API_KEY') || ! getenv('GOOGL
     exit(1);
 }
 
+if ($argc <= 1) {
+    echo "Please provide a question as argument!\n\n";
+    exit(1);
+}
+
 $eventDispatcher = new EventDispatcher();
-$eventDispatcher->subscribeTo(SomethingHappened::class, 'dump');
+$eventDispatcher->subscribeTo(Event::class, 'dump');
 
 $google = new \Google\Client();
 $google->setApplicationName('Vexo');
@@ -53,6 +58,7 @@ $agent = ZeroShotAgent::fromLLMAndTools($llm, $tools, $eventDispatcher);
 $executor = new ZeroShotAgentExecutor($agent, $toolResolver);
 $executor->useEventDispatcher($eventDispatcher);
 
-$output = $executor->process(new Input(['question' => 'What is the weather in Amsterdam?']));
+$context = new Context(['question' => $argv[1]]);
+$executor->run($context);
 
-echo "\n{$output->get('result')}\n\n";
+dump($context->get('result'));

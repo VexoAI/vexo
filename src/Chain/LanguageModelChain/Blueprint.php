@@ -11,12 +11,10 @@ interface Blueprint
     /**
      * @return array<string>
      */
-    public function stops(): array;
+    public function promptVariables(): array;
 
     /**
      * @return array<string>
      */
-    public function inputKeys(): array;
-
-    public function outputKey(): string;
+    public function stops(): array;
 }

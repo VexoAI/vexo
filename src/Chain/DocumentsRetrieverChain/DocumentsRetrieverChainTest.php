@@ -6,7 +6,7 @@ namespace Vexo\Chain\DocumentsRetrieverChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Document\Implementation\Documents;
@@ -16,7 +16,7 @@ use Vexo\Retriever\CallbackRetriever;
 #[CoversClass(DocumentsRetrieverChain::class)]
 final class DocumentsRetrieverChainTest extends TestCase
 {
-    public function testProcess(): void
+    public function testRun(): void
     {
         $documents = new Documents([
             new Document('My amazing content', new Metadata(['id' => 1])),
@@ -29,30 +29,10 @@ final class DocumentsRetrieverChainTest extends TestCase
             )
         );
 
-        $input = new Input(['query' => 'Something amazing']);
+        $context = new Context(['query' => 'Something amazing']);
 
-        $output = $chain->process($input);
+        $chain->run($context);
 
-        $this->assertSame($documents, $output->get('documents'));
-    }
-
-    public function testInputKeys(): void
-    {
-        $chain = new DocumentsRetrieverChain(
-            retriever: new CallbackRetriever(fn (string $query): DocumentsContract => new Documents()),
-            inputKey: 'foo'
-        );
-
-        $this->assertSame(['foo'], $chain->inputKeys());
-    }
-
-    public function testOutputKeys(): void
-    {
-        $chain = new DocumentsRetrieverChain(
-            retriever: new CallbackRetriever(fn (string $query): DocumentsContract => new Documents()),
-            outputKey: 'bar'
-        );
-
-        $this->assertSame(['bar'], $chain->outputKeys());
+        $this->assertSame($documents, $context->get('documents'));
     }
 }

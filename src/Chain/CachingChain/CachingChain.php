@@ -5,53 +5,66 @@ declare(strict_types=1);
 namespace Vexo\Chain\CachingChain;
 
 use Psr\SimpleCache\CacheInterface;
-use Vexo\Chain\BaseChain;
 use Vexo\Chain\Chain;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Context;
+use Vexo\Chain\Runner;
 
-final class CachingChain extends BaseChain
+final class CachingChain implements Chain
 {
     public function __construct(
-        private readonly Chain $chain,
+        private readonly Runner $runner,
         private readonly CacheInterface $cache,
+        private readonly array $contextInputValuesToMatch,
+        private readonly array $contextOutputValuesToCache,
         private readonly ?int $lifetime = null,
-        private ?string $cacheKeyPrefix = null
+        private readonly string $cacheKeyPrefix = 'vexo.chain.cache'
     ) {
-        $this->cacheKeyPrefix ??= strtolower(str_replace('\\', '.', $this->chain::class));
     }
 
-    public function inputKeys(): array
+    public function run(Context $context): void
     {
-        return $this->chain->inputKeys();
-    }
+        $cacheKey = $this->createCacheKey($context);
 
-    public function outputKeys(): array
-    {
-        return $this->chain->outputKeys();
-    }
+        $cachedContextValues = $this->cache->get($cacheKey);
+        if ($cachedContextValues !== null) {
+            $this->putValuesIntoContext($context, $cachedContextValues);
 
-    protected function call(Input $input): Output
-    {
-        $cacheKey = $this->createCacheKey($input);
-
-        $output = $this->cache->get($cacheKey);
-        if ($output !== null) {
-            return $output;
+            return;
         }
 
-        $output = $this->chain->process($input);
-        $this->cache->set($cacheKey, $output, $this->lifetime);
-
-        return $output;
+        $this->runner->run($context);
+        $this->cache->set(
+            $cacheKey,
+            $this->extractValuesFromContext($context, $this->contextOutputValuesToCache),
+            $this->lifetime
+        );
     }
 
-    private function createCacheKey(Input $input): string
+    private function createCacheKey(Context $context): string
     {
         return sprintf(
             '%s.%s',
             $this->cacheKeyPrefix,
-            hash('sha256', json_encode($input->toArray(), \JSON_THROW_ON_ERROR))
+            hash('sha256', serialize(
+                $this->extractValuesFromContext($context, $this->contextInputValuesToMatch)
+            ))
         );
+    }
+
+    private function extractValuesFromContext(Context $context, array $contextValues): array
+    {
+        $values = [];
+        foreach ($contextValues as $contextValue) {
+            $values[$contextValue] = $context->get($contextValue);
+        }
+
+        return $values;
+    }
+
+    private function putValuesIntoContext(Context $context, array $values): void
+    {
+        foreach ($values as $key => $value) {
+            $context->put($key, $value);
+        }
     }
 }

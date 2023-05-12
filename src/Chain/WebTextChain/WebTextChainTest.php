@@ -10,12 +10,12 @@ use PsrMock\Psr17\RequestFactory;
 use PsrMock\Psr18\Client;
 use PsrMock\Psr7\Response;
 use PsrMock\Psr7\Stream;
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 
 #[CoversClass(WebTextChain::class)]
 final class WebTextChainTest extends TestCase
 {
-    public function testProcess(): void
+    public function testRun(): void
     {
         $httpClient = new Client();
         $webTextChain = new WebTextChain(
@@ -29,15 +29,13 @@ final class WebTextChainTest extends TestCase
             new Response(stream: new Stream('<html><body><p>This is an amazing website! It is great!</p></body></html>'))
         );
 
-        $output = $webTextChain->process(new Input(['url' => 'http://example.com']));
+        $context = new Context(['url' => 'http://example.com']);
+        $webTextChain->run($context);
 
-        $this->assertEquals(
-            ['text' => 'This is an amazing website! It is great!'],
-            $output->toArray()
-        );
+        $this->assertEquals('This is an amazing website! It is great!', $context->get('text'));
     }
 
-    public function testProcessLimitsMaxTextLength(): void
+    public function testRunLimitsMaxTextLength(): void
     {
         $httpClient = new Client();
         $webTextChain = new WebTextChain(
@@ -52,15 +50,13 @@ final class WebTextChainTest extends TestCase
             new Response(stream: new Stream('<html><body><p>This is an amazing website! It is great!</p></body></html>'))
         );
 
-        $output = $webTextChain->process(new Input(['url' => 'http://example.com']));
+        $context = new Context(['url' => 'http://example.com']);
+        $webTextChain->run($context);
 
-        $this->assertEquals(
-            ['text' => 'This is an amazing website!'],
-            $output->toArray()
-        );
+        $this->assertEquals('This is an amazing website!', $context->get('text'));
     }
 
-    public function testProcessThrowsCorrectExceptionOnClientException(): void
+    public function testRunThrowsCorrectExceptionOnClientException(): void
     {
         $webTextChain = new WebTextChain(
             httpClient: new Client(),
@@ -68,28 +64,6 @@ final class WebTextChainTest extends TestCase
         );
 
         $this->expectException(FailedToFetchHtml::class);
-        $webTextChain->process(new Input(['url' => 'http://example.com']));
-    }
-
-    public function testInputKeys(): void
-    {
-        $webTextChain = new WebTextChain(
-            httpClient: new Client(),
-            requestFactory: new RequestFactory(),
-            inputKey: 'link'
-        );
-
-        $this->assertSame(['link'], $webTextChain->inputKeys());
-    }
-
-    public function testOutputKeys(): void
-    {
-        $webTextChain = new WebTextChain(
-            httpClient: new Client(),
-            requestFactory: new RequestFactory(),
-            outputKey: 'contents'
-        );
-
-        $this->assertSame(['contents'], $webTextChain->outputKeys());
+        $webTextChain->run(new Context(['url' => 'http://example.com']));
     }
 }

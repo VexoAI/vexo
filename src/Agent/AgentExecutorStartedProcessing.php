@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Vexo\Agent;
 
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 use Vexo\Contract\Event\BaseEvent;
 
 final class AgentExecutorStartedProcessing extends BaseEvent
 {
     public function __construct(
-        public Input $input
+        public Context $context
     ) {
     }
 }

@@ -20,24 +20,16 @@ final class QuestionAnswerBlueprint implements Blueprint
             . 'Helpful Answer: ';
     }
 
+    public function promptVariables(): array
+    {
+        return ['context', 'question'];
+    }
+
     /**
      * @return array<string>
      */
     public function stops(): array
     {
         return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function inputKeys(): array
-    {
-        return ['context', 'question'];
-    }
-
-    public function outputKey(): string
-    {
-        return 'answer';
     }
 }

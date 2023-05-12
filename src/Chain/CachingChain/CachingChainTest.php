@@ -7,59 +7,39 @@ namespace Vexo\Chain\CachingChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
-use Vexo\Chain\Chain;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Context;
+use Vexo\Chain\Runner;
 
 #[CoversClass(CachingChain::class)]
 final class CachingChainTest extends TestCase
 {
-    private CachingChain $cachingChain;
-
-    protected function setUp(): void
+    public function testRun(): void
     {
-        $this->cachingChain = new CachingChain(new ChainStub(), new CacheStub());
-    }
+        $cachingChain = new CachingChain(
+            new RunnerStub(),
+            new CacheStub(),
+            ['query'],
+            ['incrementor']
+        );
 
-    public function testProcess(): void
-    {
-        $firstOutput = $this->cachingChain->process(new Input([]));
-        $secondOutput = $this->cachingChain->process(new Input([]));
+        $context = new Context(['query' => 'Something amazing']);
+        $cachingChain->run($context);
 
-        $this->assertEquals(1, $firstOutput->toArray()['incrementor']);
-        $this->assertEquals(1, $secondOutput->toArray()['incrementor']);
-    }
+        $this->assertEquals(0, $context->get('incrementor'));
 
-    public function testInputKeysDelegatesToChain(): void
-    {
-        $this->assertSame([], $this->cachingChain->inputKeys());
-    }
+        $cachingChain->run($context);
 
-    public function testOutputKeysDelegatesToChain(): void
-    {
-        $this->assertSame(['incrementor'], $this->cachingChain->outputKeys());
+        $this->assertEquals(0, $context->get('incrementor'));
     }
 }
 
-final class ChainStub implements Chain
+final class RunnerStub implements Runner
 {
     private int $incrementor = 0;
 
-    public function inputKeys(): array
+    public function run(Context $context): void
     {
-        return [];
-    }
-
-    public function outputKeys(): array
-    {
-        return ['incrementor'];
-    }
-
-    public function process(Input $input): Output
-    {
-        $this->incrementor++;
-
-        return new Output(['incrementor' => $this->incrementor]);
+        $context->put('incrementor', $this->incrementor++);
     }
 }
 

@@ -9,6 +9,6 @@ use Ramsey\Collection\Map\AbstractMap;
 /**
  * @extends AbstractMap<string, mixed>
  */
-final class Output extends AbstractMap
+final class Context extends AbstractMap
 {
 }

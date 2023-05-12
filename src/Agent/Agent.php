@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vexo\Agent;
 
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 
 interface Agent
 {
-    public function plan(Input $input, Steps $intermediateSteps): Step;
+    public function plan(Context $context, Steps $intermediateSteps): Step;
 }

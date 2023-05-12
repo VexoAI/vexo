@@ -41,7 +41,7 @@ final class OutputParser extends RegexOutputParser implements AgentOutputParser
         $matches = parent::parse($text);
 
         if ( ! empty($matches['final_answer'])) {
-            return new Finish(['result' => $matches['final_answer']]);
+            return new Finish(['answer' => $matches['final_answer']]);
         }
 
         return new Action($matches['action'], $matches['input']);

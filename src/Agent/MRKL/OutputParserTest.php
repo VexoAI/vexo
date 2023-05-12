@@ -38,6 +38,6 @@ final class OutputParserTest extends TestCase
         $result = $this->outputParser->parse("I finally know the answer!\nFinal Answer: 42");
 
         $this->assertInstanceOf(Finish::class, $result);
-        $this->assertEquals('42', $result->results()['result']);
+        $this->assertEquals('42', $result->results()['answer']);
     }
 }

@@ -28,8 +28,7 @@ final class BlueprintTest extends TestCase
     public function testBlueprint(Blueprint $blueprint): void
     {
         $this->assertNotEmpty($blueprint->promptTemplate());
+        $this->assertContainsOnly('string', $blueprint->promptVariables());
         $this->assertContainsOnly('string', $blueprint->stops());
-        $this->assertContainsOnly('string', $blueprint->inputKeys());
-        $this->assertNotEmpty($blueprint->outputKey());
     }
 }

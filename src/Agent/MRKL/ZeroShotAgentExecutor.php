@@ -13,13 +13,11 @@ use Vexo\Agent\Finish;
 use Vexo\Agent\Step;
 use Vexo\Agent\Steps;
 use Vexo\Agent\Tool\Resolver\Resolver;
-use Vexo\Chain\Chain;
-use Vexo\Chain\Input;
-use Vexo\Chain\Output;
+use Vexo\Chain\Context;
 use Vexo\Contract\Event\EventDispatcherAware;
 use Vexo\Contract\Event\EventDispatcherAwareBehavior;
 
-final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
+final class ZeroShotAgentExecutor implements EventDispatcherAware
 {
     use EventDispatcherAwareBehavior;
 
@@ -31,38 +29,30 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
     ) {
     }
 
-    public function inputKeys(): array
-    {
-        return ['question'];
-    }
-
-    public function outputKeys(): array
-    {
-        return ['result', 'intermediateSteps'];
-    }
-
-    public function process(Input $input): Output
+    public function run(Context $context): void
     {
         $startTime = time();
         $timeElapsed = 0;
         $iterations = 0;
         $intermediateSteps = new Steps();
 
-        $this->emit(new AgentExecutorStartedProcessing($input));
+        $this->emit(new AgentExecutorStartedProcessing($context));
 
         while ($this->shouldContinue($timeElapsed, $iterations)) {
             $this->emit(new AgentExecutorStartedRunIteration($intermediateSteps, $iterations, $timeElapsed));
 
-            $nextStep = $this->takeNextStep($input, $intermediateSteps);
+            $nextStep = $this->takeNextStep($context, $intermediateSteps);
             $intermediateSteps->add($nextStep);
 
             if ($nextStep->action() instanceof Finish) {
                 $results = $nextStep->action()->results();
-                $results['intermediateSteps'] = $intermediateSteps;
 
-                $this->emit(new AgentExecutorFinishedProcessing($results, $iterations, $timeElapsed));
+                $context->put('intermediateSteps', $intermediateSteps);
+                $context->put('results', $results);
 
-                return new Output($results);
+                $this->emit(new AgentExecutorFinishedProcessing($context, $iterations, $timeElapsed));
+
+                return;
             }
 
             $timeElapsed = time() - $startTime;
@@ -71,10 +61,8 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
 
         $this->emit(new AgentExecutorForcedStop($intermediateSteps, $iterations, $timeElapsed));
 
-        return new Output([
-            'result' => 'Failed to answer question. Max iterations or time reached',
-            'intermediateSteps' => $intermediateSteps
-        ]);
+        $context->put('intermediateSteps', $intermediateSteps);
+        $context->put('result', 'Failed to answer question. Max iterations or time reached');
     }
 
     private function shouldContinue(int $timeElapsed, int $iterations): bool
@@ -93,9 +81,9 @@ final class ZeroShotAgentExecutor implements Chain, EventDispatcherAware
         return $this->maxIterations === null || $iterations < $this->maxIterations;
     }
 
-    private function takeNextStep(Input $input, Steps $intermediateSteps): Step
+    private function takeNextStep(Context $context, Steps $intermediateSteps): Step
     {
-        $nextStep = $this->agent->plan($input, $intermediateSteps);
+        $nextStep = $this->agent->plan($context, $intermediateSteps);
         if ($nextStep->action() instanceof Finish) {
             return $nextStep;
         }

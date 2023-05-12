@@ -15,7 +15,7 @@ use Vexo\Agent\Finish;
 use Vexo\Agent\Steps;
 use Vexo\Agent\Tool\Callback;
 use Vexo\Agent\Tool\Tools;
-use Vexo\Chain\Input;
+use Vexo\Chain\Context;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
 
@@ -60,15 +60,15 @@ final class ZeroShotAgentTest extends TestCase
     public function testPlan(): void
     {
         $agent = ZeroShotAgent::fromLLMAndTools($this->languageModel, new Tools([$this->toolA, $this->toolB]));
-        $input = new Input(['question' => 'What is the meaning of life?']);
+        $context = new Context(['question' => 'What is the meaning of life?']);
 
-        $nextStep = $agent->plan($input);
+        $nextStep = $agent->plan($context);
         $this->assertInstanceOf(Action::class, $nextStep->action());
         $this->assertEquals('ToolA', $nextStep->action()->tool());
         $this->assertEquals('Some input', $nextStep->action()->input());
 
-        $nextStep = $agent->plan($input, new Steps([$nextStep]));
+        $nextStep = $agent->plan($context, new Steps([$nextStep]));
         $this->assertInstanceOf(Finish::class, $nextStep->action());
-        $this->assertEquals('42', $nextStep->action()->results()['result']);
+        $this->assertEquals('42', $nextStep->action()->results()['answer']);
     }
 }
