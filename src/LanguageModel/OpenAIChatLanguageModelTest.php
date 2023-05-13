@@ -9,7 +9,7 @@ use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Collection\Map\AssociativeArrayMap;
-use Vexo\LanguageModel\Prompt\Prompt;
+use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
 
 #[CoversClass(OpenAIChatLanguageModel::class)]
 final class OpenAIChatLanguageModelTest extends TestCase

@@ -7,8 +7,8 @@ namespace Vexo\Chain\LanguageModelChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
+use Vexo\Chain\LanguageModelChain\Prompt\BasicPromptTemplate;
 use Vexo\LanguageModel\FakeLanguageModel;
-use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 use Vexo\LanguageModel\Response;
 
 #[CoversClass(LanguageModelChain::class)]

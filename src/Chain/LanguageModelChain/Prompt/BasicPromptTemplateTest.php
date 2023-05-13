@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel\Prompt;
+namespace Vexo\Chain\LanguageModelChain\Prompt;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

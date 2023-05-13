@@ -7,8 +7,8 @@ namespace Vexo\Chain\LanguageModelChain;
 use Vexo\Chain\Attribute\RequiresContextValuesMethod;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\LanguageModelChain\Prompt\PromptTemplate;
 use Vexo\LanguageModel\LanguageModel;
-use Vexo\LanguageModel\Prompt\PromptTemplate;
 
 #[RequiresContextValuesMethod('requiredContextValues')]
 final class LanguageModelChain implements Chain

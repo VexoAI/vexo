@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\LanguageModel;
 
-use Vexo\LanguageModel\Prompt\Prompt;
+use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
 
 interface LanguageModel
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel\Prompt;
+namespace Vexo\Chain\LanguageModelChain\Prompt;
 
 final class FailedToRenderPrompt extends \InvalidArgumentException
 {

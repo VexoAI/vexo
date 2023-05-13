@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel\OutputParser;
+namespace Vexo\Chain\LanguageModelChain\OutputParser;
 
 final class FailedToParseOutput extends \InvalidArgumentException
 {

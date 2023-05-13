@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\LanguageModelChain;
 
+use Vexo\Chain\LanguageModelChain\Prompt\BasicPromptTemplate;
 use Vexo\LanguageModel\LanguageModel;
-use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 
 final class LanguageModelChainFactory
 {

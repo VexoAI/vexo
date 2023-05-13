@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel\OutputParser;
+namespace Vexo\Chain\LanguageModelChain\OutputParser;
 
 use JsonSchema\Validator;
 use PHPUnit\Framework\Attributes\CoversClass;

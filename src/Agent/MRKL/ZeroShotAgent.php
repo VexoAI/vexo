@@ -16,9 +16,9 @@ use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\LanguageModelChain;
+use Vexo\Chain\LanguageModelChain\Prompt\BasicPromptTemplate;
 use Vexo\Contract\Event\Event;
 use Vexo\LanguageModel\LanguageModel;
-use Vexo\LanguageModel\Prompt\BasicPromptTemplate;
 
 final class ZeroShotAgent implements Agent
 {
