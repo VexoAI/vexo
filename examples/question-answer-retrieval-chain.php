@@ -74,8 +74,7 @@ $runner = new SequentialRunner(
         new ContextValueRemapperChain(['combined_contents' => 'context']), // Make sure combined_contents is also available as context
         (new LanguageModelChainFactory($languageModel))->createFromBlueprint(
             new QuestionAnswerBlueprint()
-        ),
-        new ContextValueRemapperChain(['text' => 'answer']), // Remap final generated text to answer
+        )
     ]
 );
 

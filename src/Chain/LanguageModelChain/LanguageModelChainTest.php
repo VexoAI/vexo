@@ -7,6 +7,7 @@ namespace Vexo\Chain\LanguageModelChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
+use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\BasicPromptTemplate;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\LanguageModel\FakeLanguageModel;
@@ -21,9 +22,10 @@ final class LanguageModelChainTest extends TestCase
     {
         $this->languageModelChain = new LanguageModelChain(
             languageModel: new FakeLanguageModel([
-                Response::fromString('Paris'),
+                Response::fromString('The capital of France is Paris'),
             ]),
             promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
+            outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/'),
             requiredContextValues: ['country']
         );
     }
@@ -34,7 +36,8 @@ final class LanguageModelChainTest extends TestCase
 
         $this->languageModelChain->run($context);
 
-        $this->assertEquals('Paris', $context->get('text'));
+        $this->assertEquals('The capital of France is Paris', $context->get('completions'));
+        $this->assertEquals('Paris', $context->get('capital'));
     }
 
     public function testRequiredContextValues(): void

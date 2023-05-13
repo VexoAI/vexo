@@ -6,25 +6,12 @@ namespace Vexo\Chain\LanguageModelChain\OutputParser;
 
 class RegexOutputParser implements OutputParser
 {
-    private const INSTRUCTIONS = <<<INSTRUCTIONS
-        The output should be text which matches the following PCRE regex, including the leading and trailing "```output" and "```":
-
-        ```output
-        {{regex}}
-        ```
-        INSTRUCTIONS;
-
     public function __construct(
         private readonly string $regex
     ) {
     }
 
-    public function formatInstructions(): string
-    {
-        return str_replace('{{regex}}', $this->regex, self::INSTRUCTIONS);
-    }
-
-    public function parse(string $text): mixed
+    public function parse(string $text): array
     {
         $matches = [];
 
@@ -37,6 +24,6 @@ class RegexOutputParser implements OutputParser
             throw new FailedToParseOutput('Failed to parse output. No matches found.');
         }
 
-        return $matches;
+        return array_filter($matches, fn ($key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
     }
 }

@@ -6,7 +6,5 @@ namespace Vexo\Chain\LanguageModelChain\OutputParser;
 
 interface OutputParser
 {
-    public function formatInstructions(): string;
-
-    public function parse(string $text): mixed;
+    public function parse(string $text): array;
 }

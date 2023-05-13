@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\LanguageModelChain\Blueprint\QuestionAnswerBlueprint;
+use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
+use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 
 #[CoversClass(QuestionAnswerBlueprint::class)]
 final class BlueprintTest extends TestCase
@@ -27,7 +29,8 @@ final class BlueprintTest extends TestCase
     #[DataProvider('blueprintProvider')]
     public function testBlueprint(Blueprint $blueprint): void
     {
-        $this->assertNotEmpty($blueprint->promptTemplate());
+        $this->assertInstanceOf(Renderer::class, $blueprint->promptRenderer());
+        $this->assertInstanceOf(OutputParser::class, $blueprint->outputParser());
         $this->assertContainsOnly('string', $blueprint->requiredContextValues());
         $this->assertContainsOnly('string', $blueprint->stops());
     }

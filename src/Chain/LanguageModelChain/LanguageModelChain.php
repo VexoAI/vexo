@@ -7,6 +7,7 @@ namespace Vexo\Chain\LanguageModelChain;
 use Vexo\Chain\Attribute\RequiresContextValuesMethod;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\LanguageModel\LanguageModel;
 
@@ -16,6 +17,7 @@ final class LanguageModelChain implements Chain
     public function __construct(
         private readonly LanguageModel $languageModel,
         private readonly Renderer $promptRenderer,
+        private readonly OutputParser $outputParser,
         private readonly array $requiredContextValues = [],
         private readonly array $stops = []
     ) {
@@ -33,6 +35,11 @@ final class LanguageModelChain implements Chain
             ...$this->stops
         );
 
-        $context->put('text', (string) $response->completions());
+        $context->put('completions', (string) $response->completions());
+
+        $parsed = $this->outputParser->parse((string) $response->completions());
+        foreach ($parsed as $key => $value) {
+            $context->put($key, $value);
+        }
     }
 }

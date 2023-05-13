@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\LanguageModelChain;
 
-use Vexo\Chain\LanguageModelChain\Prompt\TwigRenderer;
+use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
+use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\LanguageModel\LanguageModel;
 
 final class LanguageModelChainFactory
 {
     public function __construct(
-        private readonly LanguageModel $languageModel,
-        private readonly string $promptTemplatePath = __DIR__ . '/Prompt/templates'
+        private readonly LanguageModel $languageModel
     ) {
     }
 
     public function createFromBlueprint(Blueprint $blueprint): LanguageModelChain
     {
         return $this->create(
-            promptTemplate: $blueprint->promptTemplate(),
+            promptRenderer: $blueprint->promptRenderer(),
+            outputParser: $blueprint->outputParser(),
             requiredContextValues: $blueprint->requiredContextValues(),
             stops: $blueprint->stops()
         );
@@ -29,13 +30,15 @@ final class LanguageModelChainFactory
      * @param array<string> $stops
      */
     public function create(
-        string $promptTemplate,
+        Renderer $promptRenderer,
+        OutputParser $outputParser,
         array $requiredContextValues,
         array $stops
     ): LanguageModelChain {
         return new LanguageModelChain(
             languageModel: $this->languageModel,
-            promptRenderer: TwigRenderer::createWithFilesystemLoader($promptTemplate, $this->promptTemplatePath),
+            promptRenderer: $promptRenderer,
+            outputParser: $outputParser,
             requiredContextValues: $requiredContextValues,
             stops: $stops
         );

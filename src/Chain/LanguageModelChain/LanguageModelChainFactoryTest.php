@@ -8,7 +8,10 @@ use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
-use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
+use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
+use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
+use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
+use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
 
@@ -20,11 +23,12 @@ final class LanguageModelChainFactoryTest extends TestCase
         $filesystem = vfsStream::setup('templates');
         vfsStream::newFile('prompt.twig')->at($filesystem)->setContent('What is the capital of {{ country }}?');
 
-        $fakeLanguageModel = new FakeLanguageModel([Response::fromString('Paris')]);
-        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel, $filesystem->url());
+        $fakeLanguageModel = new FakeLanguageModel([Response::fromString('The capital of France is Paris')]);
+        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel);
 
         $languageModelChain = $languageModelChainFactory->create(
-            promptTemplate: 'prompt.twig',
+            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
+            outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/'),
             requiredContextValues: ['country'],
             stops: [],
         );
@@ -33,7 +37,8 @@ final class LanguageModelChainFactoryTest extends TestCase
         $languageModelChain->run($context);
 
         $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
-        $this->assertSame('Paris', $context->get('text'));
+        $this->assertEquals('The capital of France is Paris', $context->get('completions'));
+        $this->assertEquals('Paris', $context->get('capital'));
 
         $call = $fakeLanguageModel->calls()[0];
         $this->assertEquals('What is the capital of France?', $call['prompt']);
@@ -45,13 +50,18 @@ final class LanguageModelChainFactoryTest extends TestCase
         $filesystem = vfsStream::setup('templates');
         vfsStream::newFile('prompt.twig')->at($filesystem)->setContent('What is the capital of {{ country }}?');
 
-        $fakeLanguageModel = new FakeLanguageModel([Response::fromString('Paris')]);
-        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel, $filesystem->url());
+        $fakeLanguageModel = new FakeLanguageModel([Response::fromString('The capital of France is Paris')]);
+        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel);
 
         $blueprint = new class() implements Blueprint {
-            public function promptTemplate(): string
+            public function promptRenderer(): Renderer
             {
-                return 'prompt.twig';
+                return new StrReplaceRenderer('What is the capital of {{country}}?');
+            }
+
+            public function outputParser(): OutputParser
+            {
+                return new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/');
             }
 
             public function requiredContextValues(): array
@@ -71,7 +81,8 @@ final class LanguageModelChainFactoryTest extends TestCase
         $languageModelChain->run($context);
 
         $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
-        $this->assertSame('Paris', $context->get('text'));
+        $this->assertEquals('The capital of France is Paris', $context->get('completions'));
+        $this->assertEquals('Paris', $context->get('capital'));
 
         $call = $fakeLanguageModel->calls()[0];
         $this->assertEquals('What is the capital of France?', $call['prompt']);

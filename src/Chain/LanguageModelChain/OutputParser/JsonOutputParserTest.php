@@ -22,17 +22,10 @@ final class JsonOutputParserTest extends TestCase
         $this->outputParser = new JsonOutputParser($this->validator, $this->schema);
     }
 
-    public function testFormatInstructions(): void
-    {
-        $expected = 'The output should be a markdown code snippet formatted in the following schema, '
-            . "including the leading and trailing \"```json\" and \"```\":\n\n```json\n{$this->schema}\n```";
-        $this->assertSame($expected, $this->outputParser->formatInstructions());
-    }
-
     public function testParseValidJson(): void
     {
         $input = "```json\n{\"name\": \"John Doe\"}\n```";
-        $expected = (object) ['name' => 'John Doe'];
+        $expected = ['name' => 'John Doe'];
         $this->assertEquals($expected, $this->outputParser->parse($input));
     }
 
