@@ -23,7 +23,7 @@ final class OpenAIChatLanguageModel implements LanguageModel
         }
     }
 
-    public function generate(Prompt $prompt, string ...$stops): Response
+    public function generate(string $prompt, string ...$stops): Response
     {
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
@@ -35,10 +35,10 @@ final class OpenAIChatLanguageModel implements LanguageModel
         );
     }
 
-    private function prepareParameters(Prompt $prompt, array $stops): array
+    private function prepareParameters(string $prompt, array $stops): array
     {
         $parameters = $this->defaultParameters->toArray();
-        $parameters['messages'][] = ['role' => 'user', 'content' => $prompt->text()];
+        $parameters['messages'][] = ['role' => 'user', 'content' => $prompt];
 
         if ($stops !== []) {
             $parameters['stop'] = $stops;

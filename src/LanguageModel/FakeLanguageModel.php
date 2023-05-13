@@ -14,7 +14,7 @@ final class FakeLanguageModel implements LanguageModel
     private array $responses = [];
 
     /**
-     * @var array<int, array{prompt: Prompt, stops: array<string>}>>
+     * @var array<int, array{prompt: string, stops: array<string>}>>
      */
     private array $calls = [];
 
@@ -35,7 +35,7 @@ final class FakeLanguageModel implements LanguageModel
         return $this->calls;
     }
 
-    public function generate(Prompt $prompt, string ...$stops): Response
+    public function generate(string $prompt, string ...$stops): Response
     {
         $this->calls[] = ['prompt' => $prompt, 'stops' => $stops];
 

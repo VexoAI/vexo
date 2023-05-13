@@ -6,7 +6,6 @@ namespace Vexo\LanguageModel;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
 
 #[CoversClass(FakeLanguageModel::class)]
 final class FakeLanguageModelTest extends TestCase
@@ -20,11 +19,11 @@ final class FakeLanguageModelTest extends TestCase
 
         $fakeLanguageModel = new FakeLanguageModel($responsesToReturn);
 
-        $this->assertSame($responsesToReturn[0], $fakeLanguageModel->generate(new Prompt('one')));
-        $this->assertSame($responsesToReturn[1], $fakeLanguageModel->generate(new Prompt('two')));
+        $this->assertSame($responsesToReturn[0], $fakeLanguageModel->generate('one'));
+        $this->assertSame($responsesToReturn[1], $fakeLanguageModel->generate('two'));
 
         $this->expectException(\LogicException::class);
-        $fakeLanguageModel->generate(new Prompt('three'));
+        $fakeLanguageModel->generate('three');
     }
 
     public function testAddResponse(): void
@@ -34,7 +33,7 @@ final class FakeLanguageModelTest extends TestCase
         $fakeLanguageModel = new FakeLanguageModel();
         $fakeLanguageModel->addResponse($response);
 
-        $this->assertSame($response, $fakeLanguageModel->generate(new Prompt('one')));
+        $this->assertSame($response, $fakeLanguageModel->generate('one'));
     }
 
     public function testCalls(): void
@@ -44,8 +43,8 @@ final class FakeLanguageModelTest extends TestCase
         $fakeLanguageModel = new FakeLanguageModel();
         $fakeLanguageModel->addResponse($response);
 
-        $fakeLanguageModel->generate(new Prompt('one'), 'stop1', 'stop2');
+        $fakeLanguageModel->generate('one', 'stop1', 'stop2');
 
-        $this->assertEquals(['prompt' => new Prompt('one'), 'stops' => ['stop1', 'stop2']], $fakeLanguageModel->calls()[0]);
+        $this->assertEquals(['prompt' => 'one', 'stops' => ['stop1', 'stop2']], $fakeLanguageModel->calls()[0]);
     }
 }

@@ -11,7 +11,7 @@ interface Blueprint
     /**
      * @return array<string>
      */
-    public function promptVariables(): array;
+    public function requiredContextValues(): array;
 
     /**
      * @return array<string>

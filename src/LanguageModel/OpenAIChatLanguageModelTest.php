@@ -9,7 +9,6 @@ use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Collection\Map\AssociativeArrayMap;
-use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
 
 #[CoversClass(OpenAIChatLanguageModel::class)]
 final class OpenAIChatLanguageModelTest extends TestCase
@@ -36,7 +35,7 @@ final class OpenAIChatLanguageModelTest extends TestCase
 
         $openAIChatLLM = new OpenAIChatLanguageModel($client->chat(), new AssociativeArrayMap(['n' => 2]));
 
-        $response = $openAIChatLLM->generate(new Prompt('What is the capital of France?'), "\n");
+        $response = $openAIChatLLM->generate('What is the capital of France?', "\n");
         $completions = $response->completions();
 
         $this->assertCount(2, $completions);

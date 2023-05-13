@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\LanguageModelChain;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
@@ -16,12 +17,15 @@ final class LanguageModelChainFactoryTest extends TestCase
 {
     public function testCreate(): void
     {
+        $filesystem = vfsStream::setup('templates');
+        vfsStream::newFile('prompt.twig')->at($filesystem)->setContent('What is the capital of {{ country }}?');
+
         $fakeLanguageModel = new FakeLanguageModel([Response::fromString('Paris')]);
-        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel);
+        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel, $filesystem->url());
 
         $languageModelChain = $languageModelChainFactory->create(
-            promptTemplate: 'What is the capital of {{country}}?',
-            promptVariables: ['country'],
+            promptTemplate: 'prompt.twig',
+            requiredContextValues: ['country'],
             stops: [],
         );
 
@@ -32,23 +36,25 @@ final class LanguageModelChainFactoryTest extends TestCase
         $this->assertSame('Paris', $context->get('text'));
 
         $call = $fakeLanguageModel->calls()[0];
-        $this->assertInstanceOf(Prompt::class, $call['prompt']);
-        $this->assertEquals('What is the capital of France?', (string) $call['prompt']);
+        $this->assertEquals('What is the capital of France?', $call['prompt']);
         $this->assertEquals([], $call['stops']);
     }
 
     public function testCreateFromBlueprint(): void
     {
+        $filesystem = vfsStream::setup('templates');
+        vfsStream::newFile('prompt.twig')->at($filesystem)->setContent('What is the capital of {{ country }}?');
+
         $fakeLanguageModel = new FakeLanguageModel([Response::fromString('Paris')]);
-        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel);
+        $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel, $filesystem->url());
 
         $blueprint = new class() implements Blueprint {
             public function promptTemplate(): string
             {
-                return 'What is the capital of {{country}}?';
+                return 'prompt.twig';
             }
 
-            public function promptVariables(): array
+            public function requiredContextValues(): array
             {
                 return ['country'];
             }
@@ -68,8 +74,7 @@ final class LanguageModelChainFactoryTest extends TestCase
         $this->assertSame('Paris', $context->get('text'));
 
         $call = $fakeLanguageModel->calls()[0];
-        $this->assertInstanceOf(Prompt::class, $call['prompt']);
-        $this->assertEquals('What is the capital of France?', (string) $call['prompt']);
+        $this->assertEquals('What is the capital of France?', $call['prompt']);
         $this->assertEquals([], $call['stops']);
     }
 }

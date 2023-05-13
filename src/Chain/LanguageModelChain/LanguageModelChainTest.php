@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\Prompt\BasicPromptTemplate;
+use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;
 
@@ -22,7 +23,8 @@ final class LanguageModelChainTest extends TestCase
             languageModel: new FakeLanguageModel([
                 Response::fromString('Paris'),
             ]),
-            promptTemplate: new BasicPromptTemplate('What is the capital of {{country}}?', ['country'])
+            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
+            requiredContextValues: ['country']
         );
     }
 
