@@ -6,7 +6,7 @@ namespace Vexo\LanguageModel;
 
 use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
 
-final class FakeLanguageModel implements LanguageModel
+final class FakeModel implements LanguageModel
 {
     /**
      * @var Response[]

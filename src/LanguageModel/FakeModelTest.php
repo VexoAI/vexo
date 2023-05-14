@@ -7,8 +7,8 @@ namespace Vexo\LanguageModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(FakeLanguageModel::class)]
-final class FakeLanguageModelTest extends TestCase
+#[CoversClass(FakeModel::class)]
+final class FakeModelTest extends TestCase
 {
     public function testGenerate(): void
     {
@@ -17,7 +17,7 @@ final class FakeLanguageModelTest extends TestCase
             Response::fromString('two'),
         ];
 
-        $fakeLanguageModel = new FakeLanguageModel($responsesToReturn);
+        $fakeLanguageModel = new FakeModel($responsesToReturn);
 
         $this->assertSame($responsesToReturn[0], $fakeLanguageModel->generate('one'));
         $this->assertSame($responsesToReturn[1], $fakeLanguageModel->generate('two'));
@@ -30,7 +30,7 @@ final class FakeLanguageModelTest extends TestCase
     {
         $response = Response::fromString('one');
 
-        $fakeLanguageModel = new FakeLanguageModel();
+        $fakeLanguageModel = new FakeModel();
         $fakeLanguageModel->addResponse($response);
 
         $this->assertSame($response, $fakeLanguageModel->generate('one'));
@@ -40,7 +40,7 @@ final class FakeLanguageModelTest extends TestCase
     {
         $response = Response::fromString('one');
 
-        $fakeLanguageModel = new FakeLanguageModel();
+        $fakeLanguageModel = new FakeModel();
         $fakeLanguageModel->addResponse($response);
 
         $fakeLanguageModel->generate('one', 'stop1', 'stop2');

@@ -17,7 +17,7 @@ use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialRunner;
 use Vexo\Contract\Event\Event;
 use Vexo\EmbeddingModel\OpenAIModel;
-use Vexo\LanguageModel\OpenAIChatLanguageModel;
+use Vexo\LanguageModel\OpenAIChatModel;
 use Vexo\VectorStore\InMemoryVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -50,7 +50,7 @@ $vectorStore->restoreFromFile(
 );
 
 // Load our language model
-$languageModel = new OpenAIChatLanguageModel($openAI->chat());
+$languageModel = new OpenAIChatModel($openAI->chat());
 
 // Now we will set up our chains which will be used to answer the question.
 //

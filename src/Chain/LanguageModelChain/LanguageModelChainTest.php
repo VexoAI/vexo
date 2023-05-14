@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
-use Vexo\LanguageModel\FakeLanguageModel;
+use Vexo\LanguageModel\FakeModel;
 use Vexo\LanguageModel\Response;
 
 #[CoversClass(LanguageModelChain::class)]
@@ -20,7 +20,7 @@ final class LanguageModelChainTest extends TestCase
     protected function setUp(): void
     {
         $this->languageModelChain = new LanguageModelChain(
-            languageModel: new FakeLanguageModel([
+            languageModel: new FakeModel([
                 Response::fromString('The capital of France is Paris'),
             ]),
             promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),

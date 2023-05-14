@@ -10,8 +10,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Collection\Map\AssociativeArrayMap;
 
-#[CoversClass(OpenAIChatLanguageModel::class)]
-final class OpenAIChatLanguageModelTest extends TestCase
+#[CoversClass(OpenAIChatModel::class)]
+final class OpenAIChatModelTest extends TestCase
 {
     public function testGenerate(): void
     {
@@ -33,7 +33,7 @@ final class OpenAIChatLanguageModelTest extends TestCase
             ])
         ]);
 
-        $openAIChatLLM = new OpenAIChatLanguageModel($client->chat(), new AssociativeArrayMap(['n' => 2]));
+        $openAIChatLLM = new OpenAIChatModel($client->chat(), new AssociativeArrayMap(['n' => 2]));
 
         $response = $openAIChatLLM->generate('What is the capital of France?', "\n");
         $completions = $response->completions();

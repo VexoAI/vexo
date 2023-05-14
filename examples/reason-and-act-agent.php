@@ -13,7 +13,7 @@ use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\Blueprint\ReasonAndAct;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Contract\Event\Event;
-use Vexo\LanguageModel\OpenAIChatLanguageModel;
+use Vexo\LanguageModel\OpenAIChatModel;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -43,7 +43,7 @@ $tools = new Tools([
 ]);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
-$languageModel = new OpenAIChatLanguageModel($chat);
+$languageModel = new OpenAIChatModel($chat);
 $languageModelChain = (new LanguageModelChainFactory($languageModel))
     ->createFromBlueprint(new ReasonAndAct());
 

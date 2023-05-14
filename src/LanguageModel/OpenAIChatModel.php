@@ -9,7 +9,7 @@ use OpenAI\Responses\Chat\CreateResponse;
 use Ramsey\Collection\Map\AssociativeArrayMap;
 use Ramsey\Collection\Map\MapInterface;
 
-final class OpenAIChatLanguageModel implements LanguageModel
+final class OpenAIChatModel implements LanguageModel
 {
     private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
 
