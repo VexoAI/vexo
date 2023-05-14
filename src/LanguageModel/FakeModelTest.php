@@ -12,38 +12,38 @@ final class FakeModelTest extends TestCase
 {
     public function testGenerate(): void
     {
-        $responsesToReturn = [
-            Response::fromString('one'),
-            Response::fromString('two'),
+        $resultsToReturn = [
+            new Result(['one']),
+            new Result(['two']),
         ];
 
-        $fakeLanguageModel = new FakeModel($responsesToReturn);
+        $fakeLanguageModel = new FakeModel($resultsToReturn);
 
-        $this->assertSame($responsesToReturn[0], $fakeLanguageModel->generate('one'));
-        $this->assertSame($responsesToReturn[1], $fakeLanguageModel->generate('two'));
+        $this->assertSame($resultsToReturn[0], $fakeLanguageModel->generate('one'));
+        $this->assertSame($resultsToReturn[1], $fakeLanguageModel->generate('two'));
 
         $this->expectException(\LogicException::class);
         $fakeLanguageModel->generate('three');
     }
 
-    public function testAddResponse(): void
+    public function testAddResult(): void
     {
-        $response = Response::fromString('one');
+        $result = new Result(['one']);
 
         $fakeLanguageModel = new FakeModel();
-        $fakeLanguageModel->addResponse($response);
+        $fakeLanguageModel->addResult($result);
 
-        $this->assertSame($response, $fakeLanguageModel->generate('one'));
+        $this->assertSame($result, $fakeLanguageModel->generate('one'));
     }
 
     public function testCalls(): void
     {
-        $response = Response::fromString('one');
+        $result = new Result(['one']);
 
         $fakeLanguageModel = new FakeModel();
-        $fakeLanguageModel->addResponse($response);
+        $fakeLanguageModel->addResult($result);
 
-        $fakeLanguageModel->generate('one', 'stop1', 'stop2');
+        $fakeLanguageModel->generate('one', ['stop1', 'stop2']);
 
         $this->assertEquals(['prompt' => 'one', 'stops' => ['stop1', 'stop2']], $fakeLanguageModel->calls()[0]);
     }

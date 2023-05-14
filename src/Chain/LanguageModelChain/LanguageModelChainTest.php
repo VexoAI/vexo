@@ -10,7 +10,7 @@ use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\LanguageModel\FakeModel;
-use Vexo\LanguageModel\Response;
+use Vexo\LanguageModel\Result;
 
 #[CoversClass(LanguageModelChain::class)]
 final class LanguageModelChainTest extends TestCase
@@ -21,7 +21,7 @@ final class LanguageModelChainTest extends TestCase
     {
         $this->languageModelChain = new LanguageModelChain(
             languageModel: new FakeModel([
-                Response::fromString('The capital of France is Paris'),
+                new Result(['The capital of France is Paris']),
             ]),
             promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
             outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/'),

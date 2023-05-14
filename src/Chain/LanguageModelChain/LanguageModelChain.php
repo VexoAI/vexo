@@ -30,14 +30,14 @@ final class LanguageModelChain implements Chain
 
     public function run(Context $context): void
     {
-        $response = $this->languageModel->generate(
+        $result = $this->languageModel->generate(
             $this->promptRenderer->render($context),
-            ...$this->stops
+            $this->stops
         );
 
-        $context->put('completions', (string) $response->completions());
+        $context->put('completions', $result->completions()[0]);
 
-        $parsed = $this->outputParser->parse((string) $response->completions());
+        $parsed = $this->outputParser->parse($result->completions()[0]);
         foreach ($parsed as $key => $value) {
             $context->put($key, $value);
         }

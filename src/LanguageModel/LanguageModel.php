@@ -6,5 +6,8 @@ namespace Vexo\LanguageModel;
 
 interface LanguageModel
 {
-    public function generate(string $prompt, string ...$stops): Response;
+    /**
+     * @param array<string> $stops
+     */
+    public function generate(string $prompt, array $stops = []): Result;
 }

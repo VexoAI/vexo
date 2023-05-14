@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Vexo\LanguageModel;
 
 use OpenAI\Contracts\Resources\ChatContract;
-use OpenAI\Responses\Chat\CreateResponse;
 use Ramsey\Collection\Map\AssociativeArrayMap;
 use Ramsey\Collection\Map\MapInterface;
+use Vexo\Contract\Metadata\Implementation\Metadata;
 
 final class OpenAIChatModel implements LanguageModel
 {
@@ -22,15 +22,15 @@ final class OpenAIChatModel implements LanguageModel
         }
     }
 
-    public function generate(string $prompt, string ...$stops): Response
+    public function generate(string $prompt, array $stops = []): Result
     {
         $chatResponse = $this->chat->create(
             $this->prepareParameters($prompt, $stops)
         );
 
-        return new Response(
-            $this->extractCompletionsFromChatResponse($chatResponse),
-            new ResponseMetadata([...$this->defaultParameters->toArray(), 'usage' => $chatResponse->usage->toArray()])
+        return new Result(
+            array_map(fn ($choice): string => $choice->message->content, $chatResponse->choices),
+            new Metadata([...$this->defaultParameters->toArray(), 'usage' => $chatResponse->usage->toArray()])
         );
     }
 
@@ -44,15 +44,5 @@ final class OpenAIChatModel implements LanguageModel
         }
 
         return $parameters;
-    }
-
-    private function extractCompletionsFromChatResponse(CreateResponse $response): Completions
-    {
-        return new Completions(
-            array_map(
-                fn ($choice): Completion => new Completion($choice->message->content),
-                $response->choices
-            )
-        );
     }
 }

@@ -4,30 +4,28 @@ declare(strict_types=1);
 
 namespace Vexo\LanguageModel;
 
-use Vexo\Chain\LanguageModelChain\Prompt\Prompt;
-
 final class FakeModel implements LanguageModel
 {
     /**
-     * @var Response[]
+     * @var array<Result>
      */
-    private array $responses = [];
+    private array $results = [];
 
     /**
      * @var array<int, array{prompt: string, stops: array<string>}>>
      */
     private array $calls = [];
 
-    public function __construct(array $responses = [])
+    public function __construct(array $results = [])
     {
-        foreach ($responses as $response) {
-            $this->addResponse($response);
+        foreach ($results as $result) {
+            $this->addResult($result);
         }
     }
 
-    public function addResponse(Response $response): void
+    public function addResult(Result $result): void
     {
-        $this->responses[] = $response;
+        $this->results[] = $result;
     }
 
     public function calls(): array
@@ -35,14 +33,14 @@ final class FakeModel implements LanguageModel
         return $this->calls;
     }
 
-    public function generate(string $prompt, string ...$stops): Response
+    public function generate(string $prompt, array $stops = []): Result
     {
         $this->calls[] = ['prompt' => $prompt, 'stops' => $stops];
 
-        if ($this->responses === []) {
-            throw new \LogicException('No more responses to return.');
+        if ($this->results === []) {
+            throw new \LogicException('No more results to return.');
         }
 
-        return array_shift($this->responses);
+        return array_shift($this->results);
     }
 }

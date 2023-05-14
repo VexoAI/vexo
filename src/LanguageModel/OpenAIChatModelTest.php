@@ -35,18 +35,18 @@ final class OpenAIChatModelTest extends TestCase
 
         $openAIChatLLM = new OpenAIChatModel($client->chat(), new AssociativeArrayMap(['n' => 2]));
 
-        $response = $openAIChatLLM->generate('What is the capital of France?', "\n");
+        $response = $openAIChatLLM->generate('What is the capital of France?', ["\n"]);
         $completions = $response->completions();
 
         $this->assertCount(2, $completions);
-        $this->assertEquals('Paris', $completions[0]->text());
-        $this->assertEquals('The capital of France is Paris.', $completions[1]->text());
+        $this->assertEquals('Paris', $completions[0]);
+        $this->assertEquals('The capital of France is Paris.', $completions[1]);
 
-        $metadata = $response->metadata()->toArray();
-        $this->assertEquals('gpt-3.5-turbo', $metadata['model']);
-        $this->assertEquals(2, $metadata['n']);
-        $this->assertEquals(15, $metadata['usage']['prompt_tokens']);
-        $this->assertEquals(8, $metadata['usage']['completion_tokens']);
-        $this->assertEquals(23, $metadata['usage']['total_tokens']);
+        $metadata = $response->metadata();
+        $this->assertEquals('gpt-3.5-turbo', $metadata->get('model'));
+        $this->assertEquals(2, $metadata->get('n'));
+        $this->assertEquals(15, $metadata->get('usage')['prompt_tokens']);
+        $this->assertEquals(8, $metadata->get('usage')['completion_tokens']);
+        $this->assertEquals(23, $metadata->get('usage')['total_tokens']);
     }
 }

@@ -13,7 +13,7 @@ use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\LanguageModel\FakeModel;
-use Vexo\LanguageModel\Response;
+use Vexo\LanguageModel\Result;
 
 #[CoversClass(LanguageModelChainFactory::class)]
 final class LanguageModelChainFactoryTest extends TestCase
@@ -23,7 +23,7 @@ final class LanguageModelChainFactoryTest extends TestCase
         $filesystem = vfsStream::setup('templates');
         vfsStream::newFile('prompt.twig')->at($filesystem)->setContent('What is the capital of {{ country }}?');
 
-        $fakeLanguageModel = new FakeModel([Response::fromString('The capital of France is Paris')]);
+        $fakeLanguageModel = new FakeModel([new Result(['The capital of France is Paris'])]);
         $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel);
 
         $languageModelChain = $languageModelChainFactory->create(
@@ -50,7 +50,7 @@ final class LanguageModelChainFactoryTest extends TestCase
         $filesystem = vfsStream::setup('templates');
         vfsStream::newFile('prompt.twig')->at($filesystem)->setContent('What is the capital of {{ country }}?');
 
-        $fakeLanguageModel = new FakeModel([Response::fromString('The capital of France is Paris')]);
+        $fakeLanguageModel = new FakeModel([new Result(['The capital of France is Paris'])]);
         $languageModelChainFactory = new LanguageModelChainFactory($fakeLanguageModel);
 
         $blueprint = new class() implements Blueprint {
