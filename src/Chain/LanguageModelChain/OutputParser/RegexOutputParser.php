@@ -24,6 +24,6 @@ class RegexOutputParser implements OutputParser
             throw new FailedToParseOutput('Failed to parse output. No matches found.');
         }
 
-        return array_filter($matches, fn ($key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
+        return array_filter($matches, fn ($key): bool => \is_string($key), \ARRAY_FILTER_USE_KEY);
     }
 }

@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
-use Vexo\Chain\LanguageModelChain\Prompt\BasicPromptTemplate;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\LanguageModel\FakeLanguageModel;
 use Vexo\LanguageModel\Response;

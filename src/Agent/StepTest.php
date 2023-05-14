@@ -12,21 +12,21 @@ final class StepTest extends TestCase
 {
     public function testConstructorAndGetters(): void
     {
-        $action = new Action('google', 'Best restaurants in Amsterdam');
-        $step = new Step($action, 'Some log');
+        $step = new Step('Some thought', 'Some action', 'Some input');
 
-        $this->assertSame($action, $step->action());
-        $this->assertEquals('Some log', $step->log());
+        $this->assertEquals('Some thought', $step->thought());
+        $this->assertEquals('Some action', $step->action());
+        $this->assertEquals('Some input', $step->input());
     }
 
     public function testWithObservation(): void
     {
-        $action = new Action('google', 'Best restaurants in Amsterdam');
-        $step = new Step($action, 'Some log');
+        $step = new Step('Some thought', 'Some action', 'Some input');
+        $stepWithObservation = $step->withObservation('Some observation');
 
-        $this->assertNull($step->observation());
-
-        $step = $step->withObservation('Some observation');
-        $this->assertEquals('Some observation', $step->observation());
+        $this->assertEquals('Some thought', $stepWithObservation->thought());
+        $this->assertEquals('Some action', $stepWithObservation->action());
+        $this->assertEquals('Some input', $stepWithObservation->input());
+        $this->assertEquals('Some observation', $stepWithObservation->observation());
     }
 }

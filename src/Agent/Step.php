@@ -7,8 +7,9 @@ namespace Vexo\Agent;
 final class Step
 {
     public function __construct(
-        private readonly Action|Finish $action,
-        private readonly string $log,
+        private readonly string $thought,
+        private readonly string $action,
+        private readonly string $input = '',
         private readonly ?string $observation = null
     ) {
     }
@@ -16,20 +17,26 @@ final class Step
     public function withObservation(string $observation): self
     {
         return new self(
+            $this->thought,
             $this->action,
-            $this->log,
+            $this->input,
             $observation
         );
     }
 
-    public function action(): Action|Finish
+    public function thought(): string
+    {
+        return $this->thought;
+    }
+
+    public function action(): string
     {
         return $this->action;
     }
 
-    public function log(): string
+    public function input(): string
     {
-        return $this->log;
+        return $this->input;
     }
 
     public function observation(): ?string

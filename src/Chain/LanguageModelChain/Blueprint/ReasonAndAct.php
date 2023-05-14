@@ -24,25 +24,27 @@ final class ReasonAndAct implements Blueprint
     {
         return new RegexOutputParser(
             '/
-                (?:
-                    Final\ Answer:\s*       # Match "Final Answer:" followed by optional whitespace
-                    (?P<final_answer>.+)    # Capture the non-empty final answer
-                )
-                |                           # OR
-                (?:
-                    Action:\s*              # Match "Action:" followed by optional whitespace
-                    (?P<action>.+?)         # Capture the non-empty action
+               (?:
+                    (?P<thought>.+?)\s*         # Capture the thought before "Action:"
+                    Action:\s*                  # Match "Action:" followed by optional whitespace
+                    (?P<action>.+?)             # Capture the non-empty action
                     \n
-                    Action\s*Input:\s*      # Match "Action Input:" followed by optional whitespace
-                    (?P<input>.*)           # Capture the action input
+                    Action\ input:\s*           # Match "Action Input:" followed by optional whitespace
+                    (?P<input>.*)               # Capture the action input
                 )
-            /sx'                            // s and x modifiers: s makes . match newlines, x enables free-spacing mode
+                |                               # OR
+                (?:
+                    (?P<final_thought>.+?)\s*   # Capture the thought before "Final Answer:"
+                    Final\ answer:\s*           # Match "Final Answer:" followed by optional whitespace
+                    (?P<final_answer>.+)        # Capture the non-empty final answer
+                )
+            /isx'                                // i means case insensitive, s makes . match newlines, x enables free-spacing mode
         );
     }
 
     public function requiredContextValues(): array
     {
-        return ['tools', 'question', 'scratchpad'];
+        return ['tools', 'steps', 'question'];
     }
 
     /**
@@ -50,6 +52,6 @@ final class ReasonAndAct implements Blueprint
      */
     public function stops(): array
     {
-        return [];
+        return ['Observation:'];
     }
 }

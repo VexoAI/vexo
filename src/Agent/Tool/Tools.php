@@ -15,4 +15,22 @@ final class Tools extends AbstractCollection
     {
         return Tool::class;
     }
+
+    public function resolve(string $query): Tool
+    {
+        $nameToLookup = $this->normalizeName($query);
+
+        foreach ($this as $tool) {
+            if ($this->normalizeName($tool->name()) === $nameToLookup) {
+                return $tool;
+            }
+        }
+
+        throw FailedToResolveTool::for($query);
+    }
+
+    private function normalizeName(string $name): string
+    {
+        return trim(strtolower($name));
+    }
 }

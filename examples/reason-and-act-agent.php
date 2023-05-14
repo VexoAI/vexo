@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Vexo\Examples;
 
 use League\Event\EventDispatcher;
-use Vexo\Agent\MRKL\ZeroShotAgent;
-use Vexo\Agent\MRKL\ZeroShotAgentExecutor;
-use Vexo\Agent\Tool\Callback;
+use Vexo\Agent\AutonomousExecutor;
+use Vexo\Agent\ReasonAndActAgent;
 use Vexo\Agent\Tool\GoogleSearch;
-use Vexo\Agent\Tool\Resolver\NameResolver;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Context;
+use Vexo\Chain\LanguageModelChain\Blueprint\ReasonAndAct;
+use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Contract\Event\Event;
 use Vexo\LanguageModel\OpenAIChatLanguageModel;
 
@@ -39,25 +39,18 @@ $tools = new Tools([
     new GoogleSearch(
         new \Google\Service\CustomSearchAPI($google),
         getenv('GOOGLE_CUSTOM_SEARCH_ENGINE_ID')
-    ),
-    new Callback(
-        'calculator',
-        'Useful for doing math',
-        fn (string $input): string => 'The answer is 42'
     )
 ]);
 
-$toolResolver = new NameResolver($tools);
-
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
+$languageModel = new OpenAIChatLanguageModel($chat);
+$languageModelChain = (new LanguageModelChainFactory($languageModel))
+    ->createFromBlueprint(new ReasonAndAct());
 
-$llm = new OpenAIChatLanguageModel($chat);
-
-$agent = ZeroShotAgent::fromLLMAndTools($llm, $tools, $eventDispatcher);
-
-$executor = new ZeroShotAgentExecutor(agent: $agent, toolResolver: $toolResolver, eventDispatcher: $eventDispatcher);
+$agent = new ReasonAndActAgent($languageModelChain, $tools, $eventDispatcher);
+$executor = new AutonomousExecutor(agent: $agent, eventDispatcher: $eventDispatcher);
 
 $context = new Context(['question' => $argv[1]]);
 $executor->run($context);
 
-dump($context->get('result'));
+dump($context);
