@@ -5,21 +5,19 @@ declare(strict_types=1);
 namespace Vexo\LanguageModel;
 
 use OpenAI\Contracts\Resources\ChatContract;
-use Ramsey\Collection\Map\AssociativeArrayMap;
-use Ramsey\Collection\Map\MapInterface;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 
 final class OpenAIChatModel implements LanguageModel
 {
     private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
 
+    private readonly array $parameters;
+
     public function __construct(
         private readonly ChatContract $chat,
-        private readonly MapInterface $defaultParameters = new AssociativeArrayMap()
+        array $parameters = []
     ) {
-        foreach (self::DEFAULT_PARAMETERS as $key => $value) {
-            $this->defaultParameters->putIfAbsent($key, $value);
-        }
+        $this->parameters = array_merge(self::DEFAULT_PARAMETERS, $parameters);
     }
 
     public function generate(string $prompt, array $stops = []): Result
@@ -30,13 +28,13 @@ final class OpenAIChatModel implements LanguageModel
 
         return new Result(
             array_map(fn ($choice): string => $choice->message->content, $chatResponse->choices),
-            new Metadata([...$this->defaultParameters->toArray(), 'usage' => $chatResponse->usage->toArray()])
+            new Metadata([...$this->parameters, 'usage' => $chatResponse->usage->toArray()])
         );
     }
 
     private function prepareParameters(string $prompt, array $stops): array
     {
-        $parameters = $this->defaultParameters->toArray();
+        $parameters = $this->parameters;
         $parameters['messages'][] = ['role' => 'user', 'content' => $prompt];
 
         if ($stops !== []) {

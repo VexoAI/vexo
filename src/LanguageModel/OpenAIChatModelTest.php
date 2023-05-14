@@ -8,7 +8,6 @@ use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Collection\Map\AssociativeArrayMap;
 
 #[CoversClass(OpenAIChatModel::class)]
 final class OpenAIChatModelTest extends TestCase
@@ -33,7 +32,7 @@ final class OpenAIChatModelTest extends TestCase
             ])
         ]);
 
-        $openAIChatLLM = new OpenAIChatModel($client->chat(), new AssociativeArrayMap(['n' => 2]));
+        $openAIChatLLM = new OpenAIChatModel($client->chat(), ['n' => 2]);
 
         $response = $openAIChatLLM->generate('What is the capital of France?', ["\n"]);
         $completions = $response->completions();
