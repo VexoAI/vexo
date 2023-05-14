@@ -10,17 +10,17 @@ use Vexo\Contract\Metadata\Metadata as MetadataContract;
 final class Result
 {
     /**
-     * @param array<string> $completions
+     * @param array<string> $generations
      */
     public function __construct(
-        private readonly array $completions,
+        private readonly array $generations,
         private readonly MetadataContract $metadata = new Metadata(),
     ) {
     }
 
-    public function completions(): array
+    public function generations(): array
     {
-        return $this->completions;
+        return $this->generations;
     }
 
     public function metadata(): MetadataContract

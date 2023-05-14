@@ -35,9 +35,9 @@ final class LanguageModelChain implements Chain
             $this->stops
         );
 
-        $context->put('completions', $result->completions()[0]);
+        $context->put('completions', $result->generations()[0]);
 
-        $parsed = $this->outputParser->parse($result->completions()[0]);
+        $parsed = $this->outputParser->parse($result->generations()[0]);
         foreach ($parsed as $key => $value) {
             $context->put($key, $value);
         }

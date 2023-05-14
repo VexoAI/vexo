@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\LanguageModel;
 
+use League\Event\EventDispatcher;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -14,6 +15,15 @@ final class OpenAIChatModelTest extends TestCase
 {
     public function testGenerate(): void
     {
+        $emittedEvents = [];
+        $eventDispatcher = new EventDispatcher();
+        $eventDispatcher->subscribeTo(
+            ModelGeneratedResult::class,
+            function (ModelGeneratedResult $event) use (&$emittedEvents): void {
+                $emittedEvents[] = $event;
+            }
+        );
+
         $client = new ClientFake([
             CreateResponse::from([
                 'id' => 'chatcmpl-555NOEm562iYTOet9ql555znLFWES',
@@ -32,20 +42,25 @@ final class OpenAIChatModelTest extends TestCase
             ])
         ]);
 
-        $openAIChatLLM = new OpenAIChatModel($client->chat(), ['n' => 2]);
+        $openAIChatLLM = new OpenAIChatModel($client->chat(), ['n' => 2], $eventDispatcher);
 
-        $response = $openAIChatLLM->generate('What is the capital of France?', ["\n"]);
-        $completions = $response->completions();
+        $result = $openAIChatLLM->generate('What is the capital of France?', ["\n"]);
+        $generations = $result->generations();
 
-        $this->assertCount(2, $completions);
-        $this->assertEquals('Paris', $completions[0]);
-        $this->assertEquals('The capital of France is Paris.', $completions[1]);
+        $this->assertCount(2, $generations);
+        $this->assertEquals('Paris', $generations[0]);
+        $this->assertEquals('The capital of France is Paris.', $generations[1]);
 
-        $metadata = $response->metadata();
+        $metadata = $result->metadata();
         $this->assertEquals('gpt-3.5-turbo', $metadata->get('model'));
         $this->assertEquals(2, $metadata->get('n'));
         $this->assertEquals(15, $metadata->get('usage')['prompt_tokens']);
         $this->assertEquals(8, $metadata->get('usage')['completion_tokens']);
         $this->assertEquals(23, $metadata->get('usage')['total_tokens']);
+
+        $this->assertCount(1, $emittedEvents);
+        $this->assertEquals('What is the capital of France?', $emittedEvents[0]->prompt());
+        $this->assertEquals(["\n"], $emittedEvents[0]->stops());
+        $this->assertSame($result, $emittedEvents[0]->result());
     }
 }

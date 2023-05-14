@@ -16,7 +16,7 @@ final class ResultTest extends TestCase
         $metadata = new Metadata(['key1' => 'value1', 'key2' => 'value2']);
         $result = new Result(['A great result'], $metadata);
 
-        $this->assertSame(['A great result'], $result->completions());
+        $this->assertSame(['A great result'], $result->generations());
         $this->assertSame($metadata, $result->metadata());
     }
 }

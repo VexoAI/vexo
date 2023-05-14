@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Vexo\LanguageModel;
 
 use OpenAI\Contracts\Resources\ChatContract;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Vexo\Contract\Event\Event;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 
 final class OpenAIChatModel implements LanguageModel
@@ -15,7 +17,8 @@ final class OpenAIChatModel implements LanguageModel
 
     public function __construct(
         private readonly ChatContract $chat,
-        array $parameters = []
+        array $parameters = [],
+        private readonly ?EventDispatcherInterface $eventDispatcher = null
     ) {
         $this->parameters = array_merge(self::DEFAULT_PARAMETERS, $parameters);
     }
@@ -26,10 +29,14 @@ final class OpenAIChatModel implements LanguageModel
             $this->prepareParameters($prompt, $stops)
         );
 
-        return new Result(
+        $result = new Result(
             array_map(fn ($choice): string => $choice->message->content, $chatResponse->choices),
             new Metadata([...$this->parameters, 'usage' => $chatResponse->usage->toArray()])
         );
+
+        $this->emit(new ModelGeneratedResult($prompt, $stops, $result));
+
+        return $result;
     }
 
     private function prepareParameters(string $prompt, array $stops): array
@@ -42,5 +49,12 @@ final class OpenAIChatModel implements LanguageModel
         }
 
         return $parameters;
+    }
+
+    private function emit(Event $event): void
+    {
+        if ($this->eventDispatcher instanceof EventDispatcherInterface) {
+            $this->eventDispatcher->dispatch($event);
+        }
     }
 }

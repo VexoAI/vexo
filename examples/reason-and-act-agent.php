@@ -43,7 +43,7 @@ $tools = new Tools([
 ]);
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
-$languageModel = new OpenAIChatModel($chat);
+$languageModel = new OpenAIChatModel($chat, eventDispatcher: $eventDispatcher);
 $languageModelChain = (new LanguageModelChainFactory($languageModel))
     ->createFromBlueprint(new ReasonAndAct());
 
