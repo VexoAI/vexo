@@ -26,7 +26,7 @@ final class Tools extends AbstractCollection
             }
         }
 
-        throw FailedToResolveTool::for($query);
+        throw FailedToResolveTool::for($query, array_map(fn (Tool $tool): string => $tool->name(), $this->toArray()));
     }
 
     private function normalizeName(string $name): string

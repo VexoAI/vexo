@@ -6,8 +6,11 @@ namespace Vexo\Agent\Tool;
 
 final class FailedToResolveTool extends \RuntimeException
 {
-    public static function for(string $query): self
+    /**
+     * @param array<string> $availableTools
+     */
+    public static function for(string $query, array $availableTools): self
     {
-        return new self(sprintf('Failed to resolve tool "%s"', $query));
+        return new self(sprintf('Failed to resolve tool "%s"; available tools: %s', $query, implode(', ', $availableTools)));
     }
 }

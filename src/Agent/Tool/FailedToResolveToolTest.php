@@ -12,10 +12,10 @@ final class FailedToResolveToolTest extends TestCase
 {
     public function testFor(): void
     {
-        $exception = FailedToResolveTool::for('unknown tool');
+        $exception = FailedToResolveTool::for('unknown tool', ['tool1', 'tool2']);
 
         $this->assertStringContainsString(
-            'Failed to resolve tool "unknown tool"',
+            'Failed to resolve tool "unknown tool"; available tools: tool1, tool2',
             $exception->getMessage()
         );
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Agent;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Vexo\Agent\Tool\FailedToResolveTool;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
@@ -51,8 +52,14 @@ final class ReasonAndActAgent implements Agent
 
     public function takeStep(Context $context, Steps $previousSteps, Step $step): Step
     {
-        $tool = $this->tools->resolve($step->action());
-        $observation = $tool->run($step->input());
+        try {
+            $tool = $this->tools->resolve($step->action());
+            $observation = $tool->run($step->input());
+        } catch (FailedToResolveTool $exception) {
+            $observation = $exception->getMessage();
+        } catch (\Throwable $exception) {
+            $observation = sprintf('Failed to execute tool: %s', $exception->getMessage());
+        }
 
         $completedStep = $step->withObservation($observation);
         $this->emit(new AgentTookStep($context, $previousSteps, $completedStep));

@@ -110,6 +110,52 @@ final class ReasonAndActAgentTest extends TestCase
         $this->assertCount(1, $emittedEvents);
         $this->assertInstanceOf(AgentTookStep::class, $emittedEvents[0]);
     }
+
+    public function testTakeStepWithInvalidToolReportsError(): void
+    {
+        $tools = new Tools([
+            new Callback('google', 'Useful for search', fn ($input): string => 'It is cloudy and 21 degrees')
+        ]);
+        $agent = new ReasonAndActAgent(new FakeChain(), $tools);
+
+        $context = new Context(['question' => 'What is the weather in Amsterdam?']);
+        $previousSteps = new Steps();
+        $nextStep = new Step(
+            thought: 'I should do someting impossible',
+            action: 'non-existant-tool',
+            input: 'weather in Amsterdam'
+        );
+
+        $completedStep = $agent->takeStep($context, $previousSteps, $nextStep);
+
+        $this->assertStringContainsString('Failed to resolve tool', $completedStep->observation());
+    }
+
+    public function testTakeStepWithFailingToolReportsError(): void
+    {
+        $tools = new Tools([
+            new Callback(
+                'google',
+                'Useful for search',
+                function ($input): never {
+                    throw new \Exception('Something went wrong');
+                }
+            )
+        ]);
+        $agent = new ReasonAndActAgent(new FakeChain(), $tools);
+
+        $context = new Context(['question' => 'What is the weather in Amsterdam?']);
+        $previousSteps = new Steps();
+        $nextStep = new Step(
+            thought: 'I should google for the weather',
+            action: 'google',
+            input: 'weather in Amsterdam'
+        );
+
+        $completedStep = $agent->takeStep($context, $previousSteps, $nextStep);
+
+        $this->assertStringContainsString('Failed to execute tool', $completedStep->observation());
+    }
 }
 
 final class FakeChain implements Chain
