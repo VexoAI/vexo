@@ -11,13 +11,13 @@ use Vexo\Chain\ConcatenateDocumentsChain\ConcatenateDocumentsChain;
 use Vexo\Chain\Context;
 use Vexo\Chain\ContextValueRemapperChain\ContextValueRemapperChain;
 use Vexo\Chain\DocumentsRetrieverChain\DocumentsRetrieverChain;
+use Vexo\Chain\DocumentsRetrieverChain\Retriever\VectorStoreRetriever;
 use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialRunner;
 use Vexo\Contract\Event\Event;
 use Vexo\EmbeddingModel\OpenAIModel;
 use Vexo\LanguageModel\OpenAIChatLanguageModel;
-use Vexo\Retriever\VectorStoreRetriever;
 use Vexo\VectorStore\InMemoryVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';

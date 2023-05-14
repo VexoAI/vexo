@@ -7,7 +7,7 @@ namespace Vexo\Chain\DocumentsRetrieverChain;
 use Vexo\Chain\Attribute\RequiresContextValue;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Retriever\Retriever;
+use Vexo\Chain\DocumentsRetrieverChain\Retriever\Retriever;
 
 final class DocumentsRetrieverChain implements Chain
 {

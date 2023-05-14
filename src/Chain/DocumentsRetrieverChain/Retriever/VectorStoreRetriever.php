@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Retriever;
+namespace Vexo\Chain\DocumentsRetrieverChain\Retriever;
 
 use Vexo\Contract\Document\Documents;
 use Vexo\VectorStore\SearchableVectorStore;

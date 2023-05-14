@@ -7,11 +7,11 @@ namespace Vexo\Chain\DocumentsRetrieverChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
+use Vexo\Chain\DocumentsRetrieverChain\Retriever\CallbackRetriever;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Document\Implementation\Documents;
 use Vexo\Contract\Metadata\Implementation\Metadata;
-use Vexo\Retriever\CallbackRetriever;
 
 #[CoversClass(DocumentsRetrieverChain::class)]
 final class DocumentsRetrieverChainTest extends TestCase
