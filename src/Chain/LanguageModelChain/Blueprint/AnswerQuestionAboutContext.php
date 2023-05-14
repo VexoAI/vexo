@@ -10,7 +10,7 @@ use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\Chain\LanguageModelChain\Prompt\TwigRenderer;
 
-final class QuestionAnswerBlueprint implements Blueprint
+final class AnswerQuestionAboutContext implements Blueprint
 {
     public function promptRenderer(): Renderer
     {

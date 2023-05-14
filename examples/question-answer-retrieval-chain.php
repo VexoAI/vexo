@@ -11,7 +11,7 @@ use Vexo\Chain\ConcatenateDocumentsChain\ConcatenateDocumentsChain;
 use Vexo\Chain\Context;
 use Vexo\Chain\ContextValueRemapperChain\ContextValueRemapperChain;
 use Vexo\Chain\DocumentsRetrieverChain\DocumentsRetrieverChain;
-use Vexo\Chain\LanguageModelChain\Blueprint\QuestionAnswerBlueprint;
+use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialRunner;
 use Vexo\Contract\Event\Event;
@@ -73,7 +73,7 @@ $runner = new SequentialRunner(
         new ConcatenateDocumentsChain(),
         new ContextValueRemapperChain(['combined_contents' => 'context']), // Make sure combined_contents is also available as context
         (new LanguageModelChainFactory($languageModel))->createFromBlueprint(
-            new QuestionAnswerBlueprint()
+            new AnswerQuestionAboutContext()
         )
     ]
 );
