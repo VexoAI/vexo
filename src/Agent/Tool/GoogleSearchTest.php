@@ -51,21 +51,21 @@ final class GoogleSearchTest extends TestCase
     {
         $this->service->cse->returnItems = [
             [
-                'title' => 'Search result 1',
-                'link' => 'https://www.example.com/1',
-                'snippet' => 'Search snippet 1'
+                'title' => 'Result 1',
+                'link' => 'https://example.com/1',
+                'snippet' => 'Snippet 1'
             ],
             [
-                'title' => 'Search result 2',
-                'link' => 'https://www.example.com/2',
-                'snippet' => 'Search snippet 2'
+                'title' => 'Result 2',
+                'link' => 'https://example.com/2',
+                'snippet' => 'Snippet 2'
             ],
         ];
 
         $output = $this->googleSearch->run('My search query');
 
         $this->assertEquals(
-            "Search snippet 1\nSearch snippet 2\n",
+            "Result 1: Snippet 1 - https://example.com/1\nResult 2: Snippet 2 - https://example.com/2\n",
             $output
         );
     }

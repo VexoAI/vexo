@@ -45,7 +45,7 @@ final class GoogleSearch implements Tool
 
         return array_reduce(
             $results->getItems(),
-            fn ($carry, $result): string => $carry . $result->snippet . "\n",
+            fn ($carry, $result): string => $carry . $result->getTitle() . ': ' . $result->getSnippet() . ' - ' . $result->getLink() . "\n",
             ''
         );
     }
