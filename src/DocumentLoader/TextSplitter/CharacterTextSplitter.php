@@ -13,6 +13,9 @@ final class CharacterTextSplitter implements TextSplitter
      */
     private $sizeFunction;
 
+    /**
+     * @param array<string> $separators
+     */
     public function __construct(
         private readonly int $chunkSize = 4000,
         private readonly int $minChunkOverlap = 200,
@@ -63,7 +66,7 @@ final class CharacterTextSplitter implements TextSplitter
     private function findFirstExistingSeparator(string $text): string
     {
         foreach ($this->separators as $separator) {
-            if (str_contains($text, (string) $separator)) {
+            if (str_contains($text, $separator)) {
                 return $separator;
             }
         }
@@ -76,6 +79,12 @@ final class CharacterTextSplitter implements TextSplitter
         return ($this->sizeFunction)($text);
     }
 
+    /**
+     * @param array<string> $finalChunks
+     * @param array<string> $goodSplits
+     *
+     * @return array<string>
+     */
     private function mergeIntoFinalChunks(array $finalChunks, array $goodSplits, string $separator): array
     {
         if ($goodSplits === []) {
@@ -87,6 +96,11 @@ final class CharacterTextSplitter implements TextSplitter
         return array_merge($finalChunks, $mergedChunks);
     }
 
+    /**
+     * @param array<string> $splits
+     *
+     * @return array<string>
+     */
     private function mergeSplitsIntoChunks(array $splits, string $separator = ''): array
     {
         $separatorSize = $this->size($separator);
@@ -96,7 +110,6 @@ final class CharacterTextSplitter implements TextSplitter
         $currentChunkSize = 0;
 
         foreach ($splits as $split) {
-            $split = (string) $split;
             $split = $this->trimWhitespace ? trim($split) : $split;
 
             $splitSize = $this->size($split);
@@ -135,6 +148,7 @@ final class CharacterTextSplitter implements TextSplitter
             $newChunkSplits = [];
             $newChunkSize = 0;
             while ($newChunkSize < $this->minChunkOverlap && $currentChunkSplits !== []) {
+                /** @var string $overlapSplit */
                 $overlapSplit = array_pop($currentChunkSplits);
                 $overlapSplitSize = $this->size($overlapSplit);
 

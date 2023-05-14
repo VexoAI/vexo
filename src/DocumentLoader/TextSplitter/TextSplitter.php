@@ -10,5 +10,8 @@ interface TextSplitter
 {
     public function splitDocuments(Documents $document): Documents;
 
+    /**
+     * @return array<string>
+     */
     public function split(string $text): array;
 }

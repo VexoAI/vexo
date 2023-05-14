@@ -16,6 +16,9 @@ final class FakeModel implements LanguageModel
      */
     private array $calls = [];
 
+    /**
+     * @param array<Result> $results
+     */
     public function __construct(array $results = [])
     {
         foreach ($results as $result) {
@@ -28,6 +31,9 @@ final class FakeModel implements LanguageModel
         $this->results[] = $result;
     }
 
+    /**
+     * @return array<int, array{prompt: string, stops: array<string>}>>
+     */
     public function calls(): array
     {
         return $this->calls;

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Vexo\EmbeddingModel;
 
 use OpenAI\Contracts\Resources\EmbeddingsContract;
-use Ramsey\Collection\Map\AssociativeArrayMap;
-use Ramsey\Collection\Map\MapInterface;
 use Vexo\Contract\Vector\Implementation\Vector;
 use Vexo\Contract\Vector\Implementation\Vectors;
 use Vexo\Contract\Vector\Vector as VectorContract;
@@ -16,13 +14,19 @@ final class OpenAIModel implements EmbeddingModel
 {
     private const DEFAULT_PARAMETERS = ['model' => 'text-embedding-ada-002'];
 
+    /**
+     * @var array<string, mixed>
+     */
+    private readonly array $parameters;
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         private readonly EmbeddingsContract $embeddings,
-        private readonly MapInterface $defaultParameters = new AssociativeArrayMap()
+        array $parameters = []
     ) {
-        foreach (self::DEFAULT_PARAMETERS as $key => $value) {
-            $this->defaultParameters->putIfAbsent($key, $value);
-        }
+        $this->parameters = [...self::DEFAULT_PARAMETERS, ...$parameters];
     }
 
     public function embedQuery(string $query): VectorContract
@@ -53,10 +57,12 @@ final class OpenAIModel implements EmbeddingModel
 
     /**
      * @param string|array<string> $input
+     *
+     * @return array<string, mixed>
      */
     private function prepareParameters(string|array $input): array
     {
-        $parameters = $this->defaultParameters->toArray();
+        $parameters = $this->parameters;
         $parameters['input'] = $input;
 
         return $parameters;

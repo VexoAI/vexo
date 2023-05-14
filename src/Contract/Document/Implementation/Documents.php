@@ -8,6 +8,9 @@ use Ramsey\Collection\AbstractCollection;
 use Vexo\Contract\Document\Document as DocumentContract;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 
+/**
+ * @extends AbstractCollection<DocumentContract>
+ */
 final class Documents extends AbstractCollection implements DocumentsContract
 {
     public function getType(): string

@@ -18,12 +18,15 @@ use Vexo\Contract\Vector\Vector as VectorContract;
 use Vexo\Contract\Vector\Vectors as VectorsContract;
 use Vexo\EmbeddingModel\EmbeddingModel;
 
+/**
+ * @phpstan-type HashBuckets array<string, array<int, array{contents: string, metadata: MetadataContract, vector: VectorContract}>>
+ */
 final class InMemoryVectorStore implements WritableVectorStore, SearchableVectorStore
 {
     private VectorsContract $hyperplanes;
 
     /**
-     * @var array<string, array<int, array{contents: string, metadata: MetadataContract, vector: VectorContract}>>
+     * @var HashBuckets
      */
     private array $hashBuckets = [];
 
@@ -50,7 +53,9 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
 
     public function restoreFromFile(Filesystem $filesystem, string $path): void
     {
-        [$this->hashBuckets, $this->hyperplanes] = unserialize($filesystem->read($path));
+        /** @var array{0: HashBuckets, 1: VectorsContract} $unserialized */
+        $unserialized = unserialize($filesystem->read($path));
+        [$this->hashBuckets, $this->hyperplanes] = $unserialized;
     }
 
     /**
@@ -81,6 +86,7 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
         $candidates = $this->hashBuckets[$this->generateHash($queryVector)] ?? [];
 
         // Initialize priority queue to keep track of the highest scoring vectors
+        /** @var \SplPriorityQueue<float, DocumentContract> */
         $priorityQueue = new \SplPriorityQueue();
 
         // Iterate over the candidate vectors and calculate the similarity between the query and the candidate vectors
@@ -110,7 +116,7 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
             array_unshift($results, $priorityQueue->extract());
         }
 
-        return new Documents($results);
+        return new Documents($results); // @phpstan-ignore-line
     }
 
     private function generateHyperplanes(): VectorsContract

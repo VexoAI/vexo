@@ -11,11 +11,17 @@ use Vexo\Chain\Context;
 #[RequiresContextValuesMethod('requiredContextValues')]
 final class ContextValueRemapperChain implements Chain
 {
+    /**
+     * @param array<string, string> $remappings
+     */
     public function __construct(
         private readonly array $remappings
     ) {
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function requiredContextValues(): array
     {
         return array_fill_keys(array_keys($this->remappings), 'mixed');

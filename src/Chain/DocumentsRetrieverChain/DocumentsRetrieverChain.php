@@ -19,9 +19,12 @@ final class DocumentsRetrieverChain implements Chain
     #[RequiresContextValue('query', 'string')]
     public function run(Context $context): void
     {
+        /** @var string $query */
+        $query = $context->get('query');
+
         $context->put(
             'documents',
-            $this->retriever->retrieve($context->get('query'))
+            $this->retriever->retrieve($query)
         );
     }
 }

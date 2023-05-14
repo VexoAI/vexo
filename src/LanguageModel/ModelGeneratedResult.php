@@ -23,6 +23,9 @@ final class ModelGeneratedResult implements Event
         return $this->prompt;
     }
 
+    /**
+     * @return array<string>
+     */
     public function stops(): array
     {
         return $this->stops;

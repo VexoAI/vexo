@@ -37,7 +37,9 @@ final class FakeModel implements EmbeddingModel
 
         $vectors = new Vectors();
         foreach ($texts as $text) {
-            $vectors->add(array_shift($this->vectors));
+            /** @var VectorContract $vector */
+            $vector = array_shift($this->vectors);
+            $vectors->add($vector);
         }
 
         return $vectors;

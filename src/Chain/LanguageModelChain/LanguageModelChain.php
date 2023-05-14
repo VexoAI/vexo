@@ -14,6 +14,10 @@ use Vexo\LanguageModel\LanguageModel;
 #[RequiresContextValuesMethod('requiredContextValues')]
 final class LanguageModelChain implements Chain
 {
+    /**
+     * @param array<string> $requiredContextValues
+     * @param array<string> $stops
+     */
     public function __construct(
         private readonly LanguageModel $languageModel,
         private readonly Renderer $promptRenderer,
@@ -23,6 +27,9 @@ final class LanguageModelChain implements Chain
     ) {
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function requiredContextValues(): array
     {
         return array_fill_keys($this->requiredContextValues, 'mixed');

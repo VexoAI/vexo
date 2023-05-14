@@ -17,10 +17,13 @@ final class SequentialRunner implements Runner
     private array $chains = [];
 
     /**
-     * @var array<string, array<string, ?string>>
+     * @var array<string, array<string, string>>
      */
     private array $requiredContextValues = [];
 
+    /**
+     * @param array<Chain> $chains
+     */
     public function __construct(
         private readonly ?EventDispatcherInterface $eventDispatcher = null,
         array $chains = []
@@ -57,10 +60,6 @@ final class SequentialRunner implements Runner
                 throw FailedToFindRequiredContextValueForChain::with($requiredContextValue, $chain::class, $identifier);
             }
 
-            if (null === $requiredContextValueType) {
-                continue;
-            }
-
             try {
                 $this->validateContextValueType($requiredContextValueType, $context->get($requiredContextValue));
             } catch (InvalidArgumentException $exception) {
@@ -79,7 +78,7 @@ final class SequentialRunner implements Runner
             'array' => Assert::isArray($value),
             'object' => Assert::object($value),
             'mixed' => true, // no-op
-            default => Assert::isInstanceOf($value, $requiredContextValueType)
+            default => Assert::isInstanceOf($value, $requiredContextValueType) // @phpstan-ignore-line
         };
     }
 
@@ -89,13 +88,21 @@ final class SequentialRunner implements Runner
 
         foreach ((new \ReflectionMethod($chain, 'run'))->getAttributes() as $attribute) {
             if ($attribute->getName() === Attribute\RequiresContextValue::class) {
-                $this->requiredContextValues[$identifier][$attribute->newInstance()->name] = $attribute->newInstance()->type;
+                /** @var Attribute\RequiresContextValue $attributeInstance */
+                $attributeInstance = $attribute->newInstance();
+
+                $this->requiredContextValues[$identifier][$attributeInstance->name] = $attributeInstance->type;
             }
         }
 
         foreach ((new \ReflectionClass($chain))->getAttributes() as $attribute) {
             if ($attribute->getName() === Attribute\RequiresContextValuesMethod::class) {
-                $requiredContextValues = $chain->{$attribute->newInstance()->methodName}();
+                /** @var Attribute\RequiresContextValuesMethod $attributeInstance */
+                $attributeInstance = $attribute->newInstance();
+
+                /** @var array<string, string> $requiredContextValues */
+                $requiredContextValues = $chain->{$attributeInstance->methodName}();
+
                 foreach ($requiredContextValues as $name => $type) {
                     $this->requiredContextValues[$identifier][$name] = $type;
                 }

@@ -18,6 +18,9 @@ final class Result
     ) {
     }
 
+    /**
+     * @return array<string>
+     */
     public function generations(): array
     {
         return $this->generations;

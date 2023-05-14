@@ -6,11 +6,20 @@ namespace Vexo\Agent\Tool;
 
 final class Callback implements Tool
 {
+    /**
+     * @var callable(string): string
+     */
+    private $callable;
+
+    /**
+     * @param callable(string $input): string $callable
+     */
     public function __construct(
         private readonly string $name,
         private readonly string $description,
-        private readonly mixed $callable
+        callable $callable
     ) {
+        $this->callable = $callable;
     }
 
     public function name(): string
@@ -25,6 +34,6 @@ final class Callback implements Tool
 
     public function run(string $input): string
     {
-        return (string) \call_user_func($this->callable, $input);
+        return ($this->callable)($input);
     }
 }

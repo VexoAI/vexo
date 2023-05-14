@@ -17,7 +17,7 @@ use Vexo\LanguageModel\OpenAIChatModel;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-if ( ! getenv('OPENAI_API_KEY') || ! getenv('GOOGLE_API_KEY') || ! getenv('GOOGLE_API_KEY')) {
+if ( ! getenv('OPENAI_API_KEY') || ! getenv('GOOGLE_API_KEY') || ! getenv('GOOGLE_CUSTOM_SEARCH_ENGINE_ID')) {
     echo "Not all required environment variables set!\n";
     echo "Please set OPENAI_API_KEY, GOOGLE_API_KEY and GOOGLE_CUSTOM_SEARCH_ENGINE_ID\n\n";
     exit(1);

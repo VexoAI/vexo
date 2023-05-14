@@ -15,20 +15,24 @@ use Vexo\Chain\Context;
 
 final class WebTextChain implements Chain
 {
+    private readonly ClientInterface $httpClient;
+
+    private readonly RequestFactoryInterface $requestFactory;
+
     public function __construct(
-        private ?ClientInterface $httpClient = null,
-        private ?RequestFactoryInterface $requestFactory = null,
-        private ?TextExtractor $textExtractor = null,
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $requestFactory = null,
+        private readonly TextExtractor $textExtractor = new HtmlTextExtractor(),
         private readonly int $maxTextLength = 8000
     ) {
-        $this->httpClient ??= Psr18ClientDiscovery::find();
-        $this->requestFactory ??= Psr17FactoryDiscovery::findRequestFactory();
-        $this->textExtractor ??= new HtmlTextExtractor();
+        $this->httpClient = $httpClient ?? Psr18ClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
     }
 
     #[RequiresContextValue('url', 'string')]
     public function run(Context $context): void
     {
+        /** @var string $url */
         $url = $context->get('url');
 
         $html = $this->fetchHtml($url);

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Vexo\Contract\Document\Implementation;
 
-use Ramsey\Collection\Map\AbstractMap;
 use Vexo\Contract\Document\Document as DocumentContract;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 use Vexo\Contract\Metadata\Metadata as MetadataContract;
 
-final class Document extends AbstractMap implements DocumentContract
+final class Document implements DocumentContract
 {
     public function __construct(
         private readonly string $contents,

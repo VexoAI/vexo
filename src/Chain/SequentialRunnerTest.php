@@ -76,9 +76,20 @@ final class SequentialRunnerTest extends TestCase
     public function testRunThrowsExceptionIfRequiredContextHasIncorrectType(): void
     {
         $runner = (new SequentialRunner())
-            ->add(new FakeChainWhichRequiresContextValueWithType());
+            ->add(new FakeChainWhichRequiresContextValue());
 
         $context = new Context(['some-variable' => 23]); // Incorrect type
+
+        $this->expectException(RequiredContextValueForChainHasIncorrectType::class);
+        $runner->run($context);
+    }
+
+    public function testRunThrowsExceptionIfRequiredContextValueHasNonExistantClass(): void
+    {
+        $runner = (new SequentialRunner())
+            ->add(new FakeChainWhichRequiresContextValueWithMissingClass());
+
+        $context = new Context(['some-variable' => 23]);
 
         $this->expectException(RequiredContextValueForChainHasIncorrectType::class);
         $runner->run($context);
@@ -124,15 +135,15 @@ final class FakeChain implements Chain
 
 final class FakeChainWhichRequiresContextValue implements Chain
 {
-    #[Attribute\RequiresContextValue('some-variable')]
+    #[Attribute\RequiresContextValue('some-variable', 'string')]
     public function run(Context $context): void
     {
     }
 }
 
-final class FakeChainWhichRequiresContextValueWithType implements Chain
+final class FakeChainWhichRequiresContextValueWithMissingClass implements Chain
 {
-    #[Attribute\RequiresContextValue('some-variable', 'string')]
+    #[Attribute\RequiresContextValue('some-variable', 'Vexo\NonExistantClass')]
     public function run(Context $context): void
     {
     }

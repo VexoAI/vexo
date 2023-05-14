@@ -23,7 +23,7 @@ if ($argc <= 1) {
 }
 
 // Load our embedding model
-$embeddings = $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->embeddings();
+$embeddings = $chat = \OpenAI::client((string) getenv('OPENAI_API_KEY'))->embeddings();
 $embeddingModel = new OpenAIModel($embeddings);
 
 // Initialize our vector store.

@@ -27,10 +27,10 @@ final class ReasonAndActAgent implements Agent
 
         $this->languageModelChain->run($scopedContext);
 
-        if ($scopedContext->containsKey('final_thought')) {
+        if ($scopedContext->containsKey('final_answer')) {
             $conclusion = new Conclusion(
-                thought: $scopedContext->get('final_thought'),
-                observation: $scopedContext->get('final_answer')
+                thought: $scopedContext->get('final_thought', ''), // @phpstan-ignore-line
+                observation: $scopedContext->get('final_answer', '') // @phpstan-ignore-line
             );
 
             $this->emit(new AgentReachedConclusion($context, $previousSteps, $conclusion));
@@ -39,9 +39,9 @@ final class ReasonAndActAgent implements Agent
         }
 
         $nextStep = new Step(
-            thought: $scopedContext->get('thought'),
-            action: $scopedContext->get('action'),
-            input: $scopedContext->get('input')
+            thought: $scopedContext->get('thought', ''), // @phpstan-ignore-line
+            action: $scopedContext->get('action', ''), // @phpstan-ignore-line
+            input: $scopedContext->get('input', '') // @phpstan-ignore-line
         );
 
         $this->emit(new AgentPlannedNextStep($context, $previousSteps, $nextStep));

@@ -11,6 +11,10 @@ use Vexo\Chain\Runner;
 
 final class CachingChain implements Chain
 {
+    /**
+     * @param array<string> $contextInputValuesToMatch
+     * @param array<string> $contextOutputValuesToCache
+     */
     public function __construct(
         private readonly Runner $runner,
         private readonly CacheInterface $cache,
@@ -25,6 +29,7 @@ final class CachingChain implements Chain
     {
         $cacheKey = $this->createCacheKey($context);
 
+        /** @var array<string, mixed>|null $cachedContextValues */
         $cachedContextValues = $this->cache->get($cacheKey);
         if ($cachedContextValues !== null) {
             $this->putValuesIntoContext($context, $cachedContextValues);
@@ -51,6 +56,11 @@ final class CachingChain implements Chain
         );
     }
 
+    /**
+     * @param array<string> $contextValues
+     *
+     * @return array<string, mixed>
+     */
     private function extractValuesFromContext(Context $context, array $contextValues): array
     {
         $values = [];
@@ -61,6 +71,9 @@ final class CachingChain implements Chain
         return $values;
     }
 
+    /**
+     * @param array<string, mixed> $values
+     */
     private function putValuesIntoContext(Context $context, array $values): void
     {
         foreach ($values as $key => $value) {

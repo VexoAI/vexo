@@ -21,10 +21,10 @@ final class HtmlTextExtractor implements TextExtractor
         $text = $this->removeTags($contents);
 
         // Replace any newlines surrounded by whitespace with a single newline
-        $textWithNewlinesReduced = preg_replace("/\s*\n\s*/", "\n", $text);
+        $textWithNewlinesReduced = (string) preg_replace("/\s*\n\s*/", "\n", $text);
 
         // Replace any other multiple whitespace characters by a single space
-        return trim(preg_replace("/[^\S\n]+/", ' ', $textWithNewlinesReduced));
+        return trim((string) preg_replace("/[^\S\n]+/", ' ', $textWithNewlinesReduced));
     }
 
     private function removeTags(string $contents): string
@@ -36,8 +36,12 @@ final class HtmlTextExtractor implements TextExtractor
         $xpath = new \DOMXPath($dom);
         foreach (self::TAGS_TO_REMOVE as $tag) {
             $nodes = $xpath->query('//' . $tag);
-            foreach ($nodes as $node) {
-                $node->parentNode->removeChild($node);
+            if ($nodes !== false) {
+                foreach ($nodes as $node) {
+                    /** @var \DOMNode $parentNode */
+                    $parentNode = $node->parentNode;
+                    $parentNode->removeChild($node);
+                }
             }
         }
 

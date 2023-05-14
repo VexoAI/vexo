@@ -12,6 +12,9 @@ use Vexo\Contract\Vector\Vector as VectorContract;
 
 final class Vector implements VectorContract
 {
+    /**
+     * @param array<int, float> $vector
+     */
     public function __construct(
         private readonly array $vector
     ) {

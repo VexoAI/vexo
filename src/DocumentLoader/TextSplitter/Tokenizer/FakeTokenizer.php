@@ -6,6 +6,9 @@ namespace Vexo\DocumentLoader\TextSplitter\Tokenizer;
 
 final class FakeTokenizer implements Tokenizer
 {
+    /**
+     * @param array<string, array<int>> $textToTokens
+     */
     public function __construct(
         private readonly array $textToTokens = []
     ) {

@@ -1,7 +1,9 @@
 parameters:
-    level: 6
+    level: 9
     paths:
         - src
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
+        - examples
+    excludePaths:
+        analyse:
+            - *Test.php
     reportUnmatchedIgnoredErrors: true

@@ -13,14 +13,20 @@ final class OpenAIChatModel implements LanguageModel
 {
     private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
 
+    /**
+     * @var array<string, mixed>
+     */
     private readonly array $parameters;
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(
         private readonly ChatContract $chat,
         array $parameters = [],
         private readonly ?EventDispatcherInterface $eventDispatcher = null
     ) {
-        $this->parameters = array_merge(self::DEFAULT_PARAMETERS, $parameters);
+        $this->parameters = [...self::DEFAULT_PARAMETERS, ...$parameters];
     }
 
     public function generate(string $prompt, array $stops = []): Result
@@ -39,10 +45,14 @@ final class OpenAIChatModel implements LanguageModel
         return $result;
     }
 
+    /**
+     * @param array<string> $stops
+     *
+     * @return array<string, mixed>
+     */
     private function prepareParameters(string $prompt, array $stops): array
     {
-        $parameters = $this->parameters;
-        $parameters['messages'][] = ['role' => 'user', 'content' => $prompt];
+        $parameters = [...$this->parameters, ...['messages' => [['role' => 'user', 'content' => $prompt]]]];
 
         if ($stops !== []) {
             $parameters['stop'] = $stops;

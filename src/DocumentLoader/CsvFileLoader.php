@@ -37,7 +37,7 @@ final class CsvFileLoader implements Loader
             $records = $this->reader->getRecords();
             foreach ($records as $offset => $record) {
                 $documents[] = new Document(
-                    $record[$this->contentsColumn],
+                    (string) $record[$this->contentsColumn],
                     new Metadata([
                         'path' => $this->path,
                         'offset' => $offset,

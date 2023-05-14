@@ -8,6 +8,9 @@ use Ramsey\Collection\AbstractCollection;
 use Vexo\Contract\Vector\Vector as VectorContract;
 use Vexo\Contract\Vector\Vectors as VectorsContract;
 
+/**
+ * @extends AbstractCollection<VectorContract>
+ */
 final class Vectors extends AbstractCollection implements VectorsContract
 {
     public function getType(): string
