@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel;
+namespace Vexo\Model\Language;
 
 use League\Event\EventDispatcher;
-use OpenAI\Responses\Completions\CreateResponse;
+use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Testing\ClientFake;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(OpenAIModel::class)]
-final class OpenAIModelTest extends TestCase
+#[CoversClass(OpenAIChatModel::class)]
+final class OpenAIChatModelTest extends TestCase
 {
     public function testGenerate(): void
     {
@@ -26,23 +26,23 @@ final class OpenAIModelTest extends TestCase
 
         $client = new ClientFake([
             CreateResponse::from([
-                'id' => 'cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7',
-                'object' => 'text_completion',
+                'id' => 'chatcmpl-555NOEm562iYTOet9ql555znLFWES',
+                'object' => 'chat.completion',
                 'created' => 0,
-                'model' => 'text-davinci-003',
+                'model' => 'gpt-3.5-turbo-0301',
                 'usage' => [
                     'prompt_tokens' => 15,
                     'completion_tokens' => 8,
                     'total_tokens' => 23
                 ],
                 'choices' => [
-                    ['index' => 0, 'text' => 'Paris', 'logprobs' => null, 'finish_reason' => 'length'],
-                    ['index' => 1, 'text' => 'The capital of France is Paris.', 'logprobs' => null, 'finish_reason' => 'length']
+                    ['index' => 0, 'message' => ['role' => 'assistant', 'content' => 'Paris'], 'finish_reason' => 'stop'],
+                    ['index' => 1, 'message' => ['role' => 'assistant', 'content' => 'The capital of France is Paris.'], 'finish_reason' => 'stop']
                 ]
             ])
         ]);
 
-        $model = new OpenAIModel($client->completions(), ['n' => 2], $eventDispatcher);
+        $model = new OpenAIChatModel($client->chat(), ['n' => 2], $eventDispatcher);
 
         $result = $model->generate('What is the capital of France?', ["\n"]);
         $generations = $result->generations();
@@ -52,7 +52,7 @@ final class OpenAIModelTest extends TestCase
         $this->assertEquals('The capital of France is Paris.', $generations[1]);
 
         $metadata = $result->metadata();
-        $this->assertEquals('text-davinci-003', $metadata->get('model'));
+        $this->assertEquals('gpt-3.5-turbo', $metadata->get('model'));
         $this->assertEquals(2, $metadata->get('n'));
         $this->assertEquals(15, $metadata->get('usage')['prompt_tokens']);
         $this->assertEquals(8, $metadata->get('usage')['completion_tokens']);

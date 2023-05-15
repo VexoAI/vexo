@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\EmbeddingModel;
+namespace Vexo\Model\Embedding;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

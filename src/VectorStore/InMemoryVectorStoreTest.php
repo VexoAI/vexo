@@ -12,7 +12,7 @@ use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 use Vexo\Contract\Vector\Implementation\Vector;
 use Vexo\Contract\Vector\Implementation\Vectors;
-use Vexo\EmbeddingModel\FakeModel;
+use Vexo\Model\Embedding\FakeModel;
 
 #[CoversClass(InMemoryVectorStore::class)]
 final class InMemoryVectorStoreTest extends TestCase

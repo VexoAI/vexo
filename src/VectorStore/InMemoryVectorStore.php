@@ -16,7 +16,7 @@ use Vexo\Contract\Vector\Implementation\Vectors;
 use Vexo\Contract\Vector\SimilarityAlgorithm;
 use Vexo\Contract\Vector\Vector as VectorContract;
 use Vexo\Contract\Vector\Vectors as VectorsContract;
-use Vexo\EmbeddingModel\EmbeddingModel;
+use Vexo\Model\Embedding\EmbeddingModel;
 
 /**
  * @phpstan-type HashBuckets array<string, array<int, array{contents: string, metadata: MetadataContract, vector: VectorContract}>>

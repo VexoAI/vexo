@@ -16,8 +16,8 @@ use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialRunner;
 use Vexo\Contract\Event\Event;
-use Vexo\EmbeddingModel\OpenAIModel;
-use Vexo\LanguageModel\OpenAIChatModel;
+use Vexo\Model\Embedding\OpenAIModel;
+use Vexo\Model\Language\OpenAIChatModel;
 use Vexo\VectorStore\InMemoryVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';

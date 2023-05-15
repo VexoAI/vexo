@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\EmbeddingModel;
+namespace Vexo\Model\Embedding;
 
 use OpenAI\Responses\Embeddings\CreateResponse;
 use OpenAI\Testing\ClientFake;

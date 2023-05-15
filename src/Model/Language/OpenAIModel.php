@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel;
+namespace Vexo\Model\Language;
 
-use OpenAI\Contracts\Resources\ChatContract;
+use OpenAI\Contracts\Resources\CompletionsContract;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Vexo\Contract\Event\Event;
 use Vexo\Contract\Metadata\Implementation\Metadata;
 
-final class OpenAIChatModel implements LanguageModel
+final class OpenAIModel implements LanguageModel
 {
-    private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
+    private const DEFAULT_PARAMETERS = ['model' => 'text-davinci-003'];
 
     /**
      * @var array<string, mixed>
@@ -22,7 +22,7 @@ final class OpenAIChatModel implements LanguageModel
      * @param array<string, mixed> $parameters
      */
     public function __construct(
-        private readonly ChatContract $chat,
+        private readonly CompletionsContract $completions,
         array $parameters = [],
         private readonly ?EventDispatcherInterface $eventDispatcher = null
     ) {
@@ -31,12 +31,12 @@ final class OpenAIChatModel implements LanguageModel
 
     public function generate(string $prompt, array $stops = []): Result
     {
-        $response = $this->chat->create(
+        $response = $this->completions->create(
             $this->prepareParameters($prompt, $stops)
         );
 
         $result = new Result(
-            array_map(fn ($choice): string => $choice->message->content, $response->choices),
+            array_map(fn ($choice): string => $choice->text, $response->choices),
             new Metadata([...$this->parameters, 'usage' => $response->usage->toArray()])
         );
 
@@ -52,7 +52,7 @@ final class OpenAIChatModel implements LanguageModel
      */
     private function prepareParameters(string $prompt, array $stops): array
     {
-        $parameters = [...$this->parameters, ...['messages' => [['role' => 'user', 'content' => $prompt]]]];
+        $parameters = [...$this->parameters, ...['prompt' => $prompt]];
 
         if ($stops !== []) {
             $parameters['stop'] = $stops;

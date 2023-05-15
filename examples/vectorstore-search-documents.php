@@ -6,7 +6,7 @@ namespace Vexo\Examples;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use Vexo\EmbeddingModel\OpenAIModel;
+use Vexo\Model\Embedding\OpenAIModel;
 use Vexo\VectorStore\InMemoryVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';

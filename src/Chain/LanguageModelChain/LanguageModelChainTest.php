@@ -9,8 +9,8 @@ use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
-use Vexo\LanguageModel\FakeModel;
-use Vexo\LanguageModel\Result;
+use Vexo\Model\Language\FakeModel;
+use Vexo\Model\Language\Result;
 
 #[CoversClass(LanguageModelChain::class)]
 final class LanguageModelChainTest extends TestCase

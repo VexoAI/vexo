@@ -9,7 +9,7 @@ use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
-use Vexo\LanguageModel\LanguageModel;
+use Vexo\Model\Language\LanguageModel;
 
 #[RequiresContextValuesMethod('requiredContextValues')]
 final class LanguageModelChain implements Chain

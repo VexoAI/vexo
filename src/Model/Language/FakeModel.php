@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel;
+namespace Vexo\Model\Language;
 
 final class FakeModel implements LanguageModel
 {

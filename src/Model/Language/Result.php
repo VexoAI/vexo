@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\LanguageModel;
+namespace Vexo\Model\Language;
 
 use Vexo\Contract\Metadata\Implementation\Metadata;
 use Vexo\Contract\Metadata\Metadata as MetadataContract;
