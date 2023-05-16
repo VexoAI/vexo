@@ -37,7 +37,7 @@ final class LanguageModelChainFactoryTest extends TestCase
         $languageModelChain->run($context);
 
         $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
-        $this->assertEquals('The capital of France is Paris', $context->get('completions'));
+        $this->assertEquals('The capital of France is Paris', $context->get('generation'));
         $this->assertEquals('Paris', $context->get('capital'));
 
         $call = $fakeLanguageModel->calls()[0];
@@ -81,7 +81,7 @@ final class LanguageModelChainFactoryTest extends TestCase
         $languageModelChain->run($context);
 
         $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
-        $this->assertEquals('The capital of France is Paris', $context->get('completions'));
+        $this->assertEquals('The capital of France is Paris', $context->get('generation'));
         $this->assertEquals('Paris', $context->get('capital'));
 
         $call = $fakeLanguageModel->calls()[0];

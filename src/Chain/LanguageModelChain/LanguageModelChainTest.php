@@ -35,8 +35,25 @@ final class LanguageModelChainTest extends TestCase
 
         $this->languageModelChain->run($context);
 
-        $this->assertEquals('The capital of France is Paris', $context->get('completions'));
+        $this->assertEquals('The capital of France is Paris', $context->get('generation'));
         $this->assertEquals('Paris', $context->get('capital'));
+    }
+
+    public function testProcessWithoutOutputParser(): void
+    {
+        $languageModelChain = new LanguageModelChain(
+            languageModel: new FakeModel([
+                new Result(['The capital of France is Paris']),
+            ]),
+            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
+            requiredContextValues: ['country']
+        );
+
+        $context = new Context(['country' => 'France']);
+
+        $languageModelChain->run($context);
+
+        $this->assertEquals('The capital of France is Paris', $context->get('generation'));
     }
 
     public function testRequiredContextValues(): void

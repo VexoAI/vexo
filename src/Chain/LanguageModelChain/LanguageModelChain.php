@@ -21,7 +21,7 @@ final class LanguageModelChain implements Chain
     public function __construct(
         private readonly LanguageModel $languageModel,
         private readonly Renderer $promptRenderer,
-        private readonly OutputParser $outputParser,
+        private readonly ?OutputParser $outputParser = null,
         private readonly array $requiredContextValues = [],
         private readonly array $stops = []
     ) {
@@ -42,7 +42,11 @@ final class LanguageModelChain implements Chain
             $this->stops
         );
 
-        $context->put('completions', $result->generations()[0]);
+        $context->put('generation', $result->generations()[0]);
+
+        if ( ! $this->outputParser instanceof OutputParser) {
+            return;
+        }
 
         $parsed = $this->outputParser->parse($result->generations()[0]);
         foreach ($parsed as $key => $value) {
