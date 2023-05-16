@@ -11,18 +11,30 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\ContextValueMapperBehavior;
 
 final class WebTextChain implements Chain
 {
+    use ContextValueMapperBehavior;
+
+    private const INPUT_URL = 'url';
+    private const OUTPUT_TEXT = 'text';
+
     private readonly ClientInterface $httpClient;
 
     private readonly RequestFactoryInterface $requestFactory;
 
+    /**
+     * @param array<string, string> $inputMap
+     * @param array<string, string> $outputMap
+     */
     public function __construct(
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $requestFactory = null,
         private readonly TextExtractor $textExtractor = new HtmlTextExtractor(),
-        private readonly int $maxTextLength = 8000
+        private readonly int $maxTextLength = 8000,
+        private readonly array $inputMap = [],
+        private readonly array $outputMap = []
     ) {
         $this->httpClient = $httpClient ?? Psr18ClientDiscovery::find();
         $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
@@ -31,12 +43,12 @@ final class WebTextChain implements Chain
     public function run(Context $context): void
     {
         /** @var string $url */
-        $url = $context->get('url');
+        $url = $this->get($context, self::INPUT_URL);
 
         $html = $this->fetchHtml($url);
         $text = $this->extractText($html);
 
-        $context->put('text', $text);
+        $this->put($context, self::OUTPUT_TEXT, $text);
     }
 
     private function fetchHtml(string $url): string

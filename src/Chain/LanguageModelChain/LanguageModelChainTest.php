@@ -15,24 +15,19 @@ use Vexo\Model\Language\Result;
 #[CoversClass(LanguageModelChain::class)]
 final class LanguageModelChainTest extends TestCase
 {
-    private LanguageModelChain $languageModelChain;
-
-    protected function setUp(): void
+    public function testProcess(): void
     {
-        $this->languageModelChain = new LanguageModelChain(
+        $languageModelChain = new LanguageModelChain(
             languageModel: new FakeModel([
                 new Result(['The capital of France is Paris']),
             ]),
             promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
             outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/')
         );
-    }
 
-    public function testProcess(): void
-    {
         $context = new Context(['country' => 'France']);
 
-        $this->languageModelChain->run($context);
+        $languageModelChain->run($context);
 
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
         $this->assertEquals('Paris', $context->get('capital'));
@@ -51,6 +46,26 @@ final class LanguageModelChainTest extends TestCase
 
         $languageModelChain->run($context);
 
+        $this->assertEquals('The capital of France is Paris', $context->get('generation'));
+    }
+
+    public function testProcessWithInputMap(): void
+    {
+        $fakeModel = new FakeModel([
+            new Result(['The capital of France is Paris']),
+        ]);
+
+        $languageModelChain = new LanguageModelChain(
+            languageModel: $fakeModel,
+            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
+            inputMap: ['country' => 'nation']
+        );
+
+        $context = new Context(['nation' => 'France']);
+
+        $languageModelChain->run($context);
+
+        $this->assertEquals('What is the capital of France?', $fakeModel->calls()[0]['prompt']);
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
     }
 }

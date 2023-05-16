@@ -66,14 +66,14 @@ $languageModel = new OpenAIChatModel($openAI->chat(), eventDispatcher: $eventDis
 $runner = new SequentialRunner(
     eventDispatcher: $eventDispatcher,
     chains: [
-        new ContextValueRemapperChain(['question' => 'query']), // Make sure question is also available as query
         new DocumentsRetrieverChain(
-            new VectorStoreRetriever(vectorStore: $vectorStore, numResults: 3)
+            new VectorStoreRetriever(vectorStore: $vectorStore, numResults: 3),
+            inputMap: ['query' => 'question'] // Make sure question is also available as query
         ),
         new ConcatenateDocumentsChain(),
-        new ContextValueRemapperChain(['combined_contents' => 'context']), // Make sure combined_contents is also available as context
         (new LanguageModelChainFactory($languageModel))->createFromBlueprint(
-            new AnswerQuestionAboutContext()
+            new AnswerQuestionAboutContext(),
+            inputMap: ['context' => 'combined_contents'] // Make sure combined_contents is also available as context
         )
     ]
 );
