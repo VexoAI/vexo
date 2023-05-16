@@ -9,7 +9,6 @@ use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Vexo\Chain\Attribute\RequiresContextValue;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 
@@ -29,7 +28,6 @@ final class WebTextChain implements Chain
         $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
     }
 
-    #[RequiresContextValue('url', 'string')]
     public function run(Context $context): void
     {
         /** @var string $url */

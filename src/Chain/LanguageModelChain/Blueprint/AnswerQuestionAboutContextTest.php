@@ -18,7 +18,6 @@ final class AnswerQuestionAboutContextTest extends TestCase
 
         $this->assertInstanceOf(Renderer::class, $blueprint->promptRenderer());
         $this->assertInstanceOf(OutputParser::class, $blueprint->outputParser());
-        $this->assertEquals(['context', 'question'], $blueprint->requiredContextValues());
         $this->assertEmpty($blueprint->stops());
     }
 

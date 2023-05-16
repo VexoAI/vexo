@@ -24,8 +24,7 @@ final class LanguageModelChainTest extends TestCase
                 new Result(['The capital of France is Paris']),
             ]),
             promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
-            outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/'),
-            requiredContextValues: ['country']
+            outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/')
         );
     }
 
@@ -45,8 +44,7 @@ final class LanguageModelChainTest extends TestCase
             languageModel: new FakeModel([
                 new Result(['The capital of France is Paris']),
             ]),
-            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
-            requiredContextValues: ['country']
+            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?')
         );
 
         $context = new Context(['country' => 'France']);
@@ -54,13 +52,5 @@ final class LanguageModelChainTest extends TestCase
         $languageModelChain->run($context);
 
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
-    }
-
-    public function testRequiredContextValues(): void
-    {
-        $this->assertEquals(
-            ['country' => 'mixed'],
-            $this->languageModelChain->requiredContextValues()
-        );
     }
 }

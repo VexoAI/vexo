@@ -42,11 +42,6 @@ final class ReasonAndAct implements Blueprint
         );
     }
 
-    public function requiredContextValues(): array
-    {
-        return ['tools', 'steps', 'question'];
-    }
-
     /**
      * @return array<string>
      */

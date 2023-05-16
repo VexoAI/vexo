@@ -25,11 +25,6 @@ final class AnswerQuestionAboutContext implements Blueprint
         return new RegexOutputParser('/^(?<answer>.*)$/');
     }
 
-    public function requiredContextValues(): array
-    {
-        return ['context', 'question'];
-    }
-
     /**
      * @return array<string>
      */

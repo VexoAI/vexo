@@ -20,26 +20,22 @@ final class LanguageModelChainFactory
         return $this->create(
             promptRenderer: $blueprint->promptRenderer(),
             outputParser: $blueprint->outputParser(),
-            requiredContextValues: $blueprint->requiredContextValues(),
             stops: $blueprint->stops()
         );
     }
 
     /**
-     * @param array<string> $requiredContextValues
      * @param array<string> $stops
      */
     public function create(
         Renderer $promptRenderer,
         OutputParser $outputParser,
-        array $requiredContextValues,
         array $stops
     ): LanguageModelChain {
         return new LanguageModelChain(
             languageModel: $this->languageModel,
             promptRenderer: $promptRenderer,
             outputParser: $outputParser,
-            requiredContextValues: $requiredContextValues,
             stops: $stops
         );
     }

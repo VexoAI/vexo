@@ -6,22 +6,17 @@ namespace Vexo\Chain;
 
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\IgnoreClassForCodeCoverage;
 use PHPUnit\Framework\TestCase;
-use Vexo\Chain\Attribute\RequiresContextValue;
-use Vexo\Chain\Attribute\RequiresContextValuesMethod;
 use Vexo\Contract\Event\Event;
 
 #[CoversClass(SequentialRunner::class)]
-#[IgnoreClassForCodeCoverage(RequiresContextValue::class)]
-#[IgnoreClassForCodeCoverage(RequiresContextValuesMethod::class)]
 final class SequentialRunnerTest extends TestCase
 {
     public function testRun(): void
     {
         $runner = new SequentialRunner(chains: [
-            new FakeChainWhichRequiresContextValue(),
-            new FakeChain(['foo' => 'bar'])
+            new FakeChain(['foo' => 'bar']),
+            new FakeChain(['baz' => 'fudge'])
         ]);
 
         $context = new Context(['some-variable' => 'fudge']);
@@ -30,7 +25,8 @@ final class SequentialRunnerTest extends TestCase
         $this->assertSame(
             [
                 'some-variable' => 'fudge',
-                'foo' => 'bar'
+                'foo' => 'bar',
+                'baz' => 'fudge'
             ],
             $context->toArray()
         );
@@ -61,61 +57,6 @@ final class SequentialRunnerTest extends TestCase
         $this->assertInstanceOf(ChainStarted::class, $emittedEvents[0]);
         $this->assertInstanceOf(ChainFinished::class, $emittedEvents[1]); // @phpstan-ignore-line
     }
-
-    public function testRunThrowsExceptionIfRequiredContextValueIsMissing(): void
-    {
-        $runner = (new SequentialRunner())
-            ->add(new FakeChainWhichRequiresContextValue());
-
-        $context = new Context(); // Missing required 'some-variable' value
-
-        $this->expectException(FailedToFindRequiredContextValueForChain::class);
-        $runner->run($context);
-    }
-
-    public function testRunThrowsExceptionIfRequiredContextHasIncorrectType(): void
-    {
-        $runner = (new SequentialRunner())
-            ->add(new FakeChainWhichRequiresContextValue());
-
-        $context = new Context(['some-variable' => 23]); // Incorrect type
-
-        $this->expectException(RequiredContextValueForChainHasIncorrectType::class);
-        $runner->run($context);
-    }
-
-    public function testRunThrowsExceptionIfRequiredContextValueHasNonExistantClass(): void
-    {
-        $runner = (new SequentialRunner())
-            ->add(new FakeChainWhichRequiresContextValueWithMissingClass());
-
-        $context = new Context(['some-variable' => 23]);
-
-        $this->expectException(RequiredContextValueForChainHasIncorrectType::class);
-        $runner->run($context);
-    }
-
-    public function testRunThrowsExceptionIfRequiredContextValueSpecifiedThroughMethodIsMissing(): void
-    {
-        $runner = (new SequentialRunner())
-            ->add(new FakeChainWhichSpecifiesRequiredContextValuesThroughMethod());
-
-        $context = new Context(); // Missing required 'some-variable' value
-
-        $this->expectException(FailedToFindRequiredContextValueForChain::class);
-        $runner->run($context);
-    }
-
-    public function testRunThrowsExceptionIfRequiredContextValueSpecifiedThroughMethodHasIncorrectType(): void
-    {
-        $runner = (new SequentialRunner())
-            ->add(new FakeChainWhichSpecifiesRequiredContextValuesThroughMethod());
-
-        $context = new Context(['some-variable' => 23]); // Incorrect type
-
-        $this->expectException(RequiredContextValueForChainHasIncorrectType::class);
-        $runner->run($context);
-    }
 }
 
 final class FakeChain implements Chain
@@ -130,36 +71,5 @@ final class FakeChain implements Chain
         foreach ($this->valuesToAddToContext as $name => $value) {
             $context->put($name, $value);
         }
-    }
-}
-
-final class FakeChainWhichRequiresContextValue implements Chain
-{
-    #[Attribute\RequiresContextValue('some-variable', 'string')]
-    public function run(Context $context): void
-    {
-    }
-}
-
-final class FakeChainWhichRequiresContextValueWithMissingClass implements Chain
-{
-    #[Attribute\RequiresContextValue('some-variable', 'Vexo\NonExistantClass')]
-    public function run(Context $context): void
-    {
-    }
-}
-
-#[Attribute\RequiresContextValuesMethod('requiredContextValues')]
-final class FakeChainWhichSpecifiesRequiredContextValuesThroughMethod implements Chain
-{
-    public function requiredContextValues(): array
-    {
-        return [
-            'some-variable' => 'string'
-        ];
-    }
-
-    public function run(Context $context): void
-    {
     }
 }

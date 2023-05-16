@@ -16,10 +16,5 @@ interface Blueprint
     /**
      * @return array<string>
      */
-    public function requiredContextValues(): array;
-
-    /**
-     * @return array<string>
-     */
     public function stops(): array;
 }

@@ -19,7 +19,6 @@ final class ReasonAndActTest extends TestCase
 
         $this->assertInstanceOf(Renderer::class, $blueprint->promptRenderer());
         $this->assertInstanceOf(OutputParser::class, $blueprint->outputParser());
-        $this->assertEquals(['tools', 'steps', 'question'], $blueprint->requiredContextValues());
         $this->assertEquals(['Observation:'], $blueprint->stops());
     }
 

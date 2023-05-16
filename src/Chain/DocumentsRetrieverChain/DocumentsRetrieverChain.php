@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\DocumentsRetrieverChain;
 
-use Vexo\Chain\Attribute\RequiresContextValue;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\DocumentsRetrieverChain\Retriever\Retriever;
@@ -16,7 +15,6 @@ final class DocumentsRetrieverChain implements Chain
     ) {
     }
 
-    #[RequiresContextValue('query', 'string')]
     public function run(Context $context): void
     {
         /** @var string $query */

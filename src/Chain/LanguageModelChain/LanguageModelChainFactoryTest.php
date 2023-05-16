@@ -29,14 +29,12 @@ final class LanguageModelChainFactoryTest extends TestCase
         $languageModelChain = $languageModelChainFactory->create(
             promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?'),
             outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/'),
-            requiredContextValues: ['country'],
             stops: [],
         );
 
         $context = new Context(['country' => 'France']);
         $languageModelChain->run($context);
 
-        $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
         $this->assertEquals('Paris', $context->get('capital'));
 
@@ -64,11 +62,6 @@ final class LanguageModelChainFactoryTest extends TestCase
                 return new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/');
             }
 
-            public function requiredContextValues(): array
-            {
-                return ['country'];
-            }
-
             public function stops(): array
             {
                 return [];
@@ -80,7 +73,6 @@ final class LanguageModelChainFactoryTest extends TestCase
         $context = new Context(['country' => 'France']);
         $languageModelChain->run($context);
 
-        $this->assertSame(['country' => 'mixed'], $languageModelChain->requiredContextValues());
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
         $this->assertEquals('Paris', $context->get('capital'));
 
