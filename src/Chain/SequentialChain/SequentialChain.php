@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\SequentialChain;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Vexo\Chain\Chain;
+use Vexo\Chain\ChainFinished;
+use Vexo\Chain\ChainStarted;
+use Vexo\Chain\Context;
 use Vexo\Contract\Event\Event;
 
-final class SequentialRunner implements Runner
+final class SequentialChain implements Chain
 {
     /**
      * @var array<string, Chain>

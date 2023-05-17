@@ -2,25 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain;
+namespace Vexo\Chain\SequentialChain;
 
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Vexo\Chain\Chain;
+use Vexo\Chain\ChainFinished;
+use Vexo\Chain\ChainStarted;
+use Vexo\Chain\Context;
 use Vexo\Contract\Event\Event;
 
-#[CoversClass(SequentialRunner::class)]
-final class SequentialRunnerTest extends TestCase
+#[CoversClass(SequentialChain::class)]
+final class SequentialChainTest extends TestCase
 {
     public function testRun(): void
     {
-        $runner = new SequentialRunner(chains: [
+        $chain = new SequentialChain(chains: [
             new FakeChain(['foo' => 'bar']),
             new FakeChain(['baz' => 'fudge'])
         ]);
 
         $context = new Context(['some-variable' => 'fudge']);
-        $runner->run($context);
+        $chain->run($context);
 
         $this->assertSame(
             [
@@ -44,13 +48,13 @@ final class SequentialRunnerTest extends TestCase
             }
         );
 
-        $runner = new SequentialRunner(
+        $chain = new SequentialChain(
             chains: [new FakeChain(['foo' => 'bar'])],
             eventDispatcher: $eventDispatcher
         );
 
         $context = new Context(['some-variable' => 'fudge']);
-        $runner->run($context);
+        $chain->run($context);
 
         $this->assertCount(2, $emittedEvents);
 

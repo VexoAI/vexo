@@ -12,7 +12,7 @@ use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\Blueprint\ReasonAndAct;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
-use Vexo\Chain\SequentialRunner;
+use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Contract\Event\Event;
 use Vexo\Model\Language\OpenAIChatModel;
 
@@ -45,12 +45,12 @@ $tools = new Tools([
 
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
 $languageModel = new OpenAIChatModel($chat, eventDispatcher: $eventDispatcher);
-$languageModelChainRunner = new SequentialRunner(
+$sequentialChain = new SequentialChain(
     $eventDispatcher,
     [(new LanguageModelChainFactory($languageModel))->createFromBlueprint(new ReasonAndAct())]
 );
 
-$agent = new ReasonAndActAgent($languageModelChainRunner, $tools, $eventDispatcher);
+$agent = new ReasonAndActAgent($sequentialChain, $tools, $eventDispatcher);
 $executor = new AutonomousExecutor(agent: $agent, eventDispatcher: $eventDispatcher);
 
 $context = new Context(['question' => $argv[1]]);

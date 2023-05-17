@@ -8,7 +8,7 @@ use League\Event\EventDispatcher;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\LanguageModelChain;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
-use Vexo\Chain\SequentialRunner;
+use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Chain\WebTextChain\WebTextChain;
 use Vexo\Contract\Event\Event;
 use Vexo\Model\Language\OpenAIChatModel;
@@ -34,8 +34,8 @@ $eventDispatcher->subscribeTo(Event::class, 'dump');
 $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
 $languageModel = new OpenAIChatModel($chat, eventDispatcher: $eventDispatcher);
 
-// Initialize our sequential runner and the two needed chains in sequential order
-$runner = new SequentialRunner(
+// Initialize our sequential chain and the two needed chains in order
+$sequentialChain = new SequentialChain(
     eventDispatcher: $eventDispatcher,
     chains: [
         // Create our WebTextChain which will take a URL from the context, downloads the
@@ -53,6 +53,6 @@ $runner = new SequentialRunner(
 
 // Run the chains
 $context = new Context(['url' => $argv[1]]);
-$runner->run($context);
+$sequentialChain->run($context);
 
 dump($context->get('generation'));

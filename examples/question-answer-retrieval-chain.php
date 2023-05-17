@@ -9,12 +9,11 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Vexo\Chain\ConcatenateDocumentsChain\ConcatenateDocumentsChain;
 use Vexo\Chain\Context;
-use Vexo\Chain\ContextValueRemapperChain\ContextValueRemapperChain;
 use Vexo\Chain\DocumentsRetrieverChain\DocumentsRetrieverChain;
 use Vexo\Chain\DocumentsRetrieverChain\Retriever\VectorStoreRetriever;
 use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
-use Vexo\Chain\SequentialRunner;
+use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Contract\Event\Event;
 use Vexo\Model\Embedding\OpenAIModel;
 use Vexo\Model\Language\OpenAIChatModel;
@@ -63,7 +62,7 @@ $languageModel = new OpenAIChatModel($openAI->chat(), eventDispatcher: $eventDis
 // Our language model chain factory will create a chain based on the blueprint we provide. The blueprint configures the
 // chain with the correct prompt. The language model chain will then answer the question based on the context.
 //
-$runner = new SequentialRunner(
+$sequentialChain = new SequentialChain(
     eventDispatcher: $eventDispatcher,
     chains: [
         new DocumentsRetrieverChain(
@@ -80,6 +79,6 @@ $runner = new SequentialRunner(
 
 // Ask the question
 $context = new Context(['question' => $argv[1]]);
-$runner->run($context);
+$sequentialChain->run($context);
 
 dump($context->get('answer'));

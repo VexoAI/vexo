@@ -7,8 +7,8 @@ namespace Vexo\Chain\CachingChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
+use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Chain\Runner;
 
 #[CoversClass(CachingChain::class)]
 final class CachingChainTest extends TestCase
@@ -16,7 +16,7 @@ final class CachingChainTest extends TestCase
     public function testRun(): void
     {
         $cachingChain = new CachingChain(
-            new RunnerStub(),
+            new ChainStub(),
             new CacheStub(),
             ['query'],
             ['incrementor']
@@ -33,7 +33,7 @@ final class CachingChainTest extends TestCase
     }
 }
 
-final class RunnerStub implements Runner
+final class ChainStub implements Chain
 {
     private int $incrementor = 0;
 

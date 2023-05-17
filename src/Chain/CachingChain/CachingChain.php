@@ -7,7 +7,6 @@ namespace Vexo\Chain\CachingChain;
 use Psr\SimpleCache\CacheInterface;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Chain\Runner;
 
 final class CachingChain implements Chain
 {
@@ -16,7 +15,7 @@ final class CachingChain implements Chain
      * @param array<string> $contextOutputValuesToCache
      */
     public function __construct(
-        private readonly Runner $runner,
+        private readonly Chain $runner,
         private readonly CacheInterface $cache,
         private readonly array $contextInputValuesToMatch,
         private readonly array $contextOutputValuesToCache,
