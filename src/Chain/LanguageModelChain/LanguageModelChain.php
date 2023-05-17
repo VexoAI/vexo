@@ -39,10 +39,13 @@ final class LanguageModelChain implements Chain
             $promptContext->put($from, $promptContext->get($to));
         }
 
-        $result = $this->languageModel->generate(
-            $this->promptRenderer->render($promptContext),
-            $this->stops
-        );
+        $prompt = $this->promptRenderer->render($promptContext);
+
+        try {
+            $result = $this->languageModel->generate($prompt, $this->stops);
+        } catch (\Throwable $exception) {
+            throw ModelFailedToGenerateResult::because($exception);
+        }
 
         $this->put($context, self::OUTPUT_GENERATION, $result->generations()[0]);
 

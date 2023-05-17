@@ -68,4 +68,17 @@ final class LanguageModelChainTest extends TestCase
         $this->assertEquals('What is the capital of France?', $fakeModel->calls()[0]['prompt']);
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
     }
+
+    public function testProcessWhenModelThrowsException(): void
+    {
+        $languageModelChain = new LanguageModelChain(
+            languageModel: new FakeModel(),
+            promptRenderer: new StrReplaceRenderer('What is the capital of {{country}}?')
+        );
+
+        $context = new Context(['country' => 'France']);
+
+        $this->expectException(ModelFailedToGenerateResult::class);
+        $languageModelChain->run($context);
+    }
 }
