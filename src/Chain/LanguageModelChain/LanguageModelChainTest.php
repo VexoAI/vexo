@@ -128,6 +128,46 @@ final class LanguageModelChainTest extends TestCase
         $this->assertEquals('The capital of France is Paris', $context->get('generation'));
     }
 
+    public function testProcessWithOutputMapAndOutputParser(): void
+    {
+        $fakeModel = new FakeModel([
+            new Result(['The capital of France is Paris']),
+        ]);
+
+        $languageModelChain = new LanguageModelChain(
+            languageModel: $fakeModel,
+            outputParser: new RegexOutputParser('/^The capital of (.*) is (?<capital>.*)$/'),
+            outputMap: ['capital' => 'city']
+        );
+
+        $context = new Context(['prompt' => 'What is the capital of France?']);
+
+        $languageModelChain->run($context);
+
+        $this->assertEquals('What is the capital of France?', $fakeModel->calls()[0]['prompt']);
+        $this->assertEquals('The capital of France is Paris', $context->get('generation'));
+        $this->assertEquals('Paris', $context->get('city'));
+    }
+
+    public function testProcessWithOutputMapWithoutOutputParser(): void
+    {
+        $fakeModel = new FakeModel([
+            new Result(['The capital of France is Paris']),
+        ]);
+
+        $languageModelChain = new LanguageModelChain(
+            languageModel: $fakeModel,
+            outputMap: ['generation' => 'text']
+        );
+
+        $context = new Context(['prompt' => 'What is the capital of France?']);
+
+        $languageModelChain->run($context);
+
+        $this->assertEquals('What is the capital of France?', $fakeModel->calls()[0]['prompt']);
+        $this->assertEquals('The capital of France is Paris', $context->get('text'));
+    }
+
     public function testProcessThrowsExceptionWhenModelThrowsException(): void
     {
         $languageModelChain = new LanguageModelChain(
