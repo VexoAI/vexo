@@ -7,6 +7,7 @@ namespace Vexo\Chain\ConcatenateDocumentsChain;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
+use Vexo\Chain\FailedToValidateContextValue;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Document\Implementation\Documents;
 
@@ -30,5 +31,16 @@ final class ConcatenateDocumentsChainTest extends TestCase
             "My first document\n\nMy second document",
             $context->get('combined_contents')
         );
+    }
+
+    public function testRunWithInvalidContext(): void
+    {
+        $chain = new ConcatenateDocumentsChain();
+        $context = new Context([
+            'documents' => 'invalid'
+        ]);
+
+        $this->expectException(FailedToValidateContextValue::class);
+        $chain->run($context);
     }
 }

@@ -12,7 +12,13 @@ final class TwigRenderer implements Renderer
 {
     public static function createWithFilesystemLoader(string $template, string $path = __DIR__ . '/templates'): self
     {
-        return new self(new Twig(new FilesystemLoader($path)), $template);
+        return new self(
+            new Twig(
+                new FilesystemLoader($path),
+                ['strict_variables' => true, 'autoescape' => false]
+            ),
+            $template
+        );
     }
 
     public function __construct(

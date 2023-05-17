@@ -6,6 +6,7 @@ namespace Vexo\Chain\DocumentsRetrieverChain;
 
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\ContextAssert;
 use Vexo\Chain\DocumentsRetrieverChain\Retriever\Retriever;
 
 final class DocumentsRetrieverChain implements Chain
@@ -28,6 +29,7 @@ final class DocumentsRetrieverChain implements Chain
     {
         /** @var string $query */
         $query = $context->get($this->inputMap[self::INPUT_QUERY] ?? self::INPUT_QUERY);
+        ContextAssert::stringNotEmpty($query);
 
         $documents = $this->retriever->retrieve($query);
 

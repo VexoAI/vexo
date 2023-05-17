@@ -11,6 +11,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\ContextAssert;
 
 final class WebTextChain implements Chain
 {
@@ -41,6 +42,7 @@ final class WebTextChain implements Chain
     {
         /** @var string $url */
         $url = $context->get($this->inputMap[self::INPUT_URL] ?? self::INPUT_URL);
+        ContextAssert::stringNotEmpty($url);
 
         $html = $this->fetchHtml($url);
         $text = $this->extractText($html);

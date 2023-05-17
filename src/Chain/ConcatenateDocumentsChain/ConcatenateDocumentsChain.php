@@ -6,6 +6,7 @@ namespace Vexo\Chain\ConcatenateDocumentsChain;
 
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\ContextAssert;
 use Vexo\Contract\Document\Documents;
 
 final class ConcatenateDocumentsChain implements Chain
@@ -27,6 +28,7 @@ final class ConcatenateDocumentsChain implements Chain
     {
         /** @var Documents $documents */
         $documents = $context->get($this->inputMap[self::INPUT_DOCUMENTS] ?? self::INPUT_DOCUMENTS);
+        ContextAssert::isInstanceOf($documents, Documents::class);
 
         $combinedContents = implode(
             "\n\n",

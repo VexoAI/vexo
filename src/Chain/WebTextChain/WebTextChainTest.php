@@ -11,6 +11,7 @@ use PsrMock\Psr18\Client;
 use PsrMock\Psr7\Response;
 use PsrMock\Psr7\Stream;
 use Vexo\Chain\Context;
+use Vexo\Chain\FailedToValidateContextValue;
 
 #[CoversClass(WebTextChain::class)]
 final class WebTextChainTest extends TestCase
@@ -65,5 +66,16 @@ final class WebTextChainTest extends TestCase
 
         $this->expectException(FailedToFetchHtml::class);
         $webTextChain->run(new Context(['url' => 'http://example.com']));
+    }
+
+    public function testRunWithInvalidContext(): void
+    {
+        $webTextChain = new WebTextChain(
+            httpClient: new Client(),
+            requestFactory: new RequestFactory()
+        );
+
+        $this->expectException(FailedToValidateContextValue::class);
+        $webTextChain->run(new Context(['url' => '']));
     }
 }

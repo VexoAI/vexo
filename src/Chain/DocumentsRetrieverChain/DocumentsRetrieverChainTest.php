@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\DocumentsRetrieverChain\Retriever\CallbackRetriever;
+use Vexo\Chain\FailedToValidateContextValue;
 use Vexo\Contract\Document\Documents as DocumentsContract;
 use Vexo\Contract\Document\Implementation\Document;
 use Vexo\Contract\Document\Implementation\Documents;
@@ -34,5 +35,20 @@ final class DocumentsRetrieverChainTest extends TestCase
         $chain->run($context);
 
         $this->assertSame($documents, $context->get('documents'));
+    }
+
+    public function testRunWithInvalidContext(): void
+    {
+        $chain = new DocumentsRetrieverChain(
+            new CallbackRetriever(
+                retrieverFunction: fn (string $query): bool => false
+            )
+        );
+        $context = new Context([
+            'query' => ''
+        ]);
+
+        $this->expectException(FailedToValidateContextValue::class);
+        $chain->run($context);
     }
 }
