@@ -37,6 +37,20 @@ final class BranchingChainTest extends TestCase
         );
     }
 
+    public function testRunThrowsExceptionOnUnknownValue(): void
+    {
+        $chain = new BranchingChain(
+            chains: [
+                'nonExistent > 100' => new FakeChain(['foo' => 'bar'])
+            ]
+        );
+
+        $context = new Context(['number' => 42]);
+
+        $this->expectException(FailedToEvaluateCondition::class);
+        $chain->run($context);
+    }
+
     public function testRunEmitsEvents(): void
     {
         $emittedEvents = [];

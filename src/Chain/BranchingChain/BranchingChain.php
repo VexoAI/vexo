@@ -42,7 +42,7 @@ final class BranchingChain implements Chain
     public function run(Context $context): void
     {
         foreach ($this->chains as $condition => $chain) {
-            $shouldExecute = (bool) $this->evaluator->evaluate($condition, $context->toArray());
+            $shouldExecute = $this->evaluateCondition($condition, $context);
 
             $identifier = spl_object_hash($chain);
             $this->emit(
@@ -56,6 +56,15 @@ final class BranchingChain implements Chain
             $this->emit(new ChainStarted($identifier, $chain::class, $context));
             $chain->run($context);
             $this->emit(new ChainFinished($identifier, $chain::class, $context));
+        }
+    }
+
+    private function evaluateCondition(string $condition, Context $context): bool
+    {
+        try {
+            return (bool) $this->evaluator->evaluate($condition, $context->toArray());
+        } catch (\Throwable $exception) {
+            throw FailedToEvaluateCondition::because($exception);
         }
     }
 
