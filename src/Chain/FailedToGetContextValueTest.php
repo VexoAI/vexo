@@ -12,8 +12,7 @@ final class FailedToGetContextValueTest extends TestCase
 {
     public function testFactoryMethod(): void
     {
-        $context = new Context(['foo' => 'bar', 'baz' => 'qux']);
-        $exception = FailedToGetContextValue::with('fudge', $context);
+        $exception = FailedToGetContextValue::with('fudge', ['foo', 'baz']);
 
         $this->assertEquals(
             'Failed to get context value "fudge". Available values: foo, baz',

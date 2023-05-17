@@ -15,7 +15,7 @@ final class CachingChain implements Chain
      * @param array<string> $contextOutputValuesToCache
      */
     public function __construct(
-        private readonly Chain $runner,
+        private readonly Chain $chain,
         private readonly CacheInterface $cache,
         private readonly array $contextInputValuesToMatch,
         private readonly array $contextOutputValuesToCache,
@@ -36,7 +36,7 @@ final class CachingChain implements Chain
             return;
         }
 
-        $this->runner->run($context);
+        $this->chain->run($context);
         $this->cache->set(
             $cacheKey,
             $this->extractValuesFromContext($context, $this->contextOutputValuesToCache),

@@ -6,13 +6,10 @@ namespace Vexo\Chain\DocumentsRetrieverChain;
 
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Chain\ContextValueMapperBehavior;
 use Vexo\Chain\DocumentsRetrieverChain\Retriever\Retriever;
 
 final class DocumentsRetrieverChain implements Chain
 {
-    use ContextValueMapperBehavior;
-
     private const INPUT_QUERY = 'query';
     private const OUTPUT_DOCUMENTS = 'documents';
 
@@ -30,8 +27,10 @@ final class DocumentsRetrieverChain implements Chain
     public function run(Context $context): void
     {
         /** @var string $query */
-        $query = $this->get($context, self::INPUT_QUERY);
+        $query = $context->get($this->inputMap[self::INPUT_QUERY] ?? self::INPUT_QUERY);
 
-        $this->put($context, self::OUTPUT_DOCUMENTS, $this->retriever->retrieve($query));
+        $documents = $this->retriever->retrieve($query);
+
+        $context->put($this->outputMap[self::OUTPUT_DOCUMENTS] ?? self::OUTPUT_DOCUMENTS, $documents);
     }
 }

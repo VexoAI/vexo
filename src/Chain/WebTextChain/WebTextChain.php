@@ -11,12 +11,9 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Chain\ContextValueMapperBehavior;
 
 final class WebTextChain implements Chain
 {
-    use ContextValueMapperBehavior;
-
     private const INPUT_URL = 'url';
     private const OUTPUT_TEXT = 'text';
 
@@ -43,12 +40,12 @@ final class WebTextChain implements Chain
     public function run(Context $context): void
     {
         /** @var string $url */
-        $url = $this->get($context, self::INPUT_URL);
+        $url = $context->get($this->inputMap[self::INPUT_URL] ?? self::INPUT_URL);
 
         $html = $this->fetchHtml($url);
         $text = $this->extractText($html);
 
-        $this->put($context, self::OUTPUT_TEXT, $text);
+        $context->put($this->outputMap[self::OUTPUT_TEXT] ?? self::OUTPUT_TEXT, $text);
     }
 
     private function fetchHtml(string $url): string

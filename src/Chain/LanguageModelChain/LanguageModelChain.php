@@ -6,15 +6,12 @@ namespace Vexo\Chain\LanguageModelChain;
 
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Chain\ContextValueMapperBehavior;
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\Model\Language\LanguageModel;
 
 final class LanguageModelChain implements Chain
 {
-    use ContextValueMapperBehavior;
-
     private const OUTPUT_GENERATION = 'generation';
 
     /**
@@ -47,7 +44,7 @@ final class LanguageModelChain implements Chain
             throw ModelFailedToGenerateResult::because($exception);
         }
 
-        $this->put($context, self::OUTPUT_GENERATION, $result->generations()[0]);
+        $context->put($this->outputMap[self::OUTPUT_GENERATION] ?? self::OUTPUT_GENERATION, $result->generations()[0]);
 
         if ( ! $this->outputParser instanceof OutputParser) {
             return;
@@ -55,7 +52,7 @@ final class LanguageModelChain implements Chain
 
         $parsed = $this->outputParser->parse($result->generations()[0]);
         foreach ($parsed as $key => $value) {
-            $this->put($context, $key, $value);
+            $context->put($this->outputMap[$key] ?? $key, $value);
         }
     }
 }
