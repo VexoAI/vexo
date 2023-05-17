@@ -2,45 +2,57 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain\SequentialChain;
+namespace Vexo\Chain\BranchingChain;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Vexo\Chain\Chain;
 use Vexo\Chain\ChainFinished;
 use Vexo\Chain\ChainStarted;
 use Vexo\Chain\Context;
 use Vexo\Contract\Event\Event;
 
-final class SequentialChain implements Chain
+final class BranchingChain implements Chain
 {
     /**
-     * @var array<Chain>
+     * @var array<string, Chain>
      */
     private array $chains = [];
 
     /**
-     * @param array<Chain> $chains
+     * @param array<string, Chain> $chains
      */
     public function __construct(
+        private readonly ExpressionLanguage $evaluator = new ExpressionLanguage(),
         private readonly ?EventDispatcherInterface $eventDispatcher = null,
         array $chains = []
     ) {
-        foreach ($chains as $chain) {
-            $this->add($chain);
+        foreach ($chains as $condition => $chain) {
+            $this->add($condition, $chain);
         }
     }
 
-    public function add(Chain $chain): self
+    public function add(string $condition, Chain $chain): self
     {
-        $this->chains[] = $chain;
+        $this->chains[$condition] = $chain;
 
         return $this;
     }
 
     public function run(Context $context): void
     {
-        foreach ($this->chains as $identifier => $chain) {
+        foreach ($this->chains as $condition => $chain) {
+            $shouldExecute = (bool) $this->evaluator->evaluate($condition, $context->toArray());
+
             $identifier = spl_object_hash($chain);
+            $this->emit(
+                new ChainBranchConditionEvaluated($identifier, $chain::class, $context, $condition, $shouldExecute)
+            );
+
+            if ( ! $shouldExecute) {
+                continue;
+            }
+
             $this->emit(new ChainStarted($identifier, $chain::class, $context));
             $chain->run($context);
             $this->emit(new ChainFinished($identifier, $chain::class, $context));
