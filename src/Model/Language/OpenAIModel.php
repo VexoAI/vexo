@@ -31,9 +31,13 @@ final class OpenAIModel implements LanguageModel
 
     public function generate(string $prompt, array $stops = []): Result
     {
-        $response = $this->completions->create(
-            $this->prepareParameters($prompt, $stops)
-        );
+        try {
+            $response = $this->completions->create(
+                $this->prepareParameters($prompt, $stops)
+            );
+        } catch (\Throwable $exception) {
+            throw FailedToGenerateResult::because($exception);
+        }
 
         $result = new Result(
             array_map(fn ($choice): string => $choice->text, $response->choices),

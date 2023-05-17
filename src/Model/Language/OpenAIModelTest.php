@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Vexo\Model\Language;
 
 use League\Event\EventDispatcher;
+use OpenAI\Contracts\ResponseContract;
 use OpenAI\Responses\Completions\CreateResponse;
+use OpenAI\Responses\StreamResponse;
 use OpenAI\Testing\ClientFake;
+use OpenAI\Testing\Requests\TestRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -62,5 +65,20 @@ final class OpenAIModelTest extends TestCase
         $this->assertEquals('What is the capital of France?', $emittedEvents[0]->prompt());
         $this->assertEquals(["\n"], $emittedEvents[0]->stops());
         $this->assertSame($result, $emittedEvents[0]->result());
+    }
+
+    public function testGenerateThrowsAppropriateException(): void
+    {
+        $client = new class() extends ClientFake {
+            public function record(TestRequest $request): ResponseContract|StreamResponse|string
+            {
+                throw new \Exception('A terrible error occurred');
+            }
+        };
+
+        $model = new OpenAIModel($client->completions());
+
+        $this->expectException(FailedToGenerateResult::class);
+        $model->generate('What is the capital of France?');
     }
 }

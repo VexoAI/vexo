@@ -31,9 +31,13 @@ final class OpenAIModel implements EmbeddingModel
 
     public function embedQuery(string $query): VectorContract
     {
-        $response = $this->embeddings->create(
-            $this->prepareParameters($query)
-        );
+        try {
+            $response = $this->embeddings->create(
+                $this->prepareParameters($query)
+            );
+        } catch (\Throwable $exception) {
+            throw FailedToEmbedText::because($exception);
+        }
 
         return new Vector($response->embeddings[0]->embedding);
     }
@@ -43,9 +47,13 @@ final class OpenAIModel implements EmbeddingModel
      */
     public function embedTexts(array $texts): VectorsContract
     {
-        $response = $this->embeddings->create(
-            $this->prepareParameters($texts)
-        );
+        try {
+            $response = $this->embeddings->create(
+                $this->prepareParameters($texts)
+            );
+        } catch (\Throwable $exception) {
+            throw FailedToEmbedText::because($exception);
+        }
 
         $embeddings = new Vectors();
         foreach ($response->embeddings as $embedding) {

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Embedding;
 
+use OpenAI\Contracts\ResponseContract;
 use OpenAI\Responses\Embeddings\CreateResponse;
+use OpenAI\Responses\StreamResponse;
 use OpenAI\Testing\ClientFake;
+use OpenAI\Testing\Requests\TestRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -27,12 +30,26 @@ final class OpenAIModelTest extends TestCase
                 ]
             ])
         ]);
-        $embeddings = $client->embeddings();
 
-        $model = new OpenAIModel($embeddings);
+        $model = new OpenAIModel($client->embeddings());
         $vector = $model->embedQuery('What was the food like?');
 
         $this->assertEquals([0.01, -0.03, 0.04, -0.01], $vector->toArray());
+    }
+
+    public function testEmbedQueryThrowsException(): void
+    {
+        $client = new class() extends ClientFake {
+            public function record(TestRequest $request): ResponseContract|StreamResponse|string
+            {
+                throw new \Exception('A terrible error occurred');
+            }
+        };
+
+        $model = new OpenAIModel($client->embeddings());
+
+        $this->expectException(FailedToEmbedText::class);
+        $model->embedQuery('What was the food like?');
     }
 
     public function testEmbedTexts(): void
@@ -51,9 +68,8 @@ final class OpenAIModelTest extends TestCase
                 ]
             ])
         ]);
-        $embeddings = $client->embeddings();
 
-        $model = new OpenAIModel($embeddings);
+        $model = new OpenAIModel($client->embeddings());
         $vectors = $model->embedTexts([
             'The food was amazing and delicious.',
             'The service was slow but the food was great.'
@@ -61,5 +77,23 @@ final class OpenAIModelTest extends TestCase
 
         $this->assertEquals([0.01, -0.03, 0.04, -0.01], $vectors->first()->toArray());
         $this->assertEquals([0.02, -0.04, 0.05, -0.02], $vectors->last()->toArray());
+    }
+
+    public function testEmbedTextsThrowsException(): void
+    {
+        $client = new class() extends ClientFake {
+            public function record(TestRequest $request): ResponseContract|StreamResponse|string
+            {
+                throw new \Exception('A terrible error occurred');
+            }
+        };
+
+        $model = new OpenAIModel($client->embeddings());
+
+        $this->expectException(FailedToEmbedText::class);
+        $model->embedTexts([
+            'The food was amazing and delicious.',
+            'The service was slow but the food was great.'
+        ]);
     }
 }
