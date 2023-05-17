@@ -29,6 +29,20 @@ final class TwigRendererTest extends TestCase
         $this->assertSame('What is the capital of France?', $prompt);
     }
 
+    public function testRenderThrowsExceptionOnMissingValues(): void
+    {
+        $twig = new Twig(
+            new ArrayLoader([
+                'prompt.twig' => 'What is the capital of {{ country }}?'
+            ]),
+            ['strict_variables' => true]
+        );
+        $renderer = new TwigRenderer($twig, 'prompt.twig');
+
+        $this->expectException(FailedToRenderPrompt::class);
+        $renderer->render(new Context());
+    }
+
     public function testCreateWithFilesystemLoader(): void
     {
         $filesystem = vfsStream::setup('templates');

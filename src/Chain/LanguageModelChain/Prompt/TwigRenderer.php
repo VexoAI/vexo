@@ -31,6 +31,10 @@ final class TwigRenderer implements Renderer
     {
         $template = $this->twig->load($this->template);
 
-        return $template->render($context->toArray());
+        try {
+            return $template->render($context->toArray());
+        } catch (\Throwable $exception) {
+            throw FailedToRenderPrompt::because($exception);
+        }
     }
 }
