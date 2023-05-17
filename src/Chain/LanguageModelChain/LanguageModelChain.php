@@ -6,12 +6,15 @@ namespace Vexo\Chain\LanguageModelChain;
 
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
+use Vexo\Chain\ContextAssert;
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\Model\Language\LanguageModel;
+use Vexo\Model\Language\Result;
 
 final class LanguageModelChain implements Chain
 {
+    private const INPUT_PROMPT = 'prompt';
     private const OUTPUT_GENERATION = 'generation';
 
     /**
@@ -21,7 +24,7 @@ final class LanguageModelChain implements Chain
      */
     public function __construct(
         private readonly LanguageModel $languageModel,
-        private readonly Renderer $promptRenderer,
+        private readonly ?Renderer $promptRenderer = null,
         private readonly ?OutputParser $outputParser = null,
         private readonly array $stops = [],
         private readonly array $inputMap = [],
@@ -31,12 +34,7 @@ final class LanguageModelChain implements Chain
 
     public function run(Context $context): void
     {
-        $promptContext = clone $context;
-        foreach ($this->inputMap as $from => $to) {
-            $promptContext->put($from, $promptContext->get($to));
-        }
-
-        $prompt = $this->promptRenderer->render($promptContext);
+        $prompt = $this->createPrompt($context);
 
         try {
             $result = $this->languageModel->generate($prompt, $this->stops);
@@ -44,6 +42,28 @@ final class LanguageModelChain implements Chain
             throw ModelFailedToGenerateResult::because($exception);
         }
 
+        $this->putResult($context, $result);
+    }
+
+    private function createPrompt(Context $context): string
+    {
+        if ( ! $this->promptRenderer instanceof Renderer) {
+            $prompt = $context->get($this->inputMap[self::INPUT_PROMPT] ?? self::INPUT_PROMPT);
+            ContextAssert::stringNotEmpty($prompt);
+
+            return $prompt;
+        }
+
+        $promptContext = clone $context;
+        foreach ($this->inputMap as $from => $to) {
+            $promptContext->put($from, $promptContext->get($to));
+        }
+
+        return $this->promptRenderer->render($promptContext);
+    }
+
+    private function putResult(Context $context, Result $result): void
+    {
         $context->put($this->outputMap[self::OUTPUT_GENERATION] ?? self::OUTPUT_GENERATION, $result->generations()[0]);
 
         if ( ! $this->outputParser instanceof OutputParser) {
