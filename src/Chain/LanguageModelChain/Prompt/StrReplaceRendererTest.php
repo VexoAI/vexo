@@ -7,6 +7,7 @@ namespace Vexo\Chain\LanguageModelChain\Prompt;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
+use Vexo\Chain\FailedToGetContextValue;
 
 #[CoversClass(StrReplaceRenderer::class)]
 final class StrReplaceRendererTest extends TestCase
@@ -29,5 +30,15 @@ final class StrReplaceRendererTest extends TestCase
         $prompt = $renderer->render($context);
 
         $this->assertEquals('Roses are Red, violets are Blue.', $prompt);
+    }
+
+    public function testRenderThrowsExceptionOnMissingValue(): void
+    {
+        $renderer = new StrReplaceRenderer('Roses are {{first_color}}, violets are {{second_color}}.');
+
+        $context = new Context(['first_color' => 'Red']);
+
+        $this->expectException(FailedToGetContextValue::class);
+        $renderer->render($context);
     }
 }
