@@ -12,10 +12,11 @@ final class RegexOutputParserTest extends TestCase
 {
     public function testParse(): void
     {
-        $outputParser = new RegexOutputParser('/^Hello, (?P<name>.*)!$/');
+        $outputParser = new RegexOutputParser('/Action: (?P<action>.*?)\nAction input: (?P<input>.*)/');
 
-        $matches = $outputParser->parse('Hello, John Doe!');
-        $this->assertSame('John Doe', $matches['name']);
+        $matches = $outputParser->parse("Action: some action\nAction input: some input");
+        $this->assertSame('some action', $matches['action']);
+        $this->assertSame('some input', $matches['input']);
     }
 
     public function testParseWithInvalidRegex(): void
