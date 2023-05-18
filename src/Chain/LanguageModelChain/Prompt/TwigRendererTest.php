@@ -43,6 +43,20 @@ final class TwigRendererTest extends TestCase
         $renderer->render(new Context());
     }
 
+    public function testCreateWithLoader(): void
+    {
+        $loader = new ArrayLoader([
+            'prompt.twig' => 'What is the capital of {{ country }}?'
+        ]);
+
+        $renderer = TwigRenderer::createWithLoader('prompt.twig', $loader);
+
+        $context = new Context(['country' => 'France']);
+        $prompt = $renderer->render($context);
+
+        $this->assertSame('What is the capital of France?', $prompt);
+    }
+
     public function testCreateWithFilesystemLoader(): void
     {
         $filesystem = vfsStream::setup('templates');
@@ -50,6 +64,9 @@ final class TwigRendererTest extends TestCase
 
         $renderer = TwigRenderer::createWithFilesystemLoader('prompt.twig', $filesystem->url());
 
-        $this->assertInstanceOf(TwigRenderer::class, $renderer);
+        $context = new Context(['country' => 'France']);
+        $prompt = $renderer->render($context);
+
+        $this->assertSame('What is the capital of France?', $prompt);
     }
 }
