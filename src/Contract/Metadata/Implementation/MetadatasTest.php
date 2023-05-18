@@ -13,8 +13,8 @@ final class MetadatasTest extends TestCase
 {
     public function testGetType(): void
     {
-        $documents = new Metadatas();
+        $metadatas = new Metadatas();
 
-        $this->assertSame(MetadataContract::class, $documents->getType());
+        $this->assertSame(MetadataContract::class, $metadatas->getType());
     }
 }
