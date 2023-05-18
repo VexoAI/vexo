@@ -11,14 +11,14 @@ use Vexo\Chain\Context;
 final class CachingChain implements Chain
 {
     /**
-     * @param array<string> $contextInputValuesToMatch
-     * @param array<string> $contextOutputValuesToCache
+     * @param array<string> $inputValuesToMatch
+     * @param array<string> $outputValuesToCache
      */
     public function __construct(
         private readonly Chain $chain,
         private readonly CacheInterface $cache,
-        private readonly array $contextInputValuesToMatch,
-        private readonly array $contextOutputValuesToCache,
+        private readonly array $inputValuesToMatch,
+        private readonly array $outputValuesToCache,
         private readonly ?int $lifetime = null,
         private readonly string $cacheKeyPrefix = 'vexo.chain.cache'
     ) {
@@ -39,7 +39,7 @@ final class CachingChain implements Chain
         $this->chain->run($context);
         $this->cache->set(
             $cacheKey,
-            $this->extractValuesFromContext($context, $this->contextOutputValuesToCache),
+            $this->extractValuesFromContext($context, $this->outputValuesToCache),
             $this->lifetime
         );
     }
@@ -50,7 +50,7 @@ final class CachingChain implements Chain
             '%s.%s',
             $this->cacheKeyPrefix,
             hash('sha256', serialize(
-                $this->extractValuesFromContext($context, $this->contextInputValuesToMatch)
+                $this->extractValuesFromContext($context, $this->inputValuesToMatch)
             ))
         );
     }
