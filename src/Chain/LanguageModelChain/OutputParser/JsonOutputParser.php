@@ -13,14 +13,14 @@ final class JsonOutputParser implements OutputParser
     private const START_DELIMITER = '```json';
     private const END_DELIMITER = '```';
 
-    public static function createWithSchema(string $schema): self
+    public static function createWithSchema(object $schema): self
     {
         return new self(new Validator(), $schema);
     }
 
     public function __construct(
         private readonly Validator $validator,
-        private readonly string $schema
+        private readonly object $schema
     ) {
     }
 
@@ -31,7 +31,7 @@ final class JsonOutputParser implements OutputParser
 
             $this->validator->validate(
                 $decoded,
-                json_decode($this->schema, null, 512, \JSON_THROW_ON_ERROR),
+                $this->schema,
                 Constraint::CHECK_MODE_COERCE_TYPES | Constraint::CHECK_MODE_APPLY_DEFAULTS | Constraint::CHECK_MODE_VALIDATE_SCHEMA | Constraint::CHECK_MODE_EXCEPTIONS
             );
         } catch (\JsonException $e) {

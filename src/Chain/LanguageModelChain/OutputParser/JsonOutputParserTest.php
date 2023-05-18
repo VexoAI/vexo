@@ -10,12 +10,19 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(JsonOutputParser::class)]
 final class JsonOutputParserTest extends TestCase
 {
-    private string $schema;
+    private object $schema;
     private JsonOutputParser $outputParser;
 
     protected function setUp(): void
     {
-        $this->schema = '{"type": "object", "properties": {"name": {"type": "string"}}}';
+        $this->schema = (object) [
+            'type' => 'object',
+            'properties' => (object) [
+                'name' => (object) [
+                    'type' => 'string'
+                ]
+            ]
+        ];
         $this->outputParser = JsonOutputParser::createWithSchema($this->schema);
     }
 
