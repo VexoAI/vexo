@@ -13,6 +13,11 @@ final class JsonOutputParser implements OutputParser
     private const START_DELIMITER = '```json';
     private const END_DELIMITER = '```';
 
+    public static function createWithSchema(string $schema): self
+    {
+        return new self(new Validator(), $schema);
+    }
+
     public function __construct(
         private readonly Validator $validator,
         private readonly string $schema
