@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
-use League\Flysystem\Filesystem;
-use Vexo\Contract\Document\Document as DocumentContract;
-use Vexo\Contract\Document\Documents as DocumentsContract;
-use Vexo\Contract\Document\Implementation\Document;
-use Vexo\Contract\Document\Implementation\Documents;
-use Vexo\Contract\Metadata\Implementation\Metadata;
 use Vexo\Contract\Metadata\Metadata as MetadataContract;
 use Vexo\Contract\Vector\Implementation\Vector;
 use Vexo\Contract\Vector\Implementation\Vectors;
@@ -19,11 +13,11 @@ use Vexo\Contract\Vector\Vectors as VectorsContract;
 use Vexo\Model\Embedding\EmbeddingModel;
 
 /**
- * @phpstan-type HashBuckets array<string, array<int, array{contents: string, metadata: MetadataContract, vector: VectorContract}>>
+ * @phpstan-type HashBuckets array<string, array<int, array{vector: VectorContract, metadata: MetadataContract}>>
  */
-final class InMemoryVectorStore implements WritableVectorStore, SearchableVectorStore
+final class InMemoryVectorStore implements VectorStore
 {
-    private VectorsContract $hyperplanes;
+    private readonly VectorsContract $hyperplanes;
 
     /**
      * @var HashBuckets
@@ -42,42 +36,19 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
         private readonly int $numHyperplanes = 20,
         ?callable $randomDimensionGenerator = null
     ) {
-        $this->randomDimensionGenerator = $randomDimensionGenerator ?? fn (): float => random_int(-1000, 1000) / 1000;
+        $this->randomDimensionGenerator = $randomDimensionGenerator ?? fn (): float => random_int(-100, 100) / 100;
         $this->hyperplanes = $this->generateHyperplanes();
     }
 
-    public function persistToFile(Filesystem $filesystem, string $path): void
+    public function add(VectorContract $vector, MetadataContract $metadata): void
     {
-        $filesystem->write($path, serialize([$this->hashBuckets, $this->hyperplanes]));
-    }
-
-    public function restoreFromFile(Filesystem $filesystem, string $path): void
-    {
-        /** @var array{0: HashBuckets, 1: VectorsContract} $unserialized */
-        $unserialized = unserialize($filesystem->read($path));
-        [$this->hashBuckets, $this->hyperplanes] = $unserialized;
-    }
-
-    /**
-     * @param array<string> $metadataItemsToEmbed
-     */
-    public function add(DocumentContract $document, array $metadataItemsToEmbed = []): void
-    {
-        $metadataToEmbed = array_intersect_key($document->metadata()->toArray(), array_flip($metadataItemsToEmbed));
-        $textToEmbed = implode(', ', $metadataToEmbed) . ' ' . $document->contents();
-
-        $embedding = $this->embeddingModel
-            ->embedTexts([$textToEmbed])
-            ->first();
-
-        $this->hashBuckets[$this->generateHash($embedding)][] = [
-            'contents' => $document->contents(),
-            'metadata' => $document->metadata(),
-            'vector' => $embedding
+        $this->hashBuckets[$this->generateHash($vector)][] = [
+            'vector' => $vector,
+            'metadata' => $metadata
         ];
     }
 
-    public function search(string $query, int $numResults = 4): DocumentsContract
+    public function search(string $query, int $maxResults = 4): Results
     {
         // Embed the query
         $queryVector = $this->embeddingModel->embedQuery($query);
@@ -86,7 +57,7 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
         $candidates = $this->hashBuckets[$this->generateHash($queryVector)] ?? [];
 
         // Initialize priority queue to keep track of the highest scoring vectors
-        /** @var \SplPriorityQueue<float, DocumentContract> */
+        /** @var \SplPriorityQueue<float, Result> */
         $priorityQueue = new \SplPriorityQueue();
 
         // Iterate over the candidate vectors and calculate the similarity between the query and the candidate vectors
@@ -95,28 +66,25 @@ final class InMemoryVectorStore implements WritableVectorStore, SearchableVector
 
             // Insert the search result into the priority queue
             $priorityQueue->insert(
-                new Document(
-                    $candidate['contents'],
-                    new Metadata(
-                        array_merge($candidate['metadata']->toArray(), ['score' => $score])
-                    )
-                ),
-                -$score // Use negative score as priority to maintain a max-heap
+                new Result($candidate['vector'], $candidate['metadata'], $score),
+                $score
             );
 
             // Remove the lowest scoring vector from the priority queue if it exceeds the maximum number of results
-            if ($priorityQueue->count() > $numResults) {
+            if ($priorityQueue->count() > $maxResults) {
                 $priorityQueue->extract();
             }
         }
 
         // Generate the search results.
-        $results = [];
+        $results = new Results();
         while ( ! $priorityQueue->isEmpty()) {
-            array_unshift($results, $priorityQueue->extract());
+            /** @var Result $result */
+            $result = $priorityQueue->extract();
+            $results->add($result);
         }
 
-        return new Documents($results); // @phpstan-ignore-line
+        return $results;
     }
 
     private function generateHyperplanes(): VectorsContract

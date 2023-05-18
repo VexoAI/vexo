@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
-use Vexo\Contract\Document\Document as DocumentContract;
-use Vexo\Contract\Document\Documents as DocumentsContract;
-use Vexo\Contract\Document\Implementation\Documents;
+use Vexo\Contract\Metadata\Metadata;
+use Vexo\Contract\Vector\Vector;
 
-final class FakeVectorStore implements WritableVectorStore, SearchableVectorStore
+final class FakeVectorStore implements VectorStore
 {
-    public function __construct(
-        private readonly DocumentsContract $documents = new Documents()
-    ) {
+    /**
+     * @var array <int, Vector>
+     */
+    private array $vectors;
+
+    /**
+     * @var array<int, Metadata>
+     */
+    private array $metadatas;
+
+    public function add(Vector $vector, Metadata $metadata): void
+    {
+        $this->vectors[] = $vector;
+        $this->metadatas[] = $metadata;
     }
 
-    public function add(DocumentContract $document): void
+    public function search(string $query, int $maxResults = 4): Results
     {
-        $document->metadata()->offsetSet('score', 1.0);
-        $this->documents->add($document);
-    }
+        $results = new Results();
 
-    public function search(string $query, int $numResults = 4): DocumentsContract
-    {
-        return $this->documents;
+        for ($i = 0; $i < $maxResults && \array_key_exists($i, $this->vectors); $i++) {
+            $results->add(new Result($this->vectors[$i], $this->metadatas[$i], 0.5));
+        }
+
+        return $results;
     }
 }
