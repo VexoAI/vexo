@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Chain\LanguageModelChain\OutputParser;
 
-class RegexOutputParser implements OutputParser
+final class RegexOutputParser implements OutputParser
 {
     public function __construct(
         private readonly string $regex

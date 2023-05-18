@@ -6,7 +6,6 @@ use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Plus\RemoveDeadZeroAndOneOperationRector;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryAndToEarlyReturnRector;
-use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 
@@ -30,10 +29,8 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->skip([
-        ReturnBinaryAndToEarlyReturnRector::class,
-        FinalizeClassesWithoutChildrenRector::class => [
-            __DIR__ . '/src/Chain/LanguageModelChain/OutputParser/RegexOutputParser.php',
-            __DIR__ . '/src/Chain/LanguageModelChain/OutputParser/JsonOutputParser.php',
+        ReturnBinaryAndToEarlyReturnRector::class => [
+            __DIR__ . '/src/Agent/AutonomousExecutor.php',
         ],
         RemoveDeadZeroAndOneOperationRector::class => [
             __DIR__ . '/src/Compare/Similarity.php',

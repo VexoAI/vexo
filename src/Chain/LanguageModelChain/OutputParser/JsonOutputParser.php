@@ -8,7 +8,7 @@ use JsonSchema\Constraints\Constraint;
 use JsonSchema\Exception\ValidationException;
 use JsonSchema\Validator;
 
-class JsonOutputParser implements OutputParser
+final class JsonOutputParser implements OutputParser
 {
     private const START_DELIMITER = '```json';
     private const END_DELIMITER = '```';
