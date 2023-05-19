@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Language;
 
-use Vexo\Contract\Metadata\Implementation\Metadata;
-use Vexo\Contract\Metadata\Metadata as MetadataContract;
+use Vexo\Contract\Metadata\Metadata;
 
 final class Result
 {
@@ -14,7 +13,7 @@ final class Result
      */
     public function __construct(
         private readonly array $generations,
-        private readonly MetadataContract $metadata = new Metadata(),
+        private readonly Metadata $metadata = new Metadata(),
     ) {
     }
 
@@ -26,7 +25,7 @@ final class Result
         return $this->generations;
     }
 
-    public function metadata(): MetadataContract
+    public function metadata(): Metadata
     {
         return $this->metadata;
     }

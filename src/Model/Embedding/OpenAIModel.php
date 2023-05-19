@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Vexo\Model\Embedding;
 
 use OpenAI\Contracts\Resources\EmbeddingsContract;
-use Vexo\Contract\Vector\Implementation\Vector;
-use Vexo\Contract\Vector\Implementation\Vectors;
-use Vexo\Contract\Vector\Vector as VectorContract;
-use Vexo\Contract\Vector\Vectors as VectorsContract;
+use Vexo\Contract\Vector\Vector;
+use Vexo\Contract\Vector\Vectors;
 
 final class OpenAIModel implements EmbeddingModel
 {
@@ -29,7 +27,7 @@ final class OpenAIModel implements EmbeddingModel
         $this->parameters = [...self::DEFAULT_PARAMETERS, ...$parameters];
     }
 
-    public function embedQuery(string $query): VectorContract
+    public function embedQuery(string $query): Vector
     {
         try {
             $response = $this->embeddings->create(
@@ -45,7 +43,7 @@ final class OpenAIModel implements EmbeddingModel
     /**
      * @param array<string> $texts
      */
-    public function embedTexts(array $texts): VectorsContract
+    public function embedTexts(array $texts): Vectors
     {
         try {
             $response = $this->embeddings->create(

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Document\Loader;
 
 use League\Csv\Reader;
-use Vexo\Contract\Metadata\Implementation\Metadata;
+use Vexo\Contract\Metadata\Metadata;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 

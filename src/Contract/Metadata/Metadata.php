@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Vexo\Contract\Metadata;
 
-use Ramsey\Collection\Map\MapInterface;
+use Ramsey\Collection\Map\AbstractMap;
 
 /**
- * @extends MapInterface<string, mixed>
+ * @extends AbstractMap<string, mixed>
  */
-interface Metadata extends MapInterface
+final class Metadata extends AbstractMap
 {
 }

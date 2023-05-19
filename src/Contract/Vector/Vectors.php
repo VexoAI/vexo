@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Vexo\Contract\Vector;
 
-use Ramsey\Collection\CollectionInterface;
+use Ramsey\Collection\AbstractCollection;
 
 /**
- * @extends CollectionInterface<Vector>
+ * @extends AbstractCollection<Vector>
  */
-interface Vectors extends CollectionInterface
+final class Vectors extends AbstractCollection
 {
+    public function getType(): string
+    {
+        return Vector::class;
+    }
 }

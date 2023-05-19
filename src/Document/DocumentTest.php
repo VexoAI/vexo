@@ -6,7 +6,7 @@ namespace Vexo\Document;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Contract\Metadata\Implementation\Metadata;
+use Vexo\Contract\Metadata\Metadata;
 
 #[CoversClass(Document::class)]
 final class DocumentTest extends TestCase

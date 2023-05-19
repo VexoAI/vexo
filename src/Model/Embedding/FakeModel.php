@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Embedding;
 
-use Vexo\Contract\Vector\Implementation\Vectors;
-use Vexo\Contract\Vector\Vector as VectorContract;
-use Vexo\Contract\Vector\Vectors as VectorsContract;
+use Vexo\Contract\Vector\Vector;
+use Vexo\Contract\Vector\Vectors;
 
 final class FakeModel implements EmbeddingModel
 {
     /**
-     * @var VectorContract[]
+     * @var Vector[]
      */
     private array $vectors = [];
 
-    public function addVector(VectorContract $vector): void
+    public function addVector(Vector $vector): void
     {
         $this->vectors[] = $vector;
     }
 
-    public function embedQuery(string $query): VectorContract
+    public function embedQuery(string $query): Vector
     {
         if ($this->vectors === []) {
             throw new \LogicException('No more vectors to return.');
@@ -29,7 +28,7 @@ final class FakeModel implements EmbeddingModel
         return array_shift($this->vectors);
     }
 
-    public function embedTexts(array $texts): VectorsContract
+    public function embedTexts(array $texts): Vectors
     {
         if ($this->vectors === []) {
             throw new \LogicException('No more vectors to return.');
@@ -37,7 +36,7 @@ final class FakeModel implements EmbeddingModel
 
         $vectors = new Vectors();
         foreach ($texts as $text) {
-            /** @var VectorContract $vector */
+            /** @var Vector $vector */
             $vector = array_shift($this->vectors);
             $vectors->add($vector);
         }

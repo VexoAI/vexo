@@ -5,19 +5,17 @@ declare(strict_types=1);
 namespace Vexo\VectorStore;
 
 use Vexo\Contract\Metadata\Metadata as MetadataContract;
-use Vexo\Contract\Vector\Implementation\Vector;
-use Vexo\Contract\Vector\Implementation\Vectors;
 use Vexo\Contract\Vector\SimilarityAlgorithm;
-use Vexo\Contract\Vector\Vector as VectorContract;
-use Vexo\Contract\Vector\Vectors as VectorsContract;
+use Vexo\Contract\Vector\Vector;
+use Vexo\Contract\Vector\Vectors;
 use Vexo\Model\Embedding\EmbeddingModel;
 
 /**
- * @phpstan-type HashBuckets array<string, array<int, array{vector: VectorContract, metadata: MetadataContract}>>
+ * @phpstan-type HashBuckets array<string, array<int, array{vector: Vector, metadata: MetadataContract}>>
  */
 final class InMemoryVectorStore implements VectorStore
 {
-    private readonly VectorsContract $hyperplanes;
+    private readonly Vectors $hyperplanes;
 
     /**
      * @var HashBuckets
@@ -40,7 +38,7 @@ final class InMemoryVectorStore implements VectorStore
         $this->hyperplanes = $this->generateHyperplanes();
     }
 
-    public function add(VectorContract $vector, MetadataContract $metadata): void
+    public function add(Vector $vector, MetadataContract $metadata): void
     {
         $this->hashBuckets[$this->generateHash($vector)][] = [
             'vector' => $vector,
@@ -87,7 +85,7 @@ final class InMemoryVectorStore implements VectorStore
         return $results;
     }
 
-    private function generateHyperplanes(): VectorsContract
+    private function generateHyperplanes(): Vectors
     {
         $hyperplanes = new Vectors();
         for ($i = 0; $i < $this->numHyperplanes; $i++) {
@@ -101,7 +99,7 @@ final class InMemoryVectorStore implements VectorStore
         return $hyperplanes;
     }
 
-    private function generateHash(VectorContract $vector): string
+    private function generateHash(Vector $vector): string
     {
         $hash = '';
         foreach ($this->hyperplanes as $hyperplane) {

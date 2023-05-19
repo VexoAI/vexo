@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Contract\Vector\Implementation;
+namespace Vexo\Contract\Vector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Contract\Vector\Vector as VectorContract;
 
 #[CoversClass(Vectors::class)]
 final class VectorsTest extends TestCase
 {
     public function testGetType(): void
     {
-        $documents = new Vectors();
+        $vectors = new Vectors();
 
-        $this->assertSame(VectorContract::class, $documents->getType());
+        $this->assertSame(Vector::class, $vectors->getType());
     }
 }

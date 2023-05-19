@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Contract\Vector\Implementation;
+namespace Vexo\Contract\Vector;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Contract\Vector\DistanceAlgorithm;
-use Vexo\Contract\Vector\SimilarityAlgorithm;
 
 #[CoversClass(Vector::class)]
 final class VectorTest extends TestCase

@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\FailedToValidateContextValue;
-use Vexo\Contract\Metadata\Implementation\Metadata;
+use Vexo\Contract\Metadata\Metadata;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 use Vexo\Document\Repository\Repository;
