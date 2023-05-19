@@ -7,7 +7,7 @@ namespace Vexo\Chain\ConcatenateDocumentsChain;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\ContextAssert;
-use Vexo\Contract\Document\Documents;
+use Vexo\Document\Documents;
 
 final class ConcatenateDocumentsChain implements Chain
 {

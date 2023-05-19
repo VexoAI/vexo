@@ -8,8 +8,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
 use Vexo\Chain\FailedToValidateContextValue;
-use Vexo\Contract\Document\Implementation\Document;
-use Vexo\Contract\Document\Implementation\Documents;
+use Vexo\Document\Document;
+use Vexo\Document\Documents;
 
 #[CoversClass(ConcatenateDocumentsChain::class)]
 final class ConcatenateDocumentsChainTest extends TestCase
