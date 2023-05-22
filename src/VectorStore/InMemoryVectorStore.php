@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
-use Vexo\Contract\Metadata\Metadata as MetadataContract;
+use Vexo\Contract\Metadata\Metadata;
 use Vexo\Contract\Vector\SimilarityAlgorithm;
 use Vexo\Contract\Vector\Vector;
 use Vexo\Contract\Vector\Vectors;
+use Vexo\Document\Document;
+use Vexo\Document\Documents;
 use Vexo\Model\Embedding\EmbeddingModel;
 
-/**
- * @phpstan-type HashBuckets array<string, array<int, array{vector: Vector, metadata: MetadataContract}>>
- */
 final class InMemoryVectorStore implements VectorStore
 {
+    use AddTextsAndDocumentsBehavior;
+
     private readonly Vectors $hyperplanes;
 
     /**
-     * @var HashBuckets
+     * @var array<string, array<int, array{vector: Vector, metadata: Metadata}>>
      */
     private array $hashBuckets = [];
 
@@ -30,6 +31,7 @@ final class InMemoryVectorStore implements VectorStore
     public function __construct(
         private readonly EmbeddingModel $embeddingModel,
         private readonly SimilarityAlgorithm $similarityAlgorithm = SimilarityAlgorithm::COSINE,
+        private readonly string $metadataContentsKey = 'contents',
         private readonly int $numDimensions = 1536,
         private readonly int $numHyperplanes = 20,
         ?callable $randomDimensionGenerator = null
@@ -38,16 +40,24 @@ final class InMemoryVectorStore implements VectorStore
         $this->hyperplanes = $this->generateHyperplanes();
     }
 
-    public function add(Vector $vector, MetadataContract $metadata): void
+    /**
+     * @param array<Metadata> $metadatas
+     */
+    public function addVectors(Vectors $vectors, array $metadatas): void
     {
-        $this->hashBuckets[$this->generateHash($vector)][] = [
-            'vector' => $vector,
-            'metadata' => $metadata
-        ];
+        foreach ($vectors as $index => $vector) {
+            $this->hashBuckets[$this->generateHash($vector)][] = [
+                'vector' => $vector,
+                'metadata' => clone $metadatas[$index]
+            ];
+        }
     }
 
-    public function search(string $query, int $maxResults = 4): Results
-    {
+    public function similaritySearch(
+        string $query,
+        int $maxResults = 4,
+        bool $includeScoresInMetadata = true
+    ): Documents {
         // Embed the query
         $queryVector = $this->embeddingModel->embedQuery($query);
 
@@ -55,17 +65,23 @@ final class InMemoryVectorStore implements VectorStore
         $candidates = $this->hashBuckets[$this->generateHash($queryVector)] ?? [];
 
         // Initialize priority queue to keep track of the highest scoring vectors
-        /** @var \SplPriorityQueue<float, Result> */
+        /** @var \SplPriorityQueue<float, Document> */
         $priorityQueue = new \SplPriorityQueue();
 
         // Iterate over the candidate vectors and calculate the similarity between the query and the candidate vectors
         foreach ($candidates as $candidate) {
             $score = $queryVector->similarity($candidate['vector'], $this->similarityAlgorithm);
+            /** @var string $contents */
+            $contents = $candidate['metadata']->get($this->metadataContentsKey, '');
+            $metadata = clone $candidate['metadata'];
 
-            // Insert the search result into the priority queue
+            if ($includeScoresInMetadata) {
+                $metadata->put('score', $score);
+            }
+
             $priorityQueue->insert(
-                new Result($candidate['vector'], $candidate['metadata'], $score),
-                $score
+                new Document($contents, $metadata),
+                -$score // Negate score to maintain a max heap
             );
 
             // Remove the lowest scoring vector from the priority queue if it exceeds the maximum number of results
@@ -75,14 +91,14 @@ final class InMemoryVectorStore implements VectorStore
         }
 
         // Generate the search results.
-        $results = new Results();
+        $documents = new Documents();
         while ( ! $priorityQueue->isEmpty()) {
-            /** @var Result $result */
-            $result = $priorityQueue->extract();
-            $results->add($result);
+            /** @var Document $document */
+            $document = $priorityQueue->extract();
+            $documents->add($document);
         }
 
-        return $results;
+        return $documents;
     }
 
     private function generateHyperplanes(): Vectors
