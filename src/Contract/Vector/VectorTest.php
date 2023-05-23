@@ -22,6 +22,11 @@ final class VectorTest extends TestCase
         $this->assertEquals([1, 2, 3], $this->vector->toArray());
     }
 
+    public function testDimensions(): void
+    {
+        $this->assertEquals(3, $this->vector->dimensions());
+    }
+
     public function testDistance(): void
     {
         $anotherVector = new Vector([4, 5, 6]);

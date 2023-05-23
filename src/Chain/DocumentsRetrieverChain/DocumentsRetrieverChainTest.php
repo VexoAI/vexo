@@ -11,18 +11,18 @@ use Vexo\Chain\FailedToValidateContextValue;
 use Vexo\Contract\Metadata\Metadata;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
-use Vexo\Document\Repository\Repository;
+use Vexo\Document\Retriever\Retriever;
 
 #[CoversClass(DocumentsRetrieverChain::class)]
 final class DocumentsRetrieverChainTest extends TestCase
 {
-    private Repository $repository;
+    private Retriever $repository;
 
     private DocumentsRetrieverChain $chain;
 
     protected function setUp(): void
     {
-        $this->repository = new class() implements Repository {
+        $this->repository = new class() implements Retriever {
             public function __construct(
                 private readonly Documents $documents = new Documents()
             ) {
@@ -33,7 +33,7 @@ final class DocumentsRetrieverChainTest extends TestCase
                 $this->documents->add($document);
             }
 
-            public function search(string $query, int $maxResults = 4): Documents
+            public function retrieve(string $query, int $maxResults = 4): Documents
             {
                 return $this->documents;
             }

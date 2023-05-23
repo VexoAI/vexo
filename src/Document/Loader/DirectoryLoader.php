@@ -24,8 +24,8 @@ final class DirectoryLoader implements Loader
         private readonly FilesystemReader $filesystem,
         private readonly string $path,
         private readonly bool $loadRecursive = false,
-        ?callable $filter = null,
-        ?callable $fileLoader = null
+        callable $filter = null,
+        callable $fileLoader = null
     ) {
         $this->filter = $filter ?? fn (StorageAttributes $attributes): bool => true;
         $this->fileLoader = $fileLoader ?? fn (FilesystemReader $filesystem, string $path): Documents => (new TextFileLoader($filesystem, $path))->load();

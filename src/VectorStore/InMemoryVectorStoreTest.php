@@ -11,141 +11,143 @@ use Vexo\Contract\Vector\Vector;
 use Vexo\Contract\Vector\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
-use Vexo\Model\Embedding\FakeModel;
+use Vexo\Model\Embedding\EmbeddingModel;
 
 #[CoversClass(InMemoryVectorStore::class)]
 #[CoversClass(AddTextsAndDocumentsBehavior::class)]
 final class InMemoryVectorStoreTest extends TestCase
 {
+    private InMemoryVectorStore $vectorStore;
+
+    protected function setUp(): void
+    {
+        $this->vectorStore = new InMemoryVectorStore(
+            embeddingModel: new FakeModel([
+                new Vector([-0.86735673894517, 0.77182569530412]),
+                new Vector([0.91102167866706, 0.72931519138129]),
+                new Vector([0.31876312257664, -0.49097725445916]),
+                new Vector([-0.95490822007643, -0.26773092768515]),
+                new Vector([0.21046774983894, -0.57525879590551]),
+                new Vector([-0.10722856740804, 0.5842314779685])
+            ]),
+            numDimensions: 2,
+            numHyperplanes: 1
+        );
+    }
+
     public function testSimilaritySearch(): void
     {
-        $fakeModel = new FakeModel();
-
-        $vectorStore = new InMemoryVectorStore(
-            embeddingModel: $fakeModel,
-            numDimensions: 3,
-            numHyperplanes: 1,
-            randomDimensionGenerator: fn (): float => $this->generateFloat()
+        $this->vectorStore->addVectors(
+            new Vectors([
+                new Vector([-0.86735673894517, 0.77182569530412]),
+                new Vector([0.91102167866706, 0.72931519138129]),
+                new Vector([0.31876312257664, -0.49097725445916]),
+                new Vector([-0.95490822007643, -0.26773092768515]),
+                new Vector([0.21046774983894, -0.57525879590551])
+            ]),
+            [
+                new Metadata(['id' => 1, 'contents' => 'Some contents 1']),
+                new Metadata(['id' => 2, 'contents' => 'Some contents 2']),
+                new Metadata(['id' => 3, 'contents' => 'Some contents 3']),
+                new Metadata(['id' => 4, 'contents' => 'Some contents 4']),
+                new Metadata(['id' => 5, 'contents' => 'Some contents 5'])
+            ]
         );
 
-        $vectorStore->addVectors(
-            $this->generateVectors(100, 3),
-            $this->generateMetadata(100)
-        );
+        $documents = $this->vectorStore->similaritySearch('Something amazing', 2);
 
-        $fakeModel->addVector($this->generateVector(3));
-        $documents = $vectorStore->similaritySearch('Something amazing', 3);
+        $this->assertCount(2, $documents);
 
-        $this->assertCount(3, $documents);
+        $this->assertEquals('Some contents 1', $documents[0]->contents());
+        $this->assertEquals(1, $documents[0]->metadata()->get('id'));
+        $this->assertEqualsWithDelta(0.78870, $documents[0]->metadata()->get('score'), 0.00005);
 
-        $this->assertEquals('Some contents 12', $documents[0]->contents());
-        $this->assertEquals(12, $documents[0]->metadata()->get('id'));
-        $this->assertEqualsWithDelta(0.96969, $documents[0]->metadata()->get('score'), 0.00005);
-
-        $this->assertEquals('Some contents 61', $documents[1]->contents());
-        $this->assertEquals(61, $documents[1]->metadata()->get('id'));
-        $this->assertEqualsWithDelta(0.97642, $documents[1]->metadata()->get('score'), 0.00005);
-
-        $this->assertEquals('Some contents 5', $documents[2]->contents());
-        $this->assertEquals(5, $documents[2]->metadata()->get('id'));
-        $this->assertEqualsWithDelta(0.98767, $documents[2]->metadata()->get('score'), 0.00005);
+        $this->assertEquals('Some contents 4', $documents[1]->contents());
+        $this->assertEquals(4, $documents[1]->metadata()->get('id'));
+        $this->assertEqualsWithDelta(-0.09170, $documents[1]->metadata()->get('score'), 0.00005);
     }
 
     public function testAddTexts(): void
     {
-        $fakeModel = new FakeModel();
-
-        $vectorStore = new InMemoryVectorStore(
-            embeddingModel: $fakeModel,
-            numDimensions: 3,
-            numHyperplanes: 1,
-            randomDimensionGenerator: fn (): float => $this->generateFloat()
+        $this->vectorStore->addTexts(
+            [
+                'Some text 1',
+                'Some text 2',
+                'Some text 3',
+                'Some text 4',
+                'Some text 5'
+            ],
+            [
+                new Metadata(['id' => 1]),
+                new Metadata(['id' => 2]),
+                new Metadata(['id' => 3]),
+                new Metadata(['id' => 4]),
+                new Metadata(['id' => 5])
+            ]
         );
 
-        for ($i = 0; $i < 100; $i++) {
-            $fakeModel->addVector($this->generateVector(3));
-        }
-
-        $vectorStore->addTexts(
-            array_map(fn (int $i): string => 'Some text ' . $i, range(0, 99)),
-            $this->generateMetadata(100)
-        );
-
-        $fakeModel->addVector($this->generateVector(3));
-        $documents = $vectorStore->similaritySearch('Something amazing', 1);
+        $documents = $this->vectorStore->similaritySearch('Something amazing', 1);
 
         $this->assertCount(1, $documents);
 
-        $this->assertEquals('Some text 97', $documents[0]->contents());
-        $this->assertEquals(97, $documents[0]->metadata()->get('id'));
+        $this->assertEquals('Some text 1', $documents[0]->contents());
+        $this->assertEquals(1, $documents[0]->metadata()->get('id'));
     }
 
     public function testAddDocuments(): void
     {
-        $fakeModel = new FakeModel();
-
-        $vectorStore = new InMemoryVectorStore(
-            embeddingModel: $fakeModel,
-            numDimensions: 3,
-            numHyperplanes: 1,
-            randomDimensionGenerator: fn (): float => $this->generateFloat()
+        $this->vectorStore->addDocuments(
+            new Documents([
+                new Document('Some text 1', new Metadata(['id' => 1])),
+                new Document('Some text 2', new Metadata(['id' => 2])),
+                new Document('Some text 3', new Metadata(['id' => 3])),
+                new Document('Some text 4', new Metadata(['id' => 4])),
+                new Document('Some text 5', new Metadata(['id' => 5]))
+            ])
         );
 
-        for ($i = 0; $i < 100; $i++) {
-            $fakeModel->addVector($this->generateVector(3));
-        }
-
-        $vectorStore->addDocuments(
-            new Documents(
-                array_map(fn (int $i): Document => new Document('Some text ' . $i, new Metadata(['id' => $i])), range(0, 99))
-            )
-        );
-
-        $fakeModel->addVector($this->generateVector(3));
-        $documents = $vectorStore->similaritySearch('Something amazing', 1);
+        $documents = $this->vectorStore->similaritySearch('Something amazing', 1);
 
         $this->assertCount(1, $documents);
 
-        $this->assertEquals('Some text 10', $documents[0]->contents());
-        $this->assertEquals(10, $documents[0]->metadata()->get('id'));
+        $this->assertEquals('Some text 1', $documents[0]->contents());
+        $this->assertEquals(1, $documents[0]->metadata()->get('id'));
+    }
+}
+
+final class FakeModel implements EmbeddingModel
+{
+    public function __construct(
+        private array $vectors
+    ) {
     }
 
-    private function generateVectors(int $count, int $numDimensions): Vectors
+    public function embedTexts(array $texts): Vectors
     {
         return new Vectors(
             array_map(
-                fn (): Vector => $this->generateVector($numDimensions),
-                range(0, $count - 1)
+                fn (string $text): Vector => array_pop($this->vectors),
+                $texts
             )
         );
     }
 
-    private function generateMetadata(int $count): array
+    public function embedQuery(string $query): Vector
     {
-        return array_map(
-            fn (int $i): Metadata => new Metadata(['id' => $i, 'contents' => 'Some contents ' . $i]),
-            range(0, $count - 1)
-        );
+        return array_pop($this->vectors);
     }
+}
 
-    private function generateVector(int $numDimensions): Vector
-    {
-        return new Vector(
-            array_map(
-                fn (): float => $this->generateFloat(),
-                range(0, $numDimensions - 1)
-            )
-        );
-    }
+function random_int(int $min, int $max): int
+{
+    static $numbers = [
+        1109294673,
+        833541787,
+        1236955672,
+        631981979,
+        1127310249,
+        69677023
+    ];
 
-    /**
-     * Deterministic "random" number generator.
-     */
-    private function generateFloat(): float
-    {
-        static $i = 0;
-        mt_srand($i++);
-
-        return mt_rand() / mt_getrandmax() - (mt_rand() / mt_getrandmax());
-    }
+    return array_pop($numbers);
 }

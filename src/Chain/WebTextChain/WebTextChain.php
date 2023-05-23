@@ -27,8 +27,8 @@ final class WebTextChain implements Chain
      * @param array<string, string> $outputMap
      */
     public function __construct(
-        ?ClientInterface $httpClient = null,
-        ?RequestFactoryInterface $requestFactory = null,
+        ClientInterface $httpClient = null,
+        RequestFactoryInterface $requestFactory = null,
         private readonly TextExtractor $textExtractor = new HtmlTextExtractor(),
         private readonly int $maxTextLength = 8000,
         private readonly array $inputMap = [],

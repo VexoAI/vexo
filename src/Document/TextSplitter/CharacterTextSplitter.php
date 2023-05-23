@@ -21,7 +21,7 @@ final class CharacterTextSplitter implements TextSplitter
         private readonly int $minChunkOverlap = 200,
         private readonly bool $trimWhitespace = false,
         private readonly array $separators = ["\n\n", "\n", ' ', ''],
-        ?callable $sizeFunction = null,
+        callable $sizeFunction = null,
     ) {
         if ($minChunkOverlap > $chunkSize) {
             throw new \InvalidArgumentException('Minimum chunk overlap cannot be greater than chunk size');

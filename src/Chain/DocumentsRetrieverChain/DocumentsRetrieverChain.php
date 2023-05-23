@@ -7,7 +7,7 @@ namespace Vexo\Chain\DocumentsRetrieverChain;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\ContextAssert;
-use Vexo\Document\Repository\Repository;
+use Vexo\Document\Retriever\Retriever;
 
 final class DocumentsRetrieverChain implements Chain
 {
@@ -19,7 +19,7 @@ final class DocumentsRetrieverChain implements Chain
      * @param array<string, string> $outputMap
      */
     public function __construct(
-        private readonly Repository $repository,
+        private readonly Retriever $repository,
         private readonly array $inputMap = [],
         private readonly array $outputMap = []
     ) {
@@ -31,7 +31,7 @@ final class DocumentsRetrieverChain implements Chain
         $query = $context->get($this->inputMap[self::INPUT_QUERY] ?? self::INPUT_QUERY);
         ContextAssert::stringNotEmpty($query);
 
-        $documents = $this->repository->search($query);
+        $documents = $this->repository->retrieve($query);
 
         $context->put($this->outputMap[self::OUTPUT_DOCUMENTS] ?? self::OUTPUT_DOCUMENTS, $documents);
     }

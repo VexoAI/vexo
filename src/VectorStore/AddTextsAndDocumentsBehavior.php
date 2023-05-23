@@ -24,7 +24,7 @@ trait AddTextsAndDocumentsBehavior
     }
 
     /**
-     * @param array<int, string> $texts
+     * @param array<int, string>   $texts
      * @param array<int, Metadata> $metadatas
      */
     public function addTexts(array $texts, array $metadatas): void

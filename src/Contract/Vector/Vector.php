@@ -25,6 +25,11 @@ final class Vector
         return $this->vector;
     }
 
+    public function dimensions(): int
+    {
+        return \count($this->vector);
+    }
+
     public function distance(self $other, DistanceAlgorithm $algorithm): float
     {
         return Distance::{$algorithm->value}($this->vector, $other->toArray());

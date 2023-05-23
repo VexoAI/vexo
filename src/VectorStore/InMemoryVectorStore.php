@@ -23,20 +23,13 @@ final class InMemoryVectorStore implements VectorStore
      */
     private array $hashBuckets = [];
 
-    /**
-     * @var callable
-     */
-    private $randomDimensionGenerator;
-
     public function __construct(
         private readonly EmbeddingModel $embeddingModel,
         private readonly SimilarityAlgorithm $similarityAlgorithm = SimilarityAlgorithm::COSINE,
         private readonly string $metadataContentsKey = 'contents',
         private readonly int $numDimensions = 1536,
-        private readonly int $numHyperplanes = 20,
-        ?callable $randomDimensionGenerator = null
+        private readonly int $numHyperplanes = 20
     ) {
-        $this->randomDimensionGenerator = $randomDimensionGenerator ?? fn (): float => random_int(-100, 100) / 100;
         $this->hyperplanes = $this->generateHyperplanes();
     }
 
@@ -91,25 +84,21 @@ final class InMemoryVectorStore implements VectorStore
         }
 
         // Generate the search results.
-        $documents = new Documents();
+        $documents = [];
         while ( ! $priorityQueue->isEmpty()) {
             /** @var Document $document */
             $document = $priorityQueue->extract();
-            $documents->add($document);
+            array_unshift($documents, $document);
         }
 
-        return $documents;
+        return new Documents($documents);
     }
 
     private function generateHyperplanes(): Vectors
     {
         $hyperplanes = new Vectors();
         for ($i = 0; $i < $this->numHyperplanes; $i++) {
-            $hyperplane = [];
-            for ($j = 0; $j < $this->numDimensions; $j++) {
-                $hyperplane[] = ($this->randomDimensionGenerator)();
-            }
-            $hyperplanes[] = new Vector($hyperplane);
+            $hyperplanes->add($this->generateVector($this->numDimensions));
         }
 
         return $hyperplanes;
@@ -123,5 +112,20 @@ final class InMemoryVectorStore implements VectorStore
         }
 
         return $hash;
+    }
+
+    private function generateVector(int $numDimensions): Vector
+    {
+        return new Vector(
+            array_map(
+                fn (): float => $this->generateFloat(),
+                range(0, $numDimensions - 1)
+            )
+        );
+    }
+
+    private function generateFloat(): float
+    {
+        return -1 + 2 * (random_int(0, mt_getrandmax()) / mt_getrandmax());
     }
 }
