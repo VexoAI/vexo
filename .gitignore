@@ -1,3 +1,4 @@
+/examples/.env
 /vendor/
 /tmp/
 /phpunit.xml

@@ -4,45 +4,41 @@ declare(strict_types=1);
 
 namespace Vexo\Examples;
 
-use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
-use Vexo\DocumentLoader\CsvFileLoader;
+use Dotenv\Dotenv;
+use Probots\Pinecone\Client as Pinecone;
+use Vexo\Document\Loader\CsvFileLoader;
 use Vexo\Model\Embedding\OpenAIModel;
-use Vexo\VectorStore\InMemoryVectorStore;
+use Vexo\VectorStore\PineconeVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-if ( ! getenv('OPENAI_API_KEY') || ! getenv('CSV_FILE_PATH') || ! getenv('VECTORSTORE_FILENAME')) {
-    echo "Not all required environment variables set!\n";
-    echo "Please set OPENAI_API_KEY, CSV_FILE_PATH, VECTORSTORE_FILENAME\n\n";
+if ($argc <= 1) {
+    echo "Please provide a path to CSV file as as argument!\n\n";
     exit(1);
 }
 
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+$dotenv->required(['OPENAI_API_KEY', 'PINECONE_API_KEY', 'PINECONE_ENVIRONMENT', 'PINECONE_INDEX_NAME']);
+
 // Load our embedding model
-$embeddings = $chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->embeddings();
+$embeddings = \OpenAI::client($_ENV['OPENAI_API_KEY'])->embeddings();
 $embeddingModel = new OpenAIModel($embeddings);
 
-// Initialize our vector store.
-//
-// Note that you will need to tweak the amount of hyperplanes to use for your specific use case. The more hyperplanes
-// you use, the faster the search will be, but at the cost of accuracy. Using 0 hyperplanes will effectively disable the
-// Locality Sensitive Hashing (LSH) algorithm, but will mean terrible performance for even small datasets.
-//
-$vectorStore = new InMemoryVectorStore(embeddingModel: $embeddingModel, numHyperplanes: 20);
+// Load our vector store
+$pinecone = new Pinecone($_ENV['PINECONE_API_KEY'], $_ENV['PINECONE_ENVIRONMENT']);
+$vectorStore = new PineconeVectorStore(
+    embeddingModel: $embeddingModel,
+    pinecone: $pinecone->index($_ENV['PINECONE_INDEX_NAME'])->vectors()
+);
 
 // Load our CSV file loader
 $fileLoader = new CsvFileLoader(
-    path: getenv('CSV_FILE_PATH'),
+    path: $argv[1],
     contentsColumn: 'content' // The column in the CSV file that contains the text we want to store
 );
 
 // Load the documents from the CSV file into the vector store
-foreach ($fileLoader->load() as $document) {
-    $vectorStore->add($document, ['title']);
-}
-
-// Persist the vector store to disk
-$vectorStore->persistToFile(
-    filesystem: new Filesystem(new LocalFilesystemAdapter(__DIR__ . '/../tmp')),
-    path: getenv('VECTORSTORE_FILENAME')
-);
+$documents = $fileLoader->load();
+$vectorStore->addDocuments($documents);

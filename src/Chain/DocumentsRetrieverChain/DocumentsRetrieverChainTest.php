@@ -16,13 +16,13 @@ use Vexo\Document\Retriever\Retriever;
 #[CoversClass(DocumentsRetrieverChain::class)]
 final class DocumentsRetrieverChainTest extends TestCase
 {
-    private Retriever $repository;
+    private Retriever $retriever;
 
     private DocumentsRetrieverChain $chain;
 
     protected function setUp(): void
     {
-        $this->repository = new class() implements Retriever {
+        $this->retriever = new class() implements Retriever {
             public function __construct(
                 private readonly Documents $documents = new Documents()
             ) {
@@ -39,13 +39,13 @@ final class DocumentsRetrieverChainTest extends TestCase
             }
         };
 
-        $this->chain = new DocumentsRetrieverChain($this->repository);
+        $this->chain = new DocumentsRetrieverChain($this->retriever, 2);
     }
 
     public function testRun(): void
     {
-        $this->repository->persist(new Document('My amazing content', new Metadata(['id' => 1])));
-        $this->repository->persist(new Document('My amazing content', new Metadata(['id' => 2])));
+        $this->retriever->persist(new Document('My amazing content', new Metadata(['id' => 1])));
+        $this->retriever->persist(new Document('My amazing content', new Metadata(['id' => 2])));
 
         $context = new Context(['query' => 'Something amazing']);
 

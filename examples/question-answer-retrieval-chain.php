@@ -4,48 +4,47 @@ declare(strict_types=1);
 
 namespace Vexo\Examples;
 
+use Dotenv\Dotenv;
 use League\Event\EventDispatcher;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
+use Probots\Pinecone\Client as Pinecone;
 use Vexo\Chain\ConcatenateDocumentsChain\ConcatenateDocumentsChain;
 use Vexo\Chain\Context;
 use Vexo\Chain\DocumentsRetrieverChain\DocumentsRetrieverChain;
-use Vexo\Chain\DocumentsRetrieverChain\Retriever\VectorStoreRetriever;
 use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Contract\Event\Event;
+use Vexo\Document\Retriever\VectorStoreRetriever;
 use Vexo\Model\Embedding\OpenAIModel;
 use Vexo\Model\Language\OpenAIChatModel;
-use Vexo\VectorStore\InMemoryVectorStore;
+use Vexo\VectorStore\PineconeVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-if ( ! getenv('OPENAI_API_KEY') || ! getenv('VECTORSTORE_FILENAME')) {
-    echo "Not all required environment variables set!\n";
-    echo "Please set OPENAI_API_KEY, VECTORSTORE_FILENAME\n\n";
-    exit(1);
-}
 
 if ($argc <= 1) {
     echo "Please provide a question as argument!\n\n";
     exit(1);
 }
 
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+$dotenv->required(['OPENAI_API_KEY', 'PINECONE_API_KEY', 'PINECONE_ENVIRONMENT', 'PINECONE_INDEX_NAME']);
+
 // Load our event dispatcher which will be used to dump events during execution
 $eventDispatcher = new EventDispatcher();
 $eventDispatcher->subscribeTo(Event::class, 'dump');
 
-$openAI = \OpenAI::client(getenv('OPENAI_API_KEY'));
+$openAI = \OpenAI::client($_ENV['OPENAI_API_KEY']);
 
 // Load our embedding model
 $embeddingModel = new OpenAIModel($openAI->embeddings());
 
-// Initialize our vector store.
-$vectorStore = new InMemoryVectorStore(embeddingModel: $embeddingModel);
-$vectorStore->restoreFromFile(
-    filesystem: new Filesystem(new LocalFilesystemAdapter(__DIR__ . '/../tmp')),
-    path: getenv('VECTORSTORE_FILENAME')
+// Load our vector store
+$pinecone = new Pinecone($_ENV['PINECONE_API_KEY'], $_ENV['PINECONE_ENVIRONMENT']);
+$vectorStore = new PineconeVectorStore(
+    embeddingModel: $embeddingModel,
+    pinecone: $pinecone->index($_ENV['PINECONE_INDEX_NAME'])->vectors()
 );
 
 // Load our language model
@@ -66,7 +65,8 @@ $sequentialChain = new SequentialChain(
     eventDispatcher: $eventDispatcher,
     chains: [
         new DocumentsRetrieverChain(
-            new VectorStoreRetriever(vectorStore: $vectorStore, numResults: 3),
+            retriever: new VectorStoreRetriever(vectorStore: $vectorStore),
+            maxResults: 3,
             inputMap: ['query' => 'question'] // Make sure question is also available as query
         ),
         new ConcatenateDocumentsChain(),
