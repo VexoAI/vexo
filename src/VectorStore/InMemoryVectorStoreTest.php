@@ -11,7 +11,7 @@ use Vexo\Contract\Vector\Vector;
 use Vexo\Contract\Vector\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
-use Vexo\Model\Embedding\EmbeddingModel;
+use Vexo\Model\Embedding\FakeModel;
 
 #[CoversClass(InMemoryVectorStore::class)]
 #[CoversClass(AddTextsAndDocumentsBehavior::class)]
@@ -60,11 +60,11 @@ final class InMemoryVectorStoreTest extends TestCase
 
         $this->assertEquals('Some contents 1', $documents[0]->contents());
         $this->assertEquals(1, $documents[0]->metadata()->get('id'));
-        $this->assertEqualsWithDelta(0.78870, $documents[0]->metadata()->get('score'), 0.00005);
+        $this->assertEqualsWithDelta(1.0, $documents[0]->metadata()->get('score'), 0.00005);
 
         $this->assertEquals('Some contents 4', $documents[1]->contents());
         $this->assertEquals(4, $documents[1]->metadata()->get('id'));
-        $this->assertEqualsWithDelta(-0.09170, $documents[1]->metadata()->get('score'), 0.00005);
+        $this->assertEqualsWithDelta(0.53984, $documents[1]->metadata()->get('score'), 0.00005);
     }
 
     public function testAddTexts(): void
@@ -112,29 +112,6 @@ final class InMemoryVectorStoreTest extends TestCase
 
         $this->assertEquals('Some text 1', $documents[0]->contents());
         $this->assertEquals(1, $documents[0]->metadata()->get('id'));
-    }
-}
-
-final class FakeModel implements EmbeddingModel
-{
-    public function __construct(
-        private array $vectors
-    ) {
-    }
-
-    public function embedTexts(array $texts): Vectors
-    {
-        return new Vectors(
-            array_map(
-                fn (string $text): Vector => array_pop($this->vectors),
-                $texts
-            )
-        );
-    }
-
-    public function embedQuery(string $query): Vector
-    {
-        return array_pop($this->vectors);
     }
 }
 
