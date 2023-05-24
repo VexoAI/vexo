@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Examples;
 
+use Dotenv\Dotenv;
 use League\Event\EventDispatcher;
 use Vexo\Chain\Context;
 use Vexo\Chain\LanguageModelChain\LanguageModelChain;
@@ -15,23 +16,22 @@ use Vexo\Model\Language\OpenAIChatModel;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-if ( ! getenv('OPENAI_API_KEY')) {
-    echo "Not all required environment variables set!\n";
-    echo "Please set OPENAI_API_KEY\n\n";
-    exit(1);
-}
-
 if ($argc <= 1) {
     echo "Please provide a URL as argument!\n\n";
     exit(1);
 }
+
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+$dotenv->required(['OPENAI_API_KEY']);
 
 // Load our event dispatcher which will be used to dump events during execution
 $eventDispatcher = new EventDispatcher();
 $eventDispatcher->subscribeTo(Event::class, 'dump');
 
 // Load our language model using OpenAI
-$chat = \OpenAI::client(getenv('OPENAI_API_KEY'))->chat();
+$chat = \OpenAI::client($_ENV['OPENAI_API_KEY'])->chat();
 $languageModel = new OpenAIChatModel($chat, eventDispatcher: $eventDispatcher);
 
 // Initialize our sequential chain and the two needed chains in order
