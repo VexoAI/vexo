@@ -6,7 +6,7 @@ namespace Vexo\Agent;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 final class AutonomousExecutor implements Executor
 {

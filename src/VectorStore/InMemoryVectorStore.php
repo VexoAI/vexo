@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
-use Vexo\Contract\Metadata\Metadata;
-use Vexo\Contract\Vector\SimilarityAlgorithm;
-use Vexo\Contract\Vector\Vector;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Metadata;
+use Vexo\Contract\SimilarityAlgorithm;
+use Vexo\Contract\Vector;
+use Vexo\Contract\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 use Vexo\Model\Embedding\EmbeddingModel;

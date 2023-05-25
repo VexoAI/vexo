@@ -6,7 +6,7 @@ namespace Vexo\Model\Embedding;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Contract\Vector\Vector;
+use Vexo\Contract\Vector;
 
 #[CoversClass(FakeModel::class)]
 final class FakeModelTest extends TestCase

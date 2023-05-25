@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vexo\Model\Embedding;
 
 use OpenAI\Contracts\Resources\EmbeddingsContract;
-use Vexo\Contract\Vector\Vector;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Vector;
+use Vexo\Contract\Vectors;
 
 final class OpenAIModel implements EmbeddingModel
 {

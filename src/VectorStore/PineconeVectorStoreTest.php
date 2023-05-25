@@ -10,9 +10,9 @@ use Probots\Pinecone\Client;
 use Saloon\Contracts\PendingRequest;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-use Vexo\Contract\Metadata\Metadata;
-use Vexo\Contract\Vector\Vector;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Metadata;
+use Vexo\Contract\Vector;
+use Vexo\Contract\Vectors;
 use Vexo\Model\Embedding\FakeModel;
 
 #[CoversClass(PineconeVectorStore::class)]

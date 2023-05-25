@@ -11,7 +11,7 @@ use Vexo\Agent\Tool\Callback;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 #[CoversClass(ReasonAndActAgent::class)]
 final class ReasonAndActAgentTest extends TestCase

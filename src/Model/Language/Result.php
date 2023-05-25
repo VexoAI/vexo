@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Language;
 
-use Vexo\Contract\Metadata\Metadata;
+use Vexo\Contract\Metadata;
 
 final class Result
 {

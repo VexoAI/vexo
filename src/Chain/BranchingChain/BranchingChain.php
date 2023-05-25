@@ -10,7 +10,7 @@ use Vexo\Chain\Chain;
 use Vexo\Chain\ChainFinished;
 use Vexo\Chain\ChainStarted;
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 final class BranchingChain implements Chain
 {

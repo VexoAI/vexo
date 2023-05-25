@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Contract\Vector;
+namespace Vexo\Contract;
 
 use Ramsey\Collection\AbstractCollection;
 

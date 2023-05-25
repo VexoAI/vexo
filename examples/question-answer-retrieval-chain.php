@@ -13,7 +13,7 @@ use Vexo\Chain\DocumentsRetrieverChain\DocumentsRetrieverChain;
 use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialChain\SequentialChain;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 use Vexo\Document\Retriever\VectorStoreRetriever;
 use Vexo\Model\Embedding\OpenAIModel;
 use Vexo\Model\Language\OpenAIChatModel;

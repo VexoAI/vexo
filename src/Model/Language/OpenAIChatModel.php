@@ -6,8 +6,8 @@ namespace Vexo\Model\Language;
 
 use OpenAI\Contracts\Resources\ChatContract;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Vexo\Contract\Event\Event;
-use Vexo\Contract\Metadata\Metadata;
+use Vexo\Contract\Event;
+use Vexo\Contract\Metadata;
 
 final class OpenAIChatModel implements LanguageModel
 {

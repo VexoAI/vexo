@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Embedding;
 
-use Vexo\Contract\Vector\Vector;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Vector;
+use Vexo\Contract\Vectors;
 
 interface EmbeddingModel
 {

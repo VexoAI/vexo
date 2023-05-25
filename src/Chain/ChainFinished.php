@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Chain;
 
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 final class ChainFinished implements Event
 {

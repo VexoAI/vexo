@@ -11,7 +11,7 @@ use Vexo\Chain\LanguageModelChain\LanguageModelChain;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
 use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Chain\WebTextChain\WebTextChain;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 use Vexo\Model\Language\OpenAIChatModel;
 
 require __DIR__ . '/../vendor/autoload.php';

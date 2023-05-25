@@ -6,9 +6,9 @@ namespace Vexo\VectorStore;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Contract\Metadata\Metadata;
-use Vexo\Contract\Vector\Vector;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Metadata;
+use Vexo\Contract\Vector;
+use Vexo\Contract\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 use Vexo\Model\Embedding\FakeModel;

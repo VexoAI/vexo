@@ -8,7 +8,7 @@ use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 #[CoversClass(AutonomousExecutor::class)]
 final class AutonomousExecutorTest extends TestCase

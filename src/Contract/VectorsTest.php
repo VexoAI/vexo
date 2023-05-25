@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Contract\Vector;
+namespace Vexo\Contract;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

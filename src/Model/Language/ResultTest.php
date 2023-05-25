@@ -6,7 +6,7 @@ namespace Vexo\Model\Language;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Vexo\Contract\Metadata\Metadata;
+use Vexo\Contract\Metadata;
 
 #[CoversClass(Result::class)]
 final class ResultTest extends TestCase

@@ -6,7 +6,7 @@ namespace Vexo\Document\Loader;
 
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemReader;
-use Vexo\Contract\Metadata\Metadata;
+use Vexo\Contract\Metadata;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 use Vexo\Document\Documents as DocumentsContract;

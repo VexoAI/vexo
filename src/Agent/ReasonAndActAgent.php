@@ -9,7 +9,7 @@ use Vexo\Agent\Tool\FailedToResolveTool;
 use Vexo\Agent\Tool\Tools;
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 final class ReasonAndActAgent implements Agent
 {

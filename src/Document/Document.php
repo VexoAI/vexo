@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Document;
 
-use Vexo\Contract\Metadata\Metadata;
+use Vexo\Contract\Metadata;
 
 final class Document
 {

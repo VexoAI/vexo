@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vexo\Chain\BranchingChain;
 
 use Vexo\Chain\Context;
-use Vexo\Contract\Event\Event;
+use Vexo\Contract\Event;
 
 final class ChainBranchConditionEvaluated implements Event
 {

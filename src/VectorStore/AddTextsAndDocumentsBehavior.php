@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vexo\VectorStore;
 
-use Vexo\Contract\Metadata\Metadata;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Metadata;
+use Vexo\Contract\Vectors;
 use Vexo\Document\Documents;
 
 trait AddTextsAndDocumentsBehavior

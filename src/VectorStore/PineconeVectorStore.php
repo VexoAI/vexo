@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vexo\VectorStore;
 
 use Probots\Pinecone\Resources\VectorResource;
-use Vexo\Contract\Metadata\Metadata;
-use Vexo\Contract\Vector\Vectors;
+use Vexo\Contract\Metadata;
+use Vexo\Contract\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 use Vexo\Model\Embedding\EmbeddingModel;

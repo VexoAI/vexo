@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Contract\Event;
+namespace Vexo\Contract;
 
 interface Event
 {
