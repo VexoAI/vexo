@@ -11,7 +11,6 @@
 /.php-cs-fixer.dist.php export-ignore
 /phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
-/config.subsplit-publish.json export-ignore
 /rector.php export-ignore
 /run-tests.sh export-ignore
 
