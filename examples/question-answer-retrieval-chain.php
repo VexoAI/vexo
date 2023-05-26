@@ -7,7 +7,7 @@ namespace Vexo\Examples;
 use Dotenv\Dotenv;
 use League\Event\EventDispatcher;
 use Probots\Pinecone\Client as Pinecone;
-use Vexo\Chain\ConcatenateDocumentsChain\ConcatenateDocumentsChain;
+use Vexo\Chain\CombineDocumentsChain\CombineDocumentsChain;
 use Vexo\Chain\Context;
 use Vexo\Chain\DocumentsRetrieverChain\DocumentsRetrieverChain;
 use Vexo\Chain\LanguageModelChain\Blueprint\AnswerQuestionAboutContext;
@@ -69,7 +69,7 @@ $sequentialChain = new SequentialChain(
             maxResults: 3,
             inputMap: ['query' => 'question'] // Make sure question is also available as query
         ),
-        new ConcatenateDocumentsChain(),
+        new CombineDocumentsChain(),
         (new LanguageModelChainFactory($languageModel))->createFromBlueprint(
             new AnswerQuestionAboutContext(),
             inputMap: ['context' => 'combined_contents'] // Make sure combined_contents is also available as context

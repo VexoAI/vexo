@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain\ConcatenateDocumentsChain;
+namespace Vexo\Chain\CombineDocumentsChain;
 
 use Vexo\Chain\Chain;
 use Vexo\Chain\Context;
 use Vexo\Chain\ContextAssert;
 use Vexo\Document\Documents;
 
-final class ConcatenateDocumentsChain implements Chain
+final class CombineDocumentsChain implements Chain
 {
     private const INPUT_DOCUMENTS = 'documents';
     private const OUTPUT_COMBINED_CONTENTS = 'combined_contents';

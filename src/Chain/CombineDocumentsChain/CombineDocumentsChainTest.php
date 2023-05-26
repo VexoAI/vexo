@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Chain\ConcatenateDocumentsChain;
+namespace Vexo\Chain\CombineDocumentsChain;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -11,12 +11,12 @@ use Vexo\Chain\FailedToValidateContextValue;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
 
-#[CoversClass(ConcatenateDocumentsChain::class)]
-final class ConcatenateDocumentsChainTest extends TestCase
+#[CoversClass(CombineDocumentsChain::class)]
+final class CombineDocumentsChainTest extends TestCase
 {
     public function testRun(): void
     {
-        $chain = new ConcatenateDocumentsChain();
+        $chain = new CombineDocumentsChain();
 
         $context = new Context([
             'documents' => new Documents([
@@ -35,7 +35,7 @@ final class ConcatenateDocumentsChainTest extends TestCase
 
     public function testRunWithInvalidContext(): void
     {
-        $chain = new ConcatenateDocumentsChain();
+        $chain = new CombineDocumentsChain();
         $context = new Context([
             'documents' => 'invalid'
         ]);
