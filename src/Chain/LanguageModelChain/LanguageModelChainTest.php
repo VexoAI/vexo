@@ -10,8 +10,8 @@ use Vexo\Chain\Context;
 use Vexo\Chain\FailedToValidateContextValue;
 use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
-use Vexo\Model\Language\FakeModel;
-use Vexo\Model\Language\Result;
+use Vexo\Model\Completion\FakeModel;
+use Vexo\Model\Completion\Result;
 
 #[CoversClass(LanguageModelChain::class)]
 final class LanguageModelChainTest extends TestCase

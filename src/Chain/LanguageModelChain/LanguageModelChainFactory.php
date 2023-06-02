@@ -6,7 +6,7 @@ namespace Vexo\Chain\LanguageModelChain;
 
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
-use Vexo\Model\Language\LanguageModel;
+use Vexo\Model\Completion\LanguageModel;
 
 final class LanguageModelChainFactory
 {

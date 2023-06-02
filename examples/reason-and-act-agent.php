@@ -15,7 +15,7 @@ use Vexo\Chain\LanguageModelChain\Blueprint\ReasonAndAct;
 use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Contract\Event;
-use Vexo\Model\Language\OpenAIChatModel;
+use Vexo\Model\Completion\OpenAIChatModel;
 
 require __DIR__ . '/../vendor/autoload.php';
 

@@ -9,8 +9,8 @@ use Vexo\Chain\Context;
 use Vexo\Chain\ContextAssert;
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
-use Vexo\Model\Language\LanguageModel;
-use Vexo\Model\Language\Result;
+use Vexo\Model\Completion\LanguageModel;
+use Vexo\Model\Completion\Result;
 
 final class LanguageModelChain implements Chain
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vexo\Model\Language;
+namespace Vexo\Model\Completion;
 
 interface LanguageModel
 {

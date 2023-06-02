@@ -15,8 +15,8 @@ use Vexo\Chain\LanguageModelChain\LanguageModelChainFactory;
 use Vexo\Chain\SequentialChain\SequentialChain;
 use Vexo\Contract\Event;
 use Vexo\Document\Retriever\VectorStoreRetriever;
+use Vexo\Model\Completion\OpenAIChatModel;
 use Vexo\Model\Embedding\OpenAIModel;
-use Vexo\Model\Language\OpenAIChatModel;
 use Vexo\VectorStore\PineconeVectorStore;
 
 require __DIR__ . '/../vendor/autoload.php';

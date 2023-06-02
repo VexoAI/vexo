@@ -12,8 +12,8 @@ use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\OutputParser\RegexOutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
 use Vexo\Chain\LanguageModelChain\Prompt\StrReplaceRenderer;
-use Vexo\Model\Language\FakeModel;
-use Vexo\Model\Language\Result;
+use Vexo\Model\Completion\FakeModel;
+use Vexo\Model\Completion\Result;
 
 #[CoversClass(LanguageModelChainFactory::class)]
 final class LanguageModelChainFactoryTest extends TestCase
