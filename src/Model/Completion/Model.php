@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Completion;
 
-interface LanguageModel
+interface Model
 {
     /**
      * @param array<string> $stops

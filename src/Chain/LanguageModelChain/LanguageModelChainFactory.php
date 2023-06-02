@@ -6,12 +6,12 @@ namespace Vexo\Chain\LanguageModelChain;
 
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
-use Vexo\Model\Completion\LanguageModel;
+use Vexo\Model\Completion\Model;
 
 final class LanguageModelChainFactory
 {
     public function __construct(
-        private readonly LanguageModel $languageModel
+        private readonly Model $languageModel
     ) {
     }
 

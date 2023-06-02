@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vexo\Model\Completion;
 
-final class FakeModel implements LanguageModel
+final class FakeModel implements Model
 {
     /**
      * @var array<Result>

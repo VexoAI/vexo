@@ -9,7 +9,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Vexo\Contract\Event;
 use Vexo\Contract\Metadata;
 
-final class OpenAIChatModel implements LanguageModel
+final class OpenAIChatModel implements Model
 {
     private const DEFAULT_PARAMETERS = ['model' => 'gpt-3.5-turbo'];
 

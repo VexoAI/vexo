@@ -9,7 +9,7 @@ use Vexo\Chain\Context;
 use Vexo\Chain\ContextAssert;
 use Vexo\Chain\LanguageModelChain\OutputParser\OutputParser;
 use Vexo\Chain\LanguageModelChain\Prompt\Renderer;
-use Vexo\Model\Completion\LanguageModel;
+use Vexo\Model\Completion\Model;
 use Vexo\Model\Completion\Result;
 
 final class LanguageModelChain implements Chain
@@ -23,7 +23,7 @@ final class LanguageModelChain implements Chain
      * @param array<string, string> $outputMap
      */
     public function __construct(
-        private readonly LanguageModel $languageModel,
+        private readonly Model $languageModel,
         private readonly ?Renderer $promptRenderer = null,
         private readonly ?OutputParser $outputParser = null,
         private readonly array $stops = [],

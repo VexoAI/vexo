@@ -9,7 +9,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Vexo\Contract\Event;
 use Vexo\Contract\Metadata;
 
-final class OpenAIModel implements LanguageModel
+final class OpenAIModel implements Model
 {
     private const DEFAULT_PARAMETERS = ['model' => 'text-davinci-003'];
 
