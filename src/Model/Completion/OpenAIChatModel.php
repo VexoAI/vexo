@@ -56,7 +56,13 @@ final class OpenAIChatModel implements Model
      */
     private function prepareParameters(string $prompt, array $stops): array
     {
-        $parameters = [...$this->parameters, ...['messages' => [['role' => 'user', 'content' => $prompt]]]];
+        $messages = [];
+        if (\array_key_exists('messages', $this->parameters) && \is_array($this->parameters['messages'])) {
+            $messages = $this->parameters['messages'];
+        }
+        $messages[] = ['role' => 'user', 'content' => $prompt];
+
+        $parameters = [...$this->parameters, ...['messages' => $messages]];
 
         if ($stops !== []) {
             $parameters['stop'] = $stops;

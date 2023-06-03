@@ -67,6 +67,51 @@ final class OpenAIChatModelTest extends TestCase
         $this->assertSame($result, $emittedEvents[0]->result());
     }
 
+    public function testGenerateWithMessageHistory(): void
+    {
+        $client = new ClientFake([
+            CreateResponse::from([
+                'id' => 'chatcmpl-555NOEm562iYTOet9ql555znLFWES',
+                'object' => 'chat.completion',
+                'created' => 0,
+                'model' => 'gpt-3.5-turbo-0301',
+                'usage' => [
+                    'prompt_tokens' => 15,
+                    'completion_tokens' => 8,
+                    'total_tokens' => 23
+                ],
+                'choices' => [
+                    ['index' => 0, 'message' => ['role' => 'assistant', 'content' => 'Paris'], 'finish_reason' => 'stop']
+                ]
+            ])
+        ]);
+
+        $model = new OpenAIChatModel(
+            $client->chat(),
+            parameters: [
+                'messages' => [
+                    ['role' => 'system', 'content' => 'You are a helpful assistant']
+                ]
+            ]
+        );
+
+        $result = $model->generate('What is the capital of France?');
+
+        $this->assertEquals('Paris', $result->generation());
+        $client->chat()->assertSent(function (string $method, array $parameters): bool {
+            $this->assertEquals('create', $method);
+            $this->assertEquals(
+                [
+                    ['role' => 'system', 'content' => 'You are a helpful assistant'],
+                    ['role' => 'user', 'content' => 'What is the capital of France?']
+                ],
+                $parameters['messages']
+            );
+
+            return true;
+        });
+    }
+
     public function testGenerateThrowsAppropriateException(): void
     {
         $client = new class() extends ClientFake {
