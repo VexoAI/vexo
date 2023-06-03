@@ -17,6 +17,7 @@ final class ResultTest extends TestCase
         $result = new Result(['A great result'], $metadata);
 
         $this->assertSame(['A great result'], $result->generations());
+        $this->assertSame('A great result', $result->generation());
         $this->assertSame($metadata, $result->metadata());
     }
 }

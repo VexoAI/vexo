@@ -64,13 +64,13 @@ final class LanguageModelChain implements Chain
 
     private function putResult(Context $context, Result $result): void
     {
-        $context->put($this->outputMap[self::OUTPUT_GENERATION] ?? self::OUTPUT_GENERATION, $result->generations()[0]);
+        $context->put($this->outputMap[self::OUTPUT_GENERATION] ?? self::OUTPUT_GENERATION, $result->generation());
 
         if ( ! $this->outputParser instanceof OutputParser) {
             return;
         }
 
-        $parsed = $this->outputParser->parse($result->generations()[0]);
+        $parsed = $this->outputParser->parse($result->generation());
         foreach ($parsed as $key => $value) {
             $context->put($this->outputMap[$key] ?? $key, $value);
         }

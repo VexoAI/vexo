@@ -17,6 +17,11 @@ final class Result
     ) {
     }
 
+    public function generation(): string
+    {
+        return $this->generations[0];
+    }
+
     /**
      * @return array<string>
      */
