@@ -7,7 +7,7 @@ namespace Vexo\Model\Embedding;
 use Vexo\Contract\Vector;
 use Vexo\Contract\Vectors;
 
-final class FakeModel implements EmbeddingModel
+final class FakeModel implements Model
 {
     /**
      * @param array<int, Vector> $vectors

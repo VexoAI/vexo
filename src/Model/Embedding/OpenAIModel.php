@@ -8,7 +8,7 @@ use OpenAI\Contracts\Resources\EmbeddingsContract;
 use Vexo\Contract\Vector;
 use Vexo\Contract\Vectors;
 
-final class OpenAIModel implements EmbeddingModel
+final class OpenAIModel implements Model
 {
     private const DEFAULT_PARAMETERS = ['model' => 'text-embedding-ada-002'];
 

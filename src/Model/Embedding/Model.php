@@ -7,7 +7,7 @@ namespace Vexo\Model\Embedding;
 use Vexo\Contract\Vector;
 use Vexo\Contract\Vectors;
 
-interface EmbeddingModel
+interface Model
 {
     public function embedQuery(string $query): Vector;
 

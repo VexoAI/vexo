@@ -9,7 +9,7 @@ use Vexo\Contract\Metadata;
 use Vexo\Contract\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
-use Vexo\Model\Embedding\EmbeddingModel;
+use Vexo\Model\Embedding\Model;
 use Webmozart\Assert\Assert;
 
 final class PineconeVectorStore implements VectorStore
@@ -20,7 +20,7 @@ final class PineconeVectorStore implements VectorStore
      * @param int<1, max> $upsertBatchSize
      */
     public function __construct(
-        private readonly EmbeddingModel $embeddingModel,
+        private readonly Model $embeddingModel,
         private readonly VectorResource $pinecone,
         private readonly string $metadataIdKey = 'id',
         private readonly string $metadataContentsKey = 'contents',

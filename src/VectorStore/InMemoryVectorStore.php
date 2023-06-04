@@ -10,7 +10,7 @@ use Vexo\Contract\Vector;
 use Vexo\Contract\Vectors;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
-use Vexo\Model\Embedding\EmbeddingModel;
+use Vexo\Model\Embedding\Model;
 
 final class InMemoryVectorStore implements VectorStore
 {
@@ -24,7 +24,7 @@ final class InMemoryVectorStore implements VectorStore
     private array $hashBuckets = [];
 
     public function __construct(
-        private readonly EmbeddingModel $embeddingModel,
+        private readonly Model $embeddingModel,
         private readonly SimilarityAlgorithm $similarityAlgorithm = SimilarityAlgorithm::COSINE,
         private readonly string $metadataContentsKey = 'contents',
         private readonly int $numDimensions = 1536,
