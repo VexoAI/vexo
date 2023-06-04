@@ -9,7 +9,6 @@ use League\Flysystem\FilesystemReader;
 use Vexo\Contract\Metadata;
 use Vexo\Document\Document;
 use Vexo\Document\Documents;
-use Vexo\Document\Documents as DocumentsContract;
 
 final class TextFileLoader implements Loader
 {
@@ -19,7 +18,7 @@ final class TextFileLoader implements Loader
     ) {
     }
 
-    public function load(): DocumentsContract
+    public function load(): Documents
     {
         try {
             $contents = $this->filesystem->read($this->path);
